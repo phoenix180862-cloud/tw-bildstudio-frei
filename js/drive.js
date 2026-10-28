@@ -1,0 +1,24 @@
+// TW Bildstudio – kostenlose Fassung: Ersatz für js/drive.js (keine Google-Anmeldung, kein Drive, kein Google Fotos, kein Gmail)
+const AUS = () => { throw new Error('In der kostenlosen Fassung nicht enthalten.'); };
+export const CLIENT_ID = '';
+export const ORDNER = {};
+export const BILDER_UNTERORDNER = '';
+export const beiAenderung = () => { };
+export const token = () => null;
+export const verbunden = () => false;
+export const kontoBekannt = () => null;
+export const anmelden = async () => AUS();
+export const sicher = async () => AUS();
+export const api = async () => AUS();
+export const konto = async () => null;
+export const suche = async () => [];
+export const inhalt = async () => [];
+export const unterordner = async () => [];
+export const datei = async () => AUS();
+export const laden = async () => AUS();
+export const ordnerSichern = async () => AUS();
+export const hochladen = async () => AUS();
+export const baustellen = async () => [];
+export const baustellenBilderOrdner = async () => AUS();
+export const fotosAuswahl = async () => [];
+export const mailSenden = async () => AUS();

@@ -1,1 +1,41 @@
-<!doctype html><meta charset="utf-8"><title>TW Bildstudio</title><p style="font-family:sans-serif">TW Bildstudio – in Kürze verfügbar.</p>
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TW Bildstudio</title>
+<script src="frei-config.js?v=20261028-041026"></script>
+<meta name="theme-color" content="#121417">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="img/icon-192.png">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+<link rel="stylesheet" href="schriften/schriften.css">
+<link rel="stylesheet" href="css/bs.css?v=20261028-2">
+</head>
+<body>
+<header id="kopf">
+  <a class="marke" href="#/start" title="Startseite" data-t-title><img src="img/icon-192.png" alt=""></a>
+  <nav id="reiter">
+    <a href="#/start" data-r="start" data-t>⌂ Start</a>
+    <a href="#/bibliothek" data-r="bibliothek" data-t>▦ Bibliothek</a>
+    <a href="#/bearbeiten" data-r="bearbeiten" data-t>✎ Bearbeiten</a>
+  </nav>
+  <button class="btn gelb" id="kopfHilfe" title="Info &amp; Videos (F1)" data-t-title data-t>ⓘ Info &amp; Videos</button>
+  <button class="btn ki" id="kopfKI" title="KI: Bild verändern (KI-Werkstatt) oder Mail schreiben lassen (Taste I im Bearbeiten)" data-t-title>✦ KI</button>
+  <span class="platz"></span>
+  <div class="suche"><input id="suchFeld" type="search" placeholder="Suchen … (Strg+K)" data-t-placeholder autocomplete="off"></div>
+  <button class="btn" id="kopfImport" title="Bilder holen: PC, Google Fotos, Drive, Kamera" data-t-title data-t>＋ Bilder holen</button>
+  <button class="btn" id="kopfVersand" title="Ausgewählte Bilder versenden: E-Mail, WhatsApp, Baustellen-App" data-t-title data-t>✉ Versenden</button>
+  <button class="btn primaer" id="kopfExport" title="Ausgewählte Bilder speichern / weitergeben" data-t-title data-t>⇪ Exportieren</button>
+  <button class="pille" id="googlePille" title="Google-Konto verbinden (Fotos &amp; Drive)" data-t-title><i></i><span>Google verbinden</span></button>
+</header>
+<div id="haupt">
+  <aside id="seite"></aside>
+  <main id="inhalt"></main>
+</div>
+<div id="dropZone"><div><b data-t>Bilder hier loslassen</b><small data-t>Dateien oder ganze Ordner aus dem Explorer</small></div></div>
+<input type="file" id="dateiWahl" multiple accept="image/*,.heic,.heif,.cr2,.cr3,.nef,.arw,.dng,.orf,.rw2,.raf,.pef,.srw" hidden>
+<input type="file" id="kameraWahl" accept="image/*" capture="environment" hidden>
+<script type="module" src="js/app.js?v=20261028-2"></script>
+</body>
+</html>

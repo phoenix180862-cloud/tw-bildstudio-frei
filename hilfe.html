@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Info & Videos – TW Bildstudio</title>
+<script src="frei-config.js?v=20261028-041026"></script>
+<link rel="icon" type="image/png" href="img/icon-192.png">
+<link rel="stylesheet" href="schriften/schriften.css">
+<style>
+  h1,h2,h3{font-family:"Oswald",sans-serif;font-weight:600;letter-spacing:.6px}
+  :root { --bg:#121417; --bg2:#1a1d22; --bg3:#23272e; --line:#343a44; --tx:#e9ecf0; --tx2:#a7b0bd; --gelb:#facc15; --rot:#c41e1e; }
+  * { box-sizing: border-box; } html, body { margin: 0; height: 100%; background: var(--bg); color: var(--tx); font: 15px/1.5 "Source Sans 3", "Segoe UI", Arial, sans-serif; }
+  body { display: grid; grid-template-rows: auto auto auto 1fr; }
+  header { display: flex; gap: 8px; align-items: center; padding: 8px 10px; background: var(--bg2); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  header b { color: var(--gelb); white-space: nowrap; }
+  select { flex: 1; min-width: 200px; background: var(--bg); color: var(--tx); border: 1px solid var(--line); border-radius: 6px; padding: 6px; font: inherit; }
+  label.f { font-size: 12px; color: var(--tx2); display: flex; gap: 5px; align-items: center; white-space: nowrap; cursor: pointer; }
+  .vid { background: #000; display: flex; align-items: center; justify-content: center; position: relative; }
+  video { width: 100%; max-height: 50vh; display: block; }
+  .novid { color: var(--tx2); padding: 22px; text-align: center; font-size: 13px; }
+  .leiste { display: flex; gap: 6px; align-items: center; padding: 7px 10px; background: var(--bg2); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .btn { background: var(--bg3); color: var(--tx); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; cursor: pointer; font: inherit; font-size: 13px; }
+  .btn:hover { border-color: var(--gelb); } .btn.an { background: var(--gelb); color: #222; border-color: var(--gelb); font-weight: 700; }
+  .weiter { display: none; background: var(--gelb); color: #222; font-weight: 800; border: 0; border-radius: 6px; padding: 6px 14px; cursor: pointer; }
+  .platz { flex: 1; }
+  main { overflow: auto; padding: 12px 16px 24px; }
+  h2 { font-size: 16px; margin: 2px 0 4px; } .unter { color: var(--tx2); font-size: 12px; margin-bottom: 10px; }
+  h2::after { content: ""; display: block; width: 36px; height: 2px; background: var(--rot); margin-top: 6px; }
+  ol.kap { list-style: none; padding: 0; margin: 0; counter-reset: k; }
+  ol.kap li { counter-increment: k; display: flex; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; }
+  ol.kap li::before { content: counter(k); min-width: 24px; height: 24px; border-radius: 50%; background: var(--bg3); color: var(--tx2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex: none; }
+  ol.kap li:hover { background: var(--bg2); }
+  ol.kap li.an { background: #2a2410; border-color: #5c4d10; } ol.kap li.an::before { background: var(--gelb); color: #222; }
+  ol.kap li.fertig::before { background: #1f5130; color: #c9f2d5; content: "✓"; }
+  ol.kap li .zeit { margin-left: auto; color: var(--tx2); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .merke { margin-top: 14px; padding: 10px 12px; background: var(--bg2); border-left: 3px solid var(--gelb); border-radius: 6px; }
+  .merke b { color: var(--gelb); font-size: 12px; letter-spacing: .5px; text-transform: uppercase; } .merke ul { margin: 6px 0 0; padding-left: 18px; } .merke li { margin-bottom: 5px; }
+  .nav { display: flex; gap: 8px; margin-top: 14px; } .nav .btn { flex: 1; }
+  .laut { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 8px; padding: 2px 6px; } .laut small { font-size: 12px; opacity: .8; margin-right: 2px; } #lautRegler { width: 110px; accent-color: #facc15; cursor: pointer; } .laut .btn { width: 30px; padding: 4px 0; font-weight: 800; font-size: 15px; } .laut b { min-width: 46px; text-align: center; font-size: 12.5px; color: var(--tx); font-variant-numeric: tabular-nums; }
+  .btn.ton.an { background: #1f5130; border-color: #3fb950; color: #c9f2d5; }
+  .start-ton { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.45); cursor: pointer; border: 0; color: #fff; font: 700 18px/1.3 inherit; flex-direction: column; gap: 8px; }
+  .start-ton b { background: var(--gelb); color: #222; border-radius: 40px; padding: 14px 26px; font-size: 18px; }
+  .start-ton small { color: #ddd; font-size: 13px; }
+</style>
+</head>
+<body>
+<header><b>ⓘ Info</b><select id="thema" title="Thema wählen" data-t-title></select><label class="f"><input type="checkbox" id="folgen" checked> <span data-t>folgt der Arbeit</span></label><button class="btn ton" id="ton" title="Sprecherstimme in den Videos an/aus" data-t-title>🔊 Ton an</button><span class="laut" title="Lautstärke des Sprechers" data-t-title><small data-t>Lautstärke</small><button class="btn" id="leiser" title="leiser" data-t-title>−</button><input type="range" id="lautRegler" min="10" max="100" step="5" value="100" title="Lautstärke des Sprechers: ziehen" data-t-title><button class="btn" id="lauter" title="lauter" data-t-title>+</button><b id="lautWert">100 %</b></span><button class="btn" id="hb" title="Handbuch (PDF)" data-t-title data-t>Handbuch</button></header>
+<div class="vid" id="vid"></div>
+<div class="leiste"><button class="btn" id="zur" title="vorheriger Schritt" data-t-title data-t>◀ Schritt</button><button class="btn" id="vor" title="nächster Schritt" data-t-title data-t>Schritt ▶</button><label class="f" title="Video hält nach jedem Schritt an" data-t-title><input type="checkbox" id="einzeln"> <span data-t>Schritt für Schritt</span></label><button class="weiter" id="weiter" data-t>Weiter ▶</button><span class="platz"></span><span class="tempo"><button class="btn" data-t="0.75">0,75×</button><button class="btn an" data-t="1">1×</button><button class="btn" data-t="1.5">1,5×</button></span></div>
+<main><h2 id="titel"></h2><div class="unter" id="unter"></div><ol class="kap" id="kap"></ol><div class="merke" id="merke"></div><div class="nav"><button class="btn" id="vorher" data-t>◀ vorheriges Video</button><button class="btn" id="naechst" data-t>nächstes Video ▶</button></div></main>
+<script type="module">
+import { HILFE, MIT_HANDBUCH } from './js/hilfe-frei.js?v=20261028-2';
+import { tr, trz, htmlUebersetzen } from './js/i18n.js';
+htmlUebersetzen(); document.title = tr('Info & Videos') + ' – TW Bildstudio';
+const q = new URLSearchParams(location.search);
+const sel = document.getElementById('thema'); let tempo = 1, aktuell = null, video = null, kap = [], stopBei = null;
+const gruppen = {}; for (const t of HILFE) (gruppen[t.bereich] = gruppen[t.bereich] || []).push(t);
+for (const [g, ts] of Object.entries(gruppen)) { const og = document.createElement('optgroup'); og.label = g; for (const t of ts) og.append(new Option(t.titel, t.id)); sel.append(og); }
+const mmss = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+function zeige(id, erzwingen) {
+  const t = HILFE.find(x => x.id === id) || HILFE[0]; if (aktuell === t.id && !erzwingen) return; aktuell = t.id; sel.value = t.id;
+  document.getElementById('titel').textContent = t.titel;
+  kap = t.kapitel?.length ? t.kapitel : [];
+  document.getElementById('unter').textContent = `${t.bereich} · ${trz(kap.length || t.schritte.length, '{0} Schritt', '{0} Schritte')}${t.dauer ? ' · ' + mmss(t.dauer) + tr(' Min.') : ''} ${t.ohneVideo ? '' : ' · ' + tr('Schritt anklicken = Video springt dorthin')}`;
+  const ol = document.getElementById('kap'); ol.innerHTML = '';
+  (kap.length ? kap : t.schritte.map(s => ({ text: s }))).forEach((k, i) => { const li = document.createElement('li'); li.innerHTML = `<span>${k.text.replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]))}</span>${k.t != null ? `<span class="zeit">${mmss(k.t)}</span>` : ''}`; li.onclick = () => springe(i); ol.append(li); });
+  const m = document.getElementById('merke'); m.innerHTML = kap.length ? `<b>${tr('Zum Merken')}</b><ul>${t.schritte.map(s => `<li>${s.replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]))}</li>`).join('')}</ul>` : ''; m.style.display = kap.length ? '' : 'none';
+  const v = document.getElementById('vid'); v.innerHTML = '';
+  if (t.ohneVideo) { v.innerHTML = '<div class="novid"></div>'; v.firstChild.textContent = tr('Zu diesem Thema gibt es hier kein Video – die Anleitung steht unten.'); video = null; window.scrollTo(0, 0); return; }
+  video = document.createElement('video'); video.controls = true; video.autoplay = false; video.playsInline = true; video.preload = 'auto';
+  video.src = (t.videoPfad || `hilfe/videos/${t.id}.webm`) + '?v=20261028-2'; video.onloadedmetadata = () => { video.playbackRate = tempo; tonAnwenden(); abspielen(); };
+  video.onvolumechange = () => { if (!video || tonHinweis()) return; const l = Math.round(video.volume * 100); if (l !== Math.round(lautstaerke * 100) || video.muted === tonAn) { lautstaerke = Math.max(0.1, video.volume); tonAn = !video.muted; speichernTon(); lautAnzeigen(); tonAnzeigen(); } };
+  video.onerror = () => { v.innerHTML = '<div class="novid"></div>'; v.firstChild.textContent = tr('Für diesen Schritt gibt es kein eigenes Video – die Anleitung steht unten.'); video = null; };
+  video.ontimeupdate = markiere; video.onended = () => { document.getElementById('weiter').style.display = 'none'; };
+  v.append(video); window.scrollTo(0, 0);
+}
+function index() { if (!video || !kap.length) return -1; let i = -1; for (let j = 0; j < kap.length; j++) if (video.currentTime + 0.05 >= kap[j].t) i = j; return i; }
+function markiere() {
+  const i = index(); [...document.querySelectorAll('#kap li')].forEach((li, j) => { li.classList.toggle('an', j === i); li.classList.toggle('fertig', j < i); });
+  const a = document.querySelector('#kap li.an'); if (a && !istSichtbar(a)) a.scrollIntoView({ block: 'nearest' });
+  if (document.getElementById('einzeln').checked && video && !video.paused) {
+    const ende = kap[i + 1]?.t; if (stopBei == null && ende) stopBei = ende - 0.15;
+    if (stopBei != null && video.currentTime >= stopBei) { video.pause(); stopBei = null; document.getElementById('weiter').style.display = 'inline-block'; }
+  }
+}
+const istSichtbar = (e) => { const r = e.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; };
+function springe(i) { if (!video || !kap[i]) return; video.currentTime = kap[i].t + 0.05; stopBei = kap[i + 1] ? kap[i + 1].t - 0.15 : null; video.play(); document.getElementById('weiter').style.display = 'none'; }
+document.getElementById('weiter').onclick = () => { const i = index(); document.getElementById('weiter').style.display = 'none'; if (kap[i + 1]) springe(i + 1); else video.play(); };
+document.getElementById('vor').onclick = () => springe(Math.min(kap.length - 1, index() + 1));
+document.getElementById('zur').onclick = () => springe(Math.max(0, index() - (video && video.currentTime - (kap[index()]?.t || 0) > 1.5 ? 0 : 1)));
+document.getElementById('einzeln').onchange = () => { stopBei = null; };
+const reihe = HILFE.map(t => t.id);
+document.getElementById('vorher').onclick = () => zeige(reihe[Math.max(0, reihe.indexOf(aktuell) - 1)]);
+document.getElementById('naechst').onclick = () => zeige(reihe[Math.min(reihe.length - 1, reihe.indexOf(aktuell) + 1)]);
+sel.onchange = () => zeige(sel.value);
+document.querySelector('.tempo').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; tempo = +b.dataset.t; document.querySelectorAll('.tempo button').forEach(x => x.classList.toggle('an', x === b)); if (video) video.playbackRate = tempo; };
+/* ───── Ton: Die Videos haben eine Sprecherstimme (fest eingesprochen). Ton an/aus + Lautstärke gelten für alle TW-Apps. ───── */
+let tonAn = (() => { try { return localStorage.getItem('tw_hilfe_ton') !== '0'; } catch (e) { return true; } })();
+let lautstaerke = (() => { try { const v = parseFloat(localStorage.getItem('tw_hilfe_lautstaerke')); return isNaN(v) ? 0.8 : Math.max(0.1, Math.min(1, v)); } catch (e) { return 0.8; } })();
+const tonKnopf = document.getElementById('ton'), lautRegler = document.getElementById('lautRegler');
+const tonHinweis = () => document.querySelector('.start-ton');
+function speichernTon() { try { localStorage.setItem('tw_hilfe_ton', tonAn ? '1' : '0'); localStorage.setItem('tw_hilfe_lautstaerke', String(lautstaerke)); } catch (e) {} }
+function tonAnzeigen() { tonKnopf.textContent = tonAn ? tr('🔊 Ton an') : tr('🔇 Ton aus'); tonKnopf.classList.toggle('an', tonAn); }
+function lautAnzeigen() { document.getElementById('lautWert').textContent = Math.round(lautstaerke * 100) + ' %'; lautRegler.value = Math.round(lautstaerke * 100); }
+function tonAnwenden() { if (video) { video.volume = lautstaerke; video.muted = !tonAn; } tonAnzeigen(); lautAnzeigen(); }
+/** abspielen – mit Ton, wenn der Browser es erlaubt; sonst stumm starten und großen Knopf „Ton einschalten“ zeigen */
+function abspielen() {
+  if (!video) return; video.muted = !tonAn;
+  video.play().catch(() => { if (!video) return; video.muted = true; video.play().catch(() => {}); if (tonAn && !tonHinweis()) { const b = document.createElement('button'); b.className = 'start-ton'; b.innerHTML = '<b></b><small></small>'; b.firstChild.textContent = tr('🔊 Ton einschalten'); b.lastChild.textContent = tr('Der Sprecher erklärt jeden Schritt'); b.onclick = () => { b.remove(); if (video) { video.muted = false; video.volume = lautstaerke; video.currentTime = Math.max(0, (kap[index()]?.t ?? 0)); video.play(); } }; document.getElementById('vid').append(b); } });
+}
+tonKnopf.onclick = () => { tonAn = !tonAn; speichernTon(); tonHinweis()?.remove(); tonAnwenden(); if (video && video.paused && tonAn) video.play().catch(() => {}); };
+function lautSetzen(d, absolut) {
+  lautstaerke = absolut != null ? Math.max(0.1, Math.min(1, absolut)) : Math.max(0.1, Math.min(1, Math.round((lautstaerke + d) * 10) / 10));
+  if (!tonAn) tonAn = true; tonHinweis()?.remove(); speichernTon(); tonAnwenden();
+  if (lautstaerke >= 1 && d > 0) { const w = document.getElementById('lautWert'); w.textContent = tr('max.'); setTimeout(lautAnzeigen, 1500); }
+}
+document.getElementById('leiser').onclick = () => lautSetzen(-0.1);
+document.getElementById('lauter').onclick = () => lautSetzen(0.1);
+lautRegler.oninput = () => lautSetzen(0, lautRegler.value / 100);
+tonAnzeigen(); lautAnzeigen();
+if (MIT_HANDBUCH) document.getElementById('hb').onclick = () => window.open('hilfe/Bildstudio-Handbuch.pdf', '_blank'); else document.getElementById('hb').remove();
+let kanal; try { kanal = new BroadcastChannel('tw-bs-hilfe'); kanal.onmessage = (e) => { if (e.data && e.data.kontext && (document.getElementById('folgen').checked || e.data.zeigen)) zeige(e.data.kontext); }; } catch (e) {}
+window.addEventListener('message', (e) => { if (e.origin === location.origin && e.data && e.data.kontext && (document.getElementById('folgen').checked || e.data.zeigen)) zeige(e.data.kontext); });
+zeige(q.get('thema') || 'start');
+</script>
+</body>
+</html>
