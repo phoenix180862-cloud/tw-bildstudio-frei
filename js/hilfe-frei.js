@@ -5,7 +5,7 @@
 //  • Sprache: alle Texte über tr() (Schlüssel = deutscher Text). Gibt es zum Thema ein Video in der gewählten Sprache
 //    ("videos": {sprache: {kapitel, dauer}} – im Paket der freien Fassung), wird dieses genommen: hilfe/videos/<sprache>/<id>.webm
 // Gefiltert wird hier, die Texte selbst bleiben vollständig in hilfe-themen/*.json (filtern statt löschen).
-import * as D from './help-data.js?v=20261028-2';
+import * as D from './help-data.js?v=20261028-3';
 import { tr, SPRACHE } from './i18n.js';
 
 const FREI = !!(typeof window !== 'undefined' && window.TW_FREI === true);

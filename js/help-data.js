@@ -9,7 +9,9 @@ export const HILFE = [
    "start"
   ],
   "schritte": [
-   "Die Startseite zeigt alles auf einen Blick: Anzahl Bilder, Unsortierte, Bearbeitete, Favoriten, Ordner und Speicher – jede Kachel ist anklickbar.",
+   "Oben links das Firmenlogo – ein Klick führt immer zurück zur Startseite. Darunter die Begrüßung mit „Bilder holen“ und „Zur Bibliothek“.",
+   "Ganz vorne die neuesten Bilder, dann die Übersicht: Bilder, Unsortiert, Favoriten, Ordner sowie Balken, wie viel schon sortiert und bearbeitet ist, und der belegte Speicher – alles anklickbar.",
+   "Ist die Bibliothek noch leer, zeigt die Startseite eine Anleitung in drei Schritten.",
    "Darunter „Zuletzt bearbeitet“ und „Neu hinzugekommen“ – ein Klick öffnet das Bild direkt zum Bearbeiten.",
    "„Deine Ordner“ zeigt jeden Ordner mit Vorschau, Anzahl und Taste; „Bilder holen aus …“ alle Quellen: PC, ganzer Ordner, Import-Ordner, Kamera, Zwischenablage.",
    "Oben die Reiter Start, Bibliothek, Bearbeiten; daneben „Teilen“ (WhatsApp, Mail-Programm, Handy-Teilen) und „Exportieren“. Drucken bis DIN A0 per Strg+P.",
@@ -24,51 +26,59 @@ export const HILFE = [
    "de": {
     "kapitel": [
      {
-      "t": 1.4,
+      "t": 1.6,
       "text": "Das ist das Bildstudio – die Startseite zeigt dir alles auf einen Blick."
      },
      {
-      "t": 12.7,
-      "text": "Oben die Kennzahlen: wie viele Bilder, wie viele noch unsortiert, bearbeitet, Favoriten, Ordner und der belegte Speicher."
+      "t": 7.3,
+      "text": "Oben links das Logo – ein Klick bringt dich immer zurück zur Startseite."
      },
      {
-      "t": 27.8,
-      "text": "Jede Kachel ist anklickbar – „Unsortiert“ führt direkt zu den Bildern, die noch in einen Ordner müssen."
-     },
-     {
-      "t": 40.1,
+      "t": 12.9,
       "text": "Der orange Knopf „Bilder holen“: vom PC, aus einem ganzen Ordner, mit der Kamera oder aus der Zwischenablage."
      },
      {
-      "t": 53.3,
-      "text": "„Neu hinzugekommen“ und „Zuletzt bearbeitet“ – ein Klick öffnet das Bild direkt im Editor."
+      "t": 21.3,
+      "text": "Ganz vorne die neuesten Bilder – ein Klick öffnet das Bild direkt im Editor."
      },
      {
-      "t": 64.4,
+      "t": 27.3,
+      "text": "Darunter die Übersicht: Bilder, Unsortiert, Favoriten und Ordner – ein Klick führt direkt dorthin."
+     },
+     {
+      "t": 34.4,
+      "text": "Die Balken zeigen, wie viele Bilder schon sortiert und bearbeitet sind – und wie viel Speicher belegt ist."
+     },
+     {
+      "t": 42.3,
       "text": "„Deine Ordner“ mit Vorschau, Anzahl und Taste – ein Klick zeigt den Inhalt."
      },
      {
-      "t": 76.9,
+      "t": 48.6,
       "text": "Oben die Reiter: Start, Bibliothek und Bearbeiten."
      },
      {
-      "t": 86.0,
+      "t": 53.5,
       "text": "Rechts „Teilen“ – per WhatsApp oder über das Teilen-Fenster deines Geräts – und „Exportieren“."
      },
      {
-      "t": 99.6,
+      "t": 60.1,
       "text": "Daneben die Sprache: Deutsch, Englisch, Tschechisch, Slowakisch, Ukrainisch oder Polnisch."
      },
      {
-      "t": 113.3,
+      "t": 67.1,
       "text": "Der gelbe Info-Knopf sitzt unten links in der Seitenleiste – zu jedem Schritt gibt es ein kurzes Video wie dieses."
      },
      {
-      "t": 130.2,
+      "t": 74.3,
+      "text": "Ist die Bibliothek noch leer, zeigt die Startseite eine Anleitung in drei Schritten."
+     },
+     {
+      "t": 82.4,
       "text": "Deine Bilder bleiben nur in diesem Browser auf deinem Gerät – die Originale werden nie verändert."
      }
     ],
-    "dauer": 143.8
+    "dauer": 89.4
    },
    "en": {
     "kapitel": [
@@ -77,47 +87,55 @@ export const HILFE = [
       "text": "This is Bildstudio – the start page shows you everything at a glance."
      },
      {
-      "t": 8.7,
-      "text": "At the top the key figures: how many pictures, how many still unsorted, edited, favourites, folders and the storage used."
+      "t": 8.0,
+      "text": "At the top left the logo – one click always takes you back to the start page."
      },
      {
-      "t": 19.3,
-      "text": "Every tile is clickable – “Unsorted” leads straight to the pictures that still need to go into a folder."
-     },
-     {
-      "t": 27.8,
+      "t": 17.1,
       "text": "The orange “Get pictures” button: from the PC, from a whole folder, with the camera or from the clipboard."
      },
      {
-      "t": 36.6,
-      "text": "“Newly added” and “Recently edited” – one click opens the picture straight in the editor."
+      "t": 25.3,
+      "text": "Up front the newest pictures – one click opens the picture straight in the editor."
      },
      {
-      "t": 44.4,
+      "t": 34.2,
+      "text": "Below that the overview: pictures, unsorted, favourites and folders – one click takes you straight there."
+     },
+     {
+      "t": 43.5,
+      "text": "The bars show how many pictures are already sorted and edited – and how much storage is used."
+     },
+     {
+      "t": 52.8,
       "text": "“Your folders” with preview, count and key – one click shows the contents."
      },
      {
-      "t": 51.8,
+      "t": 60.1,
       "text": "At the top the tabs: Start, Library and Edit."
      },
      {
-      "t": 57.0,
+      "t": 65.3,
       "text": "On the right “Share” – via WhatsApp or your device’s share window – and “Export”."
      },
      {
-      "t": 64.0,
+      "t": 72.3,
       "text": "Next to it the language: German, English, Czech, Slovak, Ukrainian or Polish."
      },
      {
-      "t": 71.7,
+      "t": 79.8,
       "text": "The yellow info button sits at the bottom left of the sidebar – there is a short video like this one for every step."
      },
      {
-      "t": 79.7,
+      "t": 87.9,
+      "text": "If the library is still empty, the start page shows a guide in three steps."
+     },
+     {
+      "t": 95.3,
       "text": "Your pictures stay only in this browser on your device – the originals are never changed."
      }
     ],
-    "dauer": 87.2
+    "dauer": 102.8
    },
    "cs": {
     "kapitel": [
@@ -126,194 +144,226 @@ export const HILFE = [
       "text": "To je Bildstudio – úvodní stránka ti ukáže vše na první pohled."
      },
      {
-      "t": 15.7,
-      "text": "Nahoře klíčová čísla: kolik obrázků, kolik ještě netříděných, upravených, oblíbených, složek a obsazené úložiště."
+      "t": 9.3,
+      "text": "Vlevo nahoře logo – jeden klik tě vždy vrátí na úvodní stránku."
      },
      {
-      "t": 32.9,
-      "text": "Každá dlaždice je klikací – „Netříděné“ vede přímo k obrázkům, které ještě musí do složky."
-     },
-     {
-      "t": 48.2,
+      "t": 17.8,
       "text": "Oranžové tlačítko „Načíst obrázky“: z PC, z celé složky, fotoaparátem nebo ze schránky."
      },
      {
-      "t": 62.1,
-      "text": "„Nově přidané“ a „Naposledy upravené“ – jeden klik otevře obrázek přímo v editoru."
+      "t": 28.0,
+      "text": "Vpředu nejnovější obrázky – jeden klik otevře obrázek přímo v editoru."
      },
      {
-      "t": 74.7,
+      "t": 38.7,
+      "text": "Pod tím přehled: obrázky, netříděné, oblíbené a složky – jeden klik tě tam přenese."
+     },
+     {
+      "t": 48.5,
+      "text": "Pruhy ukazují, kolik obrázků je už roztříděno a upraveno – a kolik úložiště je obsazeno."
+     },
+     {
+      "t": 59.8,
       "text": "„Tvé složky“ s náhledem, počtem a klávesou – jeden klik ukáže obsah."
      },
      {
-      "t": 87.7,
+      "t": 68.3,
       "text": "Nahoře záložky: Start, Knihovna a Upravit."
      },
      {
-      "t": 94.4,
+      "t": 73.9,
       "text": "Vpravo „Sdílet“ – přes WhatsApp nebo okno sdílení tvého zařízení – a „Exportovat“."
      },
      {
-      "t": 104.4,
+      "t": 82.2,
       "text": "Vedle toho jazyk: němčina, angličtina, čeština, slovenština, ukrajinština nebo polština."
      },
      {
-      "t": 115.2,
+      "t": 91.9,
       "text": "Žluté tlačítko info je vlevo dole v postranním panelu – ke každému kroku je krátké video jako toto."
      },
      {
-      "t": 130.1,
+      "t": 101.1,
+      "text": "Je-li knihovna ještě prázdná, úvodní stránka ukáže návod ve třech krocích."
+     },
+     {
+      "t": 110.0,
       "text": "Tvé obrázky zůstávají jen v tomto prohlížeči ve tvém zařízení – originály se nikdy nemění."
      }
     ],
-    "dauer": 143.6
+    "dauer": 120.5
    },
    "sk": {
     "kapitel": [
      {
-      "t": 1.4,
+      "t": 1.6,
       "text": "To je Bildstudio – úvodná stránka ti ukáže všetko na prvý pohľad."
      },
      {
-      "t": 15.0,
-      "text": "Hore kľúčové čísla: koľko obrázkov, koľko ešte netriedených, upravených, obľúbených, priečinkov a obsadené úložisko."
+      "t": 7.0,
+      "text": "Vľavo hore logo – jeden klik ťa vždy vráti na úvodnú stránku."
      },
      {
-      "t": 28.5,
-      "text": "Každá dlaždica je klikateľná – „Netriedené“ vedie priamo k obrázkom, ktoré ešte musia do priečinka."
-     },
-     {
-      "t": 38.1,
+      "t": 14.1,
       "text": "Oranžové tlačidlo „Načítať obrázky“: z PC, z celého priečinka, fotoaparátom alebo zo schránky."
      },
      {
-      "t": 49.2,
-      "text": "„Novo pridané“ a „Naposledy upravené“ – jeden klik otvorí obrázok priamo v editore."
+      "t": 22.7,
+      "text": "Vpredu najnovšie obrázky – jeden klik otvorí obrázok priamo v editore."
      },
      {
-      "t": 59.8,
+      "t": 30.2,
+      "text": "Pod tým prehľad: obrázky, netriedené, obľúbené a priečinky – jeden klik ťa tam prenesie."
+     },
+     {
+      "t": 38.4,
+      "text": "Pruhy ukazujú, koľko obrázkov je už roztriedených a upravených – a koľko úložiska je obsadené."
+     },
+     {
+      "t": 47.5,
       "text": "„Tvoje priečinky“ s náhľadom, počtom a klávesom – jeden klik ukáže obsah."
      },
      {
-      "t": 68.9,
+      "t": 54.2,
       "text": "Hore záložky: Štart, Knižnica a Upraviť."
      },
      {
-      "t": 74.2,
+      "t": 58.8,
       "text": "Vpravo „Zdieľať“ – cez WhatsApp alebo okno zdieľania tvojho zariadenia – a „Exportovať“."
      },
      {
-      "t": 81.4,
+      "t": 65.3,
       "text": "Vedľa toho jazyk: nemčina, angličtina, čeština, slovenčina, ukrajinčina alebo poľština."
      },
      {
-      "t": 90.0,
+      "t": 72.9,
       "text": "Žlté tlačidlo info je vľavo dole v bočnom paneli – ku každému kroku je krátke video ako toto."
      },
      {
-      "t": 98.4,
+      "t": 78.7,
+      "text": "Ak je knižnica ešte prázdna, úvodná stránka ukáže návod v troch krokoch."
+     },
+     {
+      "t": 84.1,
       "text": "Tvoje obrázky zostávajú len v tomto prehliadači v tvojom zariadení – originály sa nikdy nemenia."
      }
     ],
-    "dauer": 107.7
+    "dauer": 91.2
    },
    "uk": {
     "kapitel": [
      {
-      "t": 1.4,
+      "t": 1.6,
       "text": "Це Bildstudio – стартова сторінка показує тобі все одразу."
      },
      {
-      "t": 13.7,
-      "text": "Угорі ключові цифри: скільки фото, скільки ще несортованих, оброблених, улюблених, папок і зайняте сховище."
+      "t": 8.2,
+      "text": "Ліворуч угорі логотип – один клік завжди повертає на стартову сторінку."
      },
      {
-      "t": 29.8,
-      "text": "Кожна плитка клікабельна – «Несортовані» веде прямо до фото, які ще треба розкласти по папках."
-     },
-     {
-      "t": 43.5,
+      "t": 17.5,
       "text": "Помаранчева кнопка «Додати фото»: з ПК, з цілої папки, камерою або з буфера обміну."
      },
      {
-      "t": 55.1,
-      "text": "«Нові» й «Нещодавно оброблені» – один клік відкриває фото прямо в редакторі."
+      "t": 26.3,
+      "text": "Спереду найновіші фото – один клік відкриває фото прямо в редакторі."
      },
      {
-      "t": 67.6,
+      "t": 34.5,
+      "text": "Нижче огляд: фото, несортовані, улюблені й папки – один клік веде прямо туди."
+     },
+     {
+      "t": 44.0,
+      "text": "Смуги показують, скільки фото вже відсортовано й оброблено – і скільки сховища зайнято."
+     },
+     {
+      "t": 55.4,
       "text": "«Твої папки» з переглядом, кількістю й клавішею – один клік показує вміст."
      },
      {
-      "t": 79.3,
+      "t": 64.4,
       "text": "Угорі вкладки: Старт, Бібліотека й Редагувати."
      },
      {
-      "t": 91.0,
+      "t": 70.3,
       "text": "Праворуч «Поділитися» – через WhatsApp або вікно поширення пристрою – і «Експорт»."
      },
      {
-      "t": 100.9,
+      "t": 78.0,
       "text": "Поруч мова: німецька, англійська, чеська, словацька, українська чи польська."
      },
      {
-      "t": 115.0,
+      "t": 86.9,
       "text": "Жовта кнопка інфо – ліворуч унизу на бічній панелі; до кожного кроку є коротке відео, як це."
      },
      {
-      "t": 129.1,
+      "t": 96.0,
+      "text": "Якщо бібліотека ще порожня, стартова сторінка показує інструкцію з трьох кроків."
+     },
+     {
+      "t": 105.0,
       "text": "Твої фото лишаються лише в цьому браузері на твоєму пристрої – оригінали ніколи не змінюються."
      }
     ],
-    "dauer": 143.7
+    "dauer": 114.5
    },
    "pl": {
     "kapitel": [
      {
-      "t": 1.4,
+      "t": 1.6,
       "text": "To jest Bildstudio – strona startowa pokazuje ci wszystko na pierwszy rzut oka."
      },
      {
-      "t": 10.6,
-      "text": "U góry kluczowe liczby: ile zdjęć, ile jeszcze nieposortowanych, edytowanych, ulubionych, folderów i zajęta pamięć."
+      "t": 8.6,
+      "text": "W lewym górnym rogu logo – jedno kliknięcie zawsze wraca do strony startowej."
      },
      {
-      "t": 22.5,
-      "text": "Każdy kafelek jest klikalny – „Nieposortowane” prowadzi prosto do zdjęć, które muszą jeszcze trafić do folderu."
-     },
-     {
-      "t": 35.0,
+      "t": 17.7,
       "text": "Pomarańczowy przycisk „Dodaj zdjęcia”: z komputera, z całego folderu, aparatem lub ze schowka."
      },
      {
-      "t": 46.3,
-      "text": "„Nowo dodane” i „Ostatnio edytowane” – jedno kliknięcie otwiera zdjęcie od razu w edytorze."
+      "t": 26.2,
+      "text": "Z przodu najnowsze zdjęcia – jedno kliknięcie otwiera zdjęcie od razu w edytorze."
      },
      {
-      "t": 57.2,
+      "t": 34.8,
+      "text": "Poniżej przegląd: zdjęcia, nieposortowane, ulubione i foldery – jedno kliknięcie prowadzi prosto tam."
+     },
+     {
+      "t": 44.4,
+      "text": "Paski pokazują, ile zdjęć jest już posortowanych i edytowanych – oraz ile pamięci jest zajęte."
+     },
+     {
+      "t": 54.5,
       "text": "„Twoje foldery” z podglądem, liczbą i klawiszem – jedno kliknięcie pokazuje zawartość."
      },
      {
-      "t": 71.0,
+      "t": 62.9,
       "text": "U góry karty: Start, Biblioteka i Edycja."
      },
      {
-      "t": 78.4,
+      "t": 67.9,
       "text": "Po prawej „Udostępnij” – przez WhatsApp lub okno udostępniania urządzenia – i „Eksport”."
      },
      {
-      "t": 87.4,
+      "t": 75.6,
       "text": "Obok język: niemiecki, angielski, czeski, słowacki, ukraiński lub polski."
      },
      {
-      "t": 97.6,
+      "t": 83.4,
       "text": "Żółty przycisk info jest w lewym dolnym rogu paska bocznego – do każdego kroku jest krótki film taki jak ten."
      },
      {
-      "t": 109.6,
+      "t": 91.1,
+      "text": "Gdy biblioteka jest jeszcze pusta, strona startowa pokazuje instrukcję w trzech krokach."
+     },
+     {
+      "t": 98.4,
       "text": "Twoje zdjęcia pozostają tylko w tej przeglądarce na twoim urządzeniu – oryginały nigdy nie są zmieniane."
      }
     ],
-    "dauer": 120.1
+    "dauer": 106.2
    }
   }
  },

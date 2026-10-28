@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Info & Videos – TW Bildstudio</title>
-<script src="frei-config.js?v=20261028-041026"></script>
+<script src="frei-config.js?v=20261028-104318"></script>
 <link rel="icon" type="image/png" href="img/icon-192.png">
 <link rel="stylesheet" href="schriften/schriften.css">
 <style>
@@ -49,7 +49,7 @@
 <div class="leiste"><button class="btn" id="zur" title="vorheriger Schritt" data-t-title data-t>◀ Schritt</button><button class="btn" id="vor" title="nächster Schritt" data-t-title data-t>Schritt ▶</button><label class="f" title="Video hält nach jedem Schritt an" data-t-title><input type="checkbox" id="einzeln"> <span data-t>Schritt für Schritt</span></label><button class="weiter" id="weiter" data-t>Weiter ▶</button><span class="platz"></span><span class="tempo"><button class="btn" data-t="0.75">0,75×</button><button class="btn an" data-t="1">1×</button><button class="btn" data-t="1.5">1,5×</button></span></div>
 <main><h2 id="titel"></h2><div class="unter" id="unter"></div><ol class="kap" id="kap"></ol><div class="merke" id="merke"></div><div class="nav"><button class="btn" id="vorher" data-t>◀ vorheriges Video</button><button class="btn" id="naechst" data-t>nächstes Video ▶</button></div></main>
 <script type="module">
-import { HILFE, MIT_HANDBUCH } from './js/hilfe-frei.js?v=20261028-2';
+import { HILFE, MIT_HANDBUCH } from './js/hilfe-frei.js?v=20261028-3';
 import { tr, trz, htmlUebersetzen } from './js/i18n.js';
 htmlUebersetzen(); document.title = tr('Info & Videos') + ' – TW Bildstudio';
 const q = new URLSearchParams(location.search);
@@ -68,7 +68,7 @@ function zeige(id, erzwingen) {
   const v = document.getElementById('vid'); v.innerHTML = '';
   if (t.ohneVideo) { v.innerHTML = '<div class="novid"></div>'; v.firstChild.textContent = tr('Zu diesem Thema gibt es hier kein Video – die Anleitung steht unten.'); video = null; window.scrollTo(0, 0); return; }
   video = document.createElement('video'); video.controls = true; video.autoplay = false; video.playsInline = true; video.preload = 'auto';
-  video.src = (t.videoPfad || `hilfe/videos/${t.id}.webm`) + '?v=20261028-2'; video.onloadedmetadata = () => { video.playbackRate = tempo; tonAnwenden(); abspielen(); };
+  video.src = (t.videoPfad || `hilfe/videos/${t.id}.webm`) + '?v=20261028-3'; video.onloadedmetadata = () => { video.playbackRate = tempo; tonAnwenden(); abspielen(); };
   video.onvolumechange = () => { if (!video || tonHinweis()) return; const l = Math.round(video.volume * 100); if (l !== Math.round(lautstaerke * 100) || video.muted === tonAn) { lautstaerke = Math.max(0.1, video.volume); tonAn = !video.muted; speichernTon(); lautAnzeigen(); tonAnzeigen(); } };
   video.onerror = () => { v.innerHTML = '<div class="novid"></div>'; v.firstChild.textContent = tr('Für diesen Schritt gibt es kein eigenes Video – die Anleitung steht unten.'); video = null; };
   video.ontimeupdate = markiere; video.onended = () => { document.getElementById('weiter').style.display = 'none'; };

@@ -1,6 +1,6 @@
 // TW Bildstudio (kostenlose Fassung) – Service Worker: Netz zuerst (immer neueste Fassung), Zwischenspeicher nur offline.
 // Version wird beim Paketbau gesetzt; ändert sie sich, meldet die App „Neue Version – aktualisieren“.
-const C = 'tw-bs-frei-20261028-041026';
+const C = 'tw-bs-frei-20261028-104318';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (e) => e.waitUntil(caches.keys().then(k => Promise.all(k.filter(n => n !== C).map(n => caches.delete(n)))).then(() => self.clients.claim())));
 self.addEventListener('fetch', (e) => {

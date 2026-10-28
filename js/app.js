@@ -6,7 +6,7 @@ import * as ed from './editor.js';
 import * as src from './sources.js';
 import * as exp from './export.js';
 import * as drive from './drive.js';
-import * as hilfe from './help.js?v=20261028-2';
+import * as hilfe from './help.js?v=20261028-3';
 import * as db from './db.js';
 import * as startseite from './start.js';
 import { webglOk, normalisiereBearbeitung, istBearbeitet } from './engine.js';
@@ -45,7 +45,7 @@ async function start() {
 /* ───────── Seitenleiste ───────── */
 export function seite() {
   const s = $('#seite'), z = zaehler(); s.innerHTML = '';
-  const lb = el('div', { class: 'logo-box' }, startseite.logo(tr('Bildstudio'))); s.append(el('div', { class: 's-marke', title: tr('Startseite'), onclick: () => { location.hash = '#/start'; } }, lb));
+  // Firmenlogo sitzt in der Kopfleiste (klein, Originaldatei) – in der Seitenleiste kein zweites Logo mehr
   s.append(el('div', { class: 's-link' + (aktuelleRoute() === 'start' ? ' an' : ''), onclick: () => { document.body.classList.remove('seite-auf'); location.hash = '#/start'; } }, el('span', {}, '⌂'), tr('Startseite')));
   const link = (v, ico, t, n) => el('div', { class: 's-link' + (state.ansicht === v && aktuelleRoute() === 'bibliothek' ? ' an' : ''), onclick: () => { state.ansicht = v; state.auswahl.clear(); document.body.classList.remove('seite-auf'); location.hash = '#/bibliothek'; lib.neu(); seite(); } }, el('span', {}, ico), t, el('span', { class: 'n' }, n ?? ''));
   s.append(el('div', { class: 's-gruppe' }, tr('Bilder holen')),

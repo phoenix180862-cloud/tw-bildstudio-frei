@@ -18,7 +18,7 @@ function erkennen() {
 export const SPRACHE = erkennen();
 let WB = {};
 if (SPRACHE !== 'de') {
-  try { WB = await (await fetch(new URL(`../i18n/${SPRACHE}.json?v=20261028-2`, import.meta.url))).json(); }
+  try { WB = await (await fetch(new URL(`../i18n/${SPRACHE}.json?v=20261028-3`, import.meta.url))).json(); }
   catch (e) { console.warn('Sprachdatei fehlt:', SPRACHE, e); WB = {}; }
 }
 try { document.documentElement.lang = SPRACHE; } catch (e) { }
