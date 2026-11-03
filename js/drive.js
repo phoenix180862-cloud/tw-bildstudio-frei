@@ -20,5 +20,6 @@ export const ordnerSichern = async () => AUS();
 export const hochladen = async () => AUS();
 export const baustellen = async () => [];
 export const baustellenBilderOrdner = async () => AUS();
+export const baustellenPlaene = async () => AUS();
 export const fotosAuswahl = async () => [];
 export const mailSenden = async () => AUS();

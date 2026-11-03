@@ -1,5 +1,6 @@
 // TW Bildstudio – Einzeichnen & Markieren (Vorschläge für Bauherren, Mängel, Änderungen)
 import { tr, trz } from './i18n.js';
+import * as db from './db.js';
 // Alle Punkte relativ (0–1) zum fertig zugeschnittenen Bild. Stärke 1–12 (relativ zur Bildgröße).
 export const MARKUP_WZ = [
   { t: 'pfeil', name: tr('Pfeil'), sym: '➚', tipp: tr('Ziehen: vom Ende zur Spitze') },
@@ -14,8 +15,43 @@ export const MARKUP_WZ = [
   { t: 'nummer', name: tr('Nummer'), sym: '①', tipp: tr('Nummerierter Punkt – Erklärung in der Legende') },
   { t: 'notiz', name: tr('Notiz'), sym: '💬', tipp: tr('Hinweis mit Pfeil: erst Ziel klicken, dann Textlage ziehen') },
   { t: 'kreuz', name: tr('Kreuz'), sym: '✕', tipp: tr('Durchstreichen: „entfällt / entfernen“') },
-  { t: 'haken', name: tr('Haken'), sym: '✓', tipp: tr('In Ordnung / bleibt') }
+  { t: 'haken', name: tr('Haken'), sym: '✓', tipp: tr('In Ordnung / bleibt') },
+  { t: 'ausschnitt', name: tr('Raum ausschneiden'), sym: '✂', tipp: tr('Rahmen um einen Raum ziehen – er wird ein eigenes Bild mit allen Fotopunkten und Einzeichnungen darin (maßstabsgetreu)') },
+  { t: 'foto', name: tr('Fotopunkt'), sym: '📷', tipp: tr('In den Plan klicken, dann Foto wählen – oder Fotos direkt auf den Plan ziehen. Im PDF anklickbar: das Foto öffnet sich groß.') }
 ];
+
+/* ───────── Eingefügte Bilder und Fotopunkte: Bilddaten liegen in IndexedDB (blobs, Schlüssel „ovl:…“) ───────── */
+const BILDER = new Map(), LADEN = new Map(); let geladenHoerer = null;
+/** wird aufgerufen, sobald ein noch fehlendes Bild nachgeladen ist (Editor zeichnet dann neu) */
+export const beiBildGeladen = (fn) => { geladenHoerer = fn; };
+export const bildVon = (key) => BILDER.get(key) || null;
+export function bildLaden(key) {
+  if (BILDER.has(key)) return Promise.resolve(BILDER.get(key)); if (LADEN.has(key)) return LADEN.get(key);
+  const p = (async () => { try { const b = await db.get('blobs', key); if (!b) return null; const bmp = await createImageBitmap(b); BILDER.set(key, bmp); geladenHoerer?.(); return bmp; } catch (e) { console.warn(e); return null; } finally { LADEN.delete(key); } })();
+  LADEN.set(key, p); return p;
+}
+/** vor dem (synchronen) Rendern alle Bilder einer Einzeichnungs-Liste laden */
+export const bilderVorladen = (liste) => Promise.all((liste || []).filter(m => m.bild).map(m => bildLaden(m.bild)));
+/** Bild (Blob) ablegen → Schlüssel. Sehr große Bilder werden auf maxKante verkleinert. */
+export async function bildAblegen(blob, { maxKante = 8192 } = {}) {
+  let bmp = await createImageBitmap(blob, { imageOrientation: 'from-image' }); let ablage = blob;
+  const zuGross = Math.max(bmp.width, bmp.height) > maxKante, fremd = !/^image\/(jpeg|png|webp)$/.test(blob.type || '');
+  if (zuGross || fremd) {
+    const f = Math.min(1, maxKante / Math.max(bmp.width, bmp.height)); const c = document.createElement('canvas'); c.width = Math.round(bmp.width * f); c.height = Math.round(bmp.height * f);
+    const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(bmp, 0, 0, c.width, c.height);
+    ablage = await new Promise(res => c.toBlob(res, blob.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.92)); bmp.close?.(); bmp = await createImageBitmap(ablage);
+  }
+  const key = 'ovl:' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  await db.put('blobs', key, ablage); BILDER.set(key, bmp); return { key, w: bmp.width, h: bmp.height };
+}
+export const naechsteFotoNr = (liste) => (liste || []).filter(m => m.t === 'foto').reduce((n, m) => Math.max(n, m.nr || 0), 0) + 1;
+export const fotopunkte = (liste) => (liste || []).filter(m => m.t === 'foto').sort((a, b) => (a.nr || 0) - (b.nr || 0));
+/** Fotopunkt: Kamera-Nadel mit Nummer – Radius in Pixeln */
+export const fotoRadius = (m, W, H) => sw(m, W, H) * 1.25; // Stärke 4 ≈ 1,3 % der kurzen Seite – im A1-Plan ca. 8 mm
+function kamera(x, cx, cy, r, farbe) {
+  x.save(); x.fillStyle = '#fff'; const w = r * 0.95, h = r * 0.62; x.beginPath(); x.roundRect ? x.roundRect(cx - w / 2, cy - h / 2 + r * 0.06, w, h, r * 0.12) : x.rect(cx - w / 2, cy - h / 2, w, h); x.fill();
+  x.fillRect(cx - w * 0.2, cy - h / 2 - r * 0.08, w * 0.4, r * 0.16); x.fillStyle = farbe; x.beginPath(); x.arc(cx, cy + r * 0.06, h * 0.32, 0, Math.PI * 2); x.fill(); x.restore();
+}
 export const sw = (m, W, H) => Math.max(1, (m.staerke || 4) * Math.min(W, H) / 380);
 const P = (p, W, H) => [p[0] * W, p[1] * H];
 function pfeilspitze(x, a, b, groesse, farbe) {
@@ -87,15 +123,43 @@ export function markupZeichnen(x, liste, W, H, { auswahl = null } = {}) {
         x.beginPath(); x.arc(ziel[0], ziel[1], w * 1.4, 0, Math.PI * 2); x.fill(); x.shadowBlur = 0;
         etikett(x, m.text || tr('Notiz'), lage[0], lage[1], w * 4.4, f, f, hell(f) ? '#111' : '#fff'); break;
       }
+      case 'bild': {
+        const l = Math.min(a[0], b[0]), t = Math.min(a[1], b[1]), bw = Math.abs(b[0] - a[0]) || 1, bh = Math.abs(b[1] - a[1]) || 1, img = BILDER.get(m.bild);
+        if (!m.schatten) x.shadowBlur = 0;
+        if (img) x.drawImage(img, l, t, bw, bh);
+        else { x.shadowBlur = 0; x.fillStyle = 'rgba(128,128,128,.18)'; x.fillRect(l, t, bw, bh); x.setLineDash([w * 2, w * 1.5]); x.lineWidth = Math.max(1, w * 0.5); x.strokeStyle = '#888'; x.strokeRect(l, t, bw, bh); x.setLineDash([]); bildLaden(m.bild); }
+        if (m.rahmen) { x.shadowBlur = 0; x.lineWidth = Math.max(1, w * 0.6); x.strokeStyle = f; x.strokeRect(l, t, bw, bh); }
+        if (m.text) { x.shadowBlur = 0; x.globalAlpha = 1; etikett(x, m.text, l + bw / 2, t - w * 4, w * 4.2, f); } break;
+      }
+      case 'foto': {
+        const r = fotoRadius(m, W, H), [cx, cy] = a;
+        // Nadel: Kreis mit Spitze nach unten auf den Punkt
+        x.beginPath(); x.arc(cx, cy - r * 1.55, r, Math.PI * 0.82, Math.PI * 0.18); x.lineTo(cx, cy); x.closePath(); x.fill(); x.shadowBlur = 0;
+        x.lineWidth = Math.max(1, r * 0.12); x.strokeStyle = '#fff'; x.stroke(); kamera(x, cx, cy - r * 1.62, r, f);
+        const nr = String(m.nr || '?'), rn = r * 0.55, nx = cx + r * 0.78, ny = cy - r * 2.3;
+        x.beginPath(); x.arc(nx, ny, rn, 0, Math.PI * 2); x.fillStyle = '#fff'; x.fill(); x.lineWidth = Math.max(1, r * 0.09); x.strokeStyle = f; x.stroke();
+        x.fillStyle = '#111'; x.font = `700 ${rn * 1.25}px "Source Sans 3", Arial, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(nr, nx, ny + rn * 0.05);
+        if (m.text) etikett(x, m.text, cx, cy + r * 0.75, r * 0.85, f);
+        break;
+      }
+      case 'ausschnitt': { // nur während des Aufziehens sichtbar
+        const l = Math.min(a[0], b[0]), t = Math.min(a[1], b[1]), bw = Math.abs(b[0] - a[0]), bh = Math.abs(b[1] - a[1]); x.shadowBlur = 0;
+        x.fillStyle = 'rgba(15,25,35,.35)'; x.beginPath(); x.rect(0, 0, W, H); x.rect(l, t, bw, bh); x.fill('evenodd');
+        x.strokeStyle = '#4DA6FF'; x.lineWidth = Math.max(2, Math.min(W, H) / 600); x.setLineDash([x.lineWidth * 4, x.lineWidth * 3]); x.strokeRect(l, t, bw, bh); x.setLineDash([]); break;
+      }
       case 'kreuz': { const l = Math.min(a[0], b[0]), r = Math.max(a[0], b[0]), t = Math.min(a[1], b[1]), u = Math.max(a[1], b[1]); x.lineWidth = w * 1.3; x.beginPath(); x.moveTo(l, t); x.lineTo(r, u); x.moveTo(r, t); x.lineTo(l, u); x.stroke(); break; }
       case 'haken': { const l = Math.min(a[0], b[0]), r = Math.max(a[0], b[0]), t = Math.min(a[1], b[1]), u = Math.max(a[1], b[1]); x.lineWidth = w * 1.4; x.beginPath(); x.moveTo(l, t + (u - t) * 0.55); x.lineTo(l + (r - l) * 0.38, u); x.lineTo(r, t); x.stroke(); break; }
     }
     x.restore();
+    if (auswahl === m && m.t === 'bild') { const [l, t, bw, bh] = bildBox(m, W, H); x.save(); x.strokeStyle = '#fff'; x.setLineDash([5, 4]); x.lineWidth = 1.5; x.strokeRect(l, t, bw, bh); x.setLineDash([]); for (const [px, py] of [[l, t], [l + bw, t], [l + bw, t + bh], [l, t + bh]]) { x.fillStyle = '#fff'; x.strokeStyle = '#000'; x.fillRect(px - 5, py - 5, 10, 10); x.strokeRect(px - 5, py - 5, 10, 10); } x.restore(); continue; }
     if (auswahl === m) { const bb = rahmenVon(m, W, H); x.save(); x.strokeStyle = '#fff'; x.setLineDash([5, 4]); x.lineWidth = 1.5; x.strokeRect(bb[0] - 6, bb[1] - 6, bb[2] + 12, bb[3] + 12); x.restore(); for (const p of pts) { x.save(); x.fillStyle = '#fff'; x.strokeStyle = '#000'; x.beginPath(); x.arc(p[0], p[1], 5, 0, Math.PI * 2); x.fill(); x.stroke(); x.restore(); } }
   }
 }
 function hell(hex) { const n = parseInt(String(hex).replace('#', '').padEnd(6, '0').slice(0, 6), 16); return (0.3 * (n >> 16) + 0.59 * ((n >> 8) & 255) + 0.11 * (n & 255)) > 170; }
+export function bildBox(m, W, H) { const [a, b] = (m.pts || []).map(p => P(p, W, H)); return [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1])]; }
 export function rahmenVon(m, W, H) {
+  if (m.t === 'bild') return bildBox(m, W, H);
+  if (m.t === 'foto') { const r = fotoRadius(m, W, H), [cx, cy] = P(m.pts[0], W, H); return [cx - r * 1.1, cy - r * 2.9, r * 2.6, r * 2.9 + (m.text ? r * 1.6 : r * 0.2)]; }
   const pts = (m.pts || []).map(p => P(p, W, H)); const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]); const w = sw(m, W, H) * (m.t === 'nummer' ? 3.6 : 2);
   const l = Math.min(...xs) - w, t = Math.min(...ys) - w; return [l, t, Math.max(...xs) + w - l, Math.max(...ys) + w - t];
 }

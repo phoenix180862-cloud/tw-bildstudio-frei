@@ -1,7 +1,8 @@
 // TW Bildstudio – Export (Web/Social/Druckdatei), Wasserzeichen, Ablage (PC, Drive, Baustelle, ZIP), Drucken bis DIN A0, Vorschlagsblatt
 import { state, bitmap, einstSpeichern, ordner } from './store.js';
 import * as E from './engine.js';
-import { legendeAnhaengen, legende } from './markup.js';
+import { legendeAnhaengen, legende, rahmenVon, bilderVorladen } from './markup.js';
+import { papierName } from './pdf.js';
 import { GROESSEN, PAPIER } from './presets.js';
 import * as drive from './drive.js';
 import * as db from './db.js';
@@ -521,3 +522,125 @@ async function vorschlagDocxFrei(bild, L, f) {
   return D.Packer.toBlob(doc);
 }
 void esc; void clamp;
+
+/* ═════════ Plan als PDF – Originalgröße, Fotopunkte anklickbar (seit 03.11.2026) ═════════
+ * Seite für Seite der Plan (bzw. das Bild) mit allen Einzeichnungen, in der Papiergröße der ursprünglichen PDF.
+ * Jeder Fotopunkt und jedes eingefügte Bild ist im PDF ein Verweis auf eine eigene Seite mit dem Foto in hoher Auflösung
+ * (zum Hineinzoomen); dort führt „zurück zum Plan“ wieder auf die Planseite. Funktioniert in jedem PDF-Programm. */
+const PLAN_O = { papier: 'A4', fotos: 'voll', bilderAnhaengen: true, liste: true };
+const FOTO_STUFEN = { voll: { kante: 6000, q: 0.92 }, mail: { kante: 2400, q: 0.82 } };
+function jpegAus(c, q) { return c.toDataURL('image/jpeg', q); }
+async function fotoJpeg(key, stufe) {
+  const b = await db.get('blobs', key); if (!b) return null;
+  const bmp = await createImageBitmap(b, { imageOrientation: 'from-image' }); const f = Math.min(1, stufe.kante / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(bmp.width * f)); c.height = Math.max(1, Math.round(bmp.height * f));
+  const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.imageSmoothingQuality = 'high'; x.drawImage(bmp, 0, 0, c.width, c.height); bmp.close?.();
+  const d = jpegAus(c, stufe.q); const w = c.width, h = c.height; c.width = c.height = 1; return { d, w, h };
+}
+/** Papiergröße einer Planseite: aus der Original-PDF, sonst die gewählte; Ausrichtung folgt dem Bild */
+function planPapier(rec, asp, o) {
+  let w, h; if (rec.pdf?.mmB && !rec.pdf.ausschnitt) { w = rec.pdf.mmB; h = rec.pdf.mmH; } else { const p = PAPIER.find(x => x.id === o.papier) || PAPIER.find(x => x.id === 'A4'); w = p.w; h = p.h; }
+  if ((asp > 1) !== (w > h) && Math.abs(asp - 1) > 0.02) [w, h] = [h, w]; return { w, h };
+}
+export async function planPdfErzeugen(recs, o, p = null) {
+  await ladeSkript('lib/jspdf.umd.min.js'); const { jsPDF } = window.jspdf; const stufe = FOTO_STUFEN[o.fotos] || FOTO_STUFEN.voll;
+  // 1. Anhänge (Fotopunkte, eingefügte Bilder) durchnummerieren → Seitennummern stehen vorher fest
+  const anh = []; recs.forEach((r, ri) => { const M = r.edit?.markup || []; M.filter(m => m.t === 'foto').sort((a, b) => (a.nr || 0) - (b.nr || 0)).forEach(m => anh.push({ ri, m })); if (o.bilderAnhaengen) M.filter(m => m.t === 'bild').forEach((m, i) => anh.push({ ri, m, bildNr: i + 1 })); });
+  const listeSeite = o.liste && anh.length ? recs.length + 1 : 0, ersteAnh = recs.length + (listeSeite ? 1 : 0) + 1;
+  anh.forEach((a, i) => { a.seite = ersteAnh + i; a.titel = a.m.t === 'foto' ? tr('Foto {0}', a.m.nr) + (a.m.text ? ' – ' + a.m.text : '') : tr('Bild {0}', a.bildNr) + (a.m.text ? ' – ' + a.m.text : '') + (recs.length > 1 ? ' (' + tr('Seite {0}', a.ri + 1) + ')' : ''); });
+  const fuss = tr('Erstellt mit TW Bildstudio · Thomas Willwacher Fliesenlegermeister e.K.');
+  let doc = null; const ziele = [];
+  const schrift = async () => { await pdfSchrift(doc, anh.map(a => a.titel), recs.map(r => r.titel || r.name), fuss); };
+  // 2. Planseiten
+  for (let i = 0; i < recs.length; i++) {
+    const rec = recs[i]; p?.set(i, recs.length + anh.length, tr('Plan {0} von {1} wird aufbereitet …', i + 1, recs.length));
+    const bmp = await bitmap(rec); await bilderVorladen(rec.edit?.markup);
+    const c = E.rendern(bmp, rec.id, rec.edit, rec.pdf ? {} : { maxW: 6000, maxH: 6000 }); const asp = c.width / c.height; const pa = planPapier(rec, asp, o);
+    if (!doc) { doc = new jsPDF({ unit: 'mm', format: [pa.w, pa.h], orientation: pa.w > pa.h ? 'l' : 'p', compress: true }); await schrift(); } else doc.addPage([pa.w, pa.h], pa.w > pa.h ? 'l' : 'p');
+    let w = pa.w, h = pa.w / asp; if (h > pa.h) { h = pa.h; w = h * asp; }
+    // ausgeschnittener Raum: maßstabsgetreu wie im Originalplan, wenn er aufs Blatt passt (sonst verkleinert)
+    let massstab = null; if (rec.pdf?.ausschnitt) { const passt = rec.pdf.mmB <= pa.w - 20 && rec.pdf.mmH <= pa.h - 26; if (passt) { w = rec.pdf.mmB; h = rec.pdf.mmH; } else { w *= (pa.w - 20) / pa.w; h *= (pa.w - 20) / pa.w; if (h > pa.h - 26) { const f = (pa.h - 26) / h; w *= f; h *= f; } } massstab = passt; }
+    const ox = (pa.w - w) / 2, oy = (pa.h - h) / 2;
+    doc.addImage(jpegAus(c, 0.92), 'JPEG', ox, oy, w, h, undefined, 'FAST');
+    // Verweise: Fläche jedes Fotopunkts / Bildes → Fotoseite
+    for (const a of anh.filter(a => a.ri === i)) { const [l, t, bw, bh] = rahmenVon(a.m, c.width, c.height); const k = w / c.width; doc.link(ox + l * k, oy + t * k, bw * k, bh * k, { pageNumber: a.seite }); }
+    if (rec.pdf?.ausschnitt) { doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(20); doc.text(rec.titel || rec.name.replace(/\.[^.]+$/, ''), 10, 10); doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(110); doc.text(tr('Ausschnitt aus {0}', (rec.pdf.von || rec.pdf.datei || '').replace(/\.[^.]+$/, '')) + ' · ' + (massstab ? tr('Maßstab wie im Originalplan') : tr('verkleinert – nicht maßstäblich')), 10, 14.5); }
+    doc.setFontSize(Math.max(5, Math.min(7, pa.w / 70))); doc.setTextColor(150); doc.text(fuss, pa.w - 3, pa.h - 2.5, { align: 'right' });
+    ziele.push({ titel: rec.titel || rec.name.replace(/\.[^.]+$/, ''), seite: i + 1 }); c.width = c.height = 1;
+  }
+  // 3. Übersicht der Fotos (anklickbar)
+  if (listeSeite) {
+    doc.addPage('a4', 'p'); const W = 210; let y = 24;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(20); doc.text(tr('Fotodokumentation – Übersicht'), 18, y); y += 5; doc.setDrawColor(196, 30, 30); doc.setLineWidth(0.6); doc.line(18, y, 60, y); y += 9;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(90); doc.text(doc.splitTextToSize(tr('Die Kamera-Punkte im Plan sind anklickbar: Ein Klick öffnet das Foto in hoher Auflösung zum Vergrößern. „Zurück zum Plan“ führt wieder an die Stelle im Plan.'), W - 36), 18, y); y += 14;
+    doc.setFontSize(11); doc.setTextColor(30);
+    for (const a of anh) { if (y > 280) { doc.addPage('a4', 'p'); y = 22; } doc.setTextColor(30, 80, 170); doc.textWithLink('›  ' + a.titel, 22, y, { pageNumber: a.seite }); doc.setTextColor(140); doc.text(tr('Seite {0}', a.seite), W - 18, y, { align: 'right' }); y += 7.5; }
+    ziele.push({ titel: tr('Übersicht der Fotos'), seite: listeSeite });
+  }
+  // 4. Fotoseiten in hoher Auflösung
+  for (let i = 0; i < anh.length; i++) {
+    const a = anh[i]; p?.set(recs.length + i, recs.length + anh.length, tr('Foto {0} von {1} …', i + 1, anh.length));
+    const f = await fotoJpeg(a.m.bild, stufe); const quer = !f || f.w >= f.h; const W = quer ? 297 : 210, H = quer ? 210 : 297;
+    doc.addPage('a4', quer ? 'l' : 'p');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(20); doc.text(a.titel, 12, 13);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(30, 80, 170); const zur = tr('« zurück zum Plan'); doc.text(zur, W - 12, 13, { align: 'right' });
+    const tw = doc.getTextWidth(zur); doc.link(W - 12 - tw, 8.5, tw, 6, { pageNumber: a.ri + 1 });
+    doc.setDrawColor(196, 30, 30); doc.setLineWidth(0.5); doc.line(12, 16, 44, 16);
+    if (f) { const bw = W - 24, bh = H - 30; let w = bw, h = bw * f.h / f.w; if (h > bh) { h = bh; w = bh * f.w / f.h; } doc.addImage(f.d, 'JPEG', (W - w) / 2, 19 + (bh - h) / 2, w, h, undefined, 'FAST'); }
+    else { doc.setTextColor(150); doc.text(tr('Foto nicht gefunden.'), 12, 30); }
+    doc.setFontSize(7); doc.setTextColor(150); doc.text(fuss, W - 12, H - 5, { align: 'right' }); doc.text(tr('Seite {0}', a.seite), 12, H - 5);
+    ziele.push({ titel: a.titel, seite: a.seite, unter: true });
+  }
+  // 5. Lesezeichen (Inhaltsverzeichnis im PDF-Programm)
+  try { let planKnoten = null; for (const z of ziele) { const k = doc.outline.add(z.unter ? planKnoten : null, z.titel, { pageNumber: z.seite }); if (!z.unter && !planKnoten) planKnoten = k; } } catch (e) { console.warn(e); }
+  doc.setProperties({ title: recs.map(r => r.titel || r.name.replace(/\.[^.]+$/, '')).join(', '), creator: 'TW Bildstudio', subject: anh.length ? tr('Plan mit {0} Fotos', anh.length) : '' });
+  return { blob: doc.output('blob'), seiten: recs.length + (listeSeite ? 1 : 0) + anh.length, fotos: anh.length };
+}
+
+export async function planPdfDialog(ids) {
+  const recs = (ids || []).map(id => state.recs.get(id)).filter(Boolean); if (!recs.length) { toast(tr('Bitte zuerst Bilder auswählen.'), 'warn'); return; }
+  const o = { ...PLAN_O, ...(state.einst.planPdf || {}) }; const anzahlFotos = recs.reduce((n, r) => n + (r.edit?.markup || []).filter(m => m.t === 'foto').length, 0), anzahlBilder = recs.reduce((n, r) => n + (r.edit?.markup || []).filter(m => m.t === 'bild').length, 0);
+  const ohnePdf = recs.filter(r => !r.pdf || r.pdf.ausschnitt); const box = el('div');
+  const zeichne = () => {
+    box.innerHTML = '';
+    box.append(
+      el('p', {}, trz(recs.length, '{0} Planseite', '{0} Planseiten') + ' · ' + trz(anzahlFotos, '{0} Fotopunkt', '{0} Fotopunkte') + (anzahlBilder ? ' · ' + trz(anzahlBilder, '{0} eingefügtes Bild', '{0} eingefügte Bilder') : '')),
+      el('div', { class: 'hinweis' }, ...recs.slice(0, 6).map(r => el('div', {}, '• ' + (r.titel || r.name) + ' – ' + (r.pdf?.ausschnitt ? tr('ausgeschnittener Raum – maßstabsgetreu auf dem Papier unten') : r.pdf?.mmB ? papierName(r.pdf.mmB, r.pdf.mmH) + ' ' + tr('(wie Original-PDF)') : tr('Papier wie unten gewählt'))))),
+      ohnePdf.length ? el('div', {}, el('label', { class: 'lbl' }, tr('Papiergröße für Räume und Bilder ohne Original-PDF')), el('select', { class: 'inp', onchange: (e) => { o.papier = e.target.value; } }, ...PAPIER.filter(x => /^A[0-5]$/.test(x.id)).map(x => el('option', { value: x.id, selected: o.papier === x.id }, x.name)))) : null,
+      anzahlFotos + anzahlBilder ? el('div', {},
+        el('label', { class: 'lbl' }, tr('Fotos im PDF')),
+        el('div', { class: 'tabs' }, el('button', { class: o.fotos === 'voll' ? 'an' : '', onclick: () => { o.fotos = 'voll'; zeichne(); } }, tr('Hohe Auflösung (zum Hineinzoomen)')), el('button', { class: o.fotos === 'mail' ? 'an' : '', onclick: () => { o.fotos = 'mail'; zeichne(); } }, tr('Kleiner (für E-Mail)'))),
+        el('p', { class: 'hinweis' }, o.fotos === 'voll' ? tr('Ca. 1–3 MB je Foto. Für sehr viele Fotos lieber „Kleiner“ wählen – E-Mail-Anhänge dürfen meist höchstens 20–25 MB groß sein.') : tr('Ca. 0,3–0,6 MB je Foto – gut für E-Mail, Vergrößern bleibt gut möglich.')),
+        el('label', { class: 'chk' }, el('input', { type: 'checkbox', checked: o.liste, onchange: (e) => o.liste = e.target.checked }), tr('Übersichtsseite mit allen Fotos (anklickbar)')),
+        anzahlBilder ? el('label', { class: 'chk' }, el('input', { type: 'checkbox', checked: o.bilderAnhaengen, onchange: (e) => o.bilderAnhaengen = e.target.checked }), tr('Eingefügte Bilder zusätzlich groß anhängen (im Plan anklickbar)')) : null) : null,
+      el('p', { class: 'notiz' }, tr('Im PDF sind die Kamera-Punkte anklickbar – der Empfänger braucht kein Programm außer einem normalen PDF-Betrachter.')));
+  };
+  zeichne();
+  const ziele = [{ text: tr('Abbrechen'), wert: null }, { text: tr('💾 PDF speichern'), art: FREI ? 'primaer' : '', wert: 'speichern' }];
+  if (navigator.canShare && FREI) ziele.push({ text: tr('📤 Teilen'), wert: 'teilen' });
+  if (!FREI) ziele.push({ text: tr('☁ In Drive ablegen'), wert: 'drive' }, { text: tr('📝 Gmail-Entwurf mit PDF'), art: 'primaer', wert: 'mail' });
+  const was = await modal({ titel: tr('Als PDF speichern – Fotos anklickbar'), inhalt: box, breit: true, hilfe: 'plan-bilder', knoepfe: ziele });
+  if (!was) return; state.einst.planPdf = { ...o }; einstSpeichern();
+  const prog = fortschritt(tr('PDF wird erstellt')); let erg;
+  try { erg = await planPdfErzeugen(recs, o, prog); } catch (e) { prog.zu(); console.error(e); toast(tr('PDF konnte nicht erstellt werden: ') + e.message, 'fehler', 8000); return; }
+  prog.zu();
+  const basis = dateiname((recs[0].titel || recs[0].pdf?.datei || recs[0].name).replace(/\.[^.]+$/, '').replace(/ – .*$/, ''), false) + (erg.fotos ? '_' + tr('mit-Fotos') : '') + '_' + isoDate();
+  const name = basis + '.pdf', groesse = fmtBytes(erg.blob.size);
+  try {
+    if (was === 'speichern') {
+      if ('showSaveFilePicker' in window) { try { const h = await showSaveFilePicker({ suggestedName: name, types: [{ description: 'PDF', accept: { 'application/pdf': ['.pdf'] } }] }); const w = await h.createWritable(); await w.write(erg.blob); await w.close(); toast(tr('PDF gespeichert ({0})', groesse)); return; } catch (e) { if (e.name === 'AbortError') return; } }
+      dateiSpeichern(erg.blob, name); toast(tr('PDF gespeichert ({0}) – liegt in „Downloads“', groesse));
+    } else if (was === 'teilen') {
+      const f = new File([erg.blob], name, { type: 'application/pdf' }); if (navigator.canShare?.({ files: [f] })) await navigator.share({ files: [f], title: name }); else dateiSpeichern(erg.blob, name);
+    } else if (was === 'drive') {
+      const b = recs.find(r => r.quelleInfo?.baustelleId)?.quelleInfo; const f = await driveBrowser({ modus: 'ordner', titel: tr('PDF ablegen in …'), start: b ? { id: b.baustelleId, name: b.baustelle } : null }); if (!f) return;
+      await drive.hochladen(erg.blob, name, f.id); toast(tr('PDF abgelegt in {0} ({1})', f.pfad, groesse), 'ok', 6000);
+    } else if (was === 'mail') {
+      if (erg.blob.size > 24 * 1048576) { toast(tr('Das PDF ist {0} groß – zu groß für eine E-Mail. Bitte „Kleiner (für E-Mail)“ wählen.', groesse), 'warn', 9000); dateiSpeichern(erg.blob, name); return; }
+      await drive.sicher(['mail']);
+      const text = ('Sehr geehrte Damen und Herren,\n\nanbei erhalten Sie den Plan mit Fotodokumentation.\n\nDie Kamera-Punkte im Plan sind anklickbar: Ein Klick öffnet das jeweilige Foto in hoher Auflösung, es kann beliebig vergrößert werden. Über „zurück zum Plan“ gelangen Sie wieder an die Stelle im Plan.\n\nFür eine schriftliche Rückmeldung bedanke ich mich im Voraus.\n\nMit freundlichen Grüßen\nThomas Willwacher\nThomas Willwacher Fliesenlegermeister e.K.'); // i18n-aus – Geschäftsmail bleibt deutsch
+      await drive.mailSenden({ an: '', betreff: 'Plan mit Fotodokumentation – ' + basis.replace(/_/g, ' '), text, anhaenge: [{ blob: erg.blob, name }] }, true);
+      toast(tr('Gmail-Entwurf mit dem PDF ({0}) liegt in „Entwürfe“ – Empfänger eintragen und senden.', groesse), 'ok', 8000);
+    }
+  } catch (e) { if (e.name === 'AbortError') return; console.error(e); toast(e.message, 'fehler', 8000); }
+}

@@ -270,7 +270,11 @@ class GL {
     const gl = this.gl, g = ausgabeGroesse(geo, this.srcW, this.srcH, maxW, maxH, ganzerRahmen);
     if (g.w > this.max || g.h > this.max) { const k = this.max / Math.max(g.w, g.h); return this.geometrie(geo, g.w * k, g.h * k, ganzerRahmen, ziel); }
     const Mx = geoMatrix(geo, this.srcW, this.srcH, g.w / g.cw, ganzerRahmen); // Faktor nach Rundung
-    this.groesse(g.w, g.h); gl.useProgram(this.geo.p);
+    this.groesse(g.w, g.h);
+    // Der Browser darf die Zeichenfläche kleiner anlegen als verlangt (Speichergrenze, v. a. bei sehr großen Plänen/Fotos) –
+    // dann sonst nur ein Teil des Bildes sichtbar. Also passend verkleinern und neu rechnen.
+    if (gl.drawingBufferWidth < g.w || gl.drawingBufferHeight < g.h) { const k = Math.min(gl.drawingBufferWidth / g.w, gl.drawingBufferHeight / g.h) * 0.995; this.max = Math.min(this.max, Math.floor(Math.max(g.w, g.h) * k)); return this.geometrie(geo, g.w * k, g.h * k, ganzerRahmen, ziel); }
+    gl.useProgram(this.geo.p);
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, this.srcTex); gl.uniform1i(this.geo.u.uSrc, 0);
     gl.uniformMatrix3fv(this.geo.u.uM, true, new Float32Array(Mx)); gl.uniform2f(this.geo.u.uOut, g.w, g.h);
     const L = geo.lens || {}; gl.uniform1f(this.geo.u.uK, -(L.k || 0) / 100 * 0.35); gl.uniform1f(this.geo.u.uCA, (L.ca || 0) / 100 * 0.004); gl.uniform1f(this.geo.u.uAsp, this.srcW / this.srcH);
@@ -398,8 +402,19 @@ export function rahmen(canvas, fr) {
 
 /* ═════════════ Komplett rendern ═════════════ */
 /** Bild mit allen Bearbeitungen rendern. Rückgabe: Canvas */
+/** ohne Geometrie-, Retusche-, Masken- und Farbänderung (typisch: Pläne aus PDF) – dann ohne Grafikkarte in voller Größe rendern */
+function istNeutral(e) {
+  const g = e.geo, n = neueBearbeitung();
+  return !g.rot && !g.flipH && !g.flipV && !g.angle && !g.crop && !g.persp?.v && !g.persp?.h && !g.lens?.k && !g.lens?.ca && !e.heal.length && (!e.deblur?.art || e.deblur.art === 'aus') && !e.masken?.length
+    && JSON.stringify(e.adj) === JSON.stringify(n.adj) && JSON.stringify(e.hsl) === JSON.stringify(n.hsl) && JSON.stringify(e.curves) === JSON.stringify(n.curves);
+}
 export function rendern(bmp, key, edit, { maxW = Infinity, maxH = Infinity, ebenen = true, ganzerRahmen = false, ohneFarbe = false } = {}) {
-  const e = normalisiereBearbeitung(edit); const G = gl(); G.quelle(bmp, key);
+  const e = normalisiereBearbeitung(edit);
+  if (!ganzerRahmen && istNeutral(e)) {
+    const f = Math.min(1, maxW / bmp.width, maxH / bmp.height); const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(bmp.width * f)); c.height = Math.max(1, Math.round(bmp.height * f));
+    const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(bmp, 0, 0, c.width, c.height);
+    if (ohneFarbe || !ebenen) return c; markupZeichnen(x, e.markup, c.width, c.height); textZeichnen(x, e.text, c.width, c.height); return rahmen(c, e.frame);
+  } const G = gl(); G.quelle(bmp, key);
   const g = G.geometrie(e.geo, maxW, maxH, ganzerRahmen);
   let basis = g.canvas;
   if (!ganzerRahmen) { retusche(basis, e.heal); basis = entfalten(basis, e.deblur, g.w / (g.cw || g.w)); }

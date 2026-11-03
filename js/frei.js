@@ -6,7 +6,7 @@ import { tr, trz } from './i18n.js';
 export const FREI = !!(typeof window !== 'undefined' && window.TW_FREI === true);
 
 /** Quellen/Wege, die nur in der Firmen-Fassung existieren */
-export const NUR_FIRMA_QUELLEN = ['gfotos', 'baustelle', 'drive'];
+export const NUR_FIRMA_QUELLEN = ['gfotos', 'baustelle', 'drive', 'plan'];
 
 export const HERSTELLER = {
   text: tr('Ein kostenloses Programm von Thomas Willwacher Fliesenlegermeister e.K.'),

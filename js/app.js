@@ -22,6 +22,8 @@ const BS = window.BS = {
   export: (ids) => exp.exportDialog(ids || lib.auswahlIds()),
   drucken: (ids) => exp.druckDialog(ids || lib.auswahlIds()),
   vorschlag: (id) => exp.vorschlagDialog(id || lib.auswahlIds()[0]),
+  planPdf: (ids) => exp.planPdfDialog(ids || lib.auswahlIds()),
+  planOeffnen: (anker) => src.planOeffnen(anker),
   versand: async (ids) => (await import('./versand.js')).versandDialog(ids || lib.auswahlIds()),
   hilfe: (id) => hilfe.oeffnen(id),
   ordnerNeu: async () => { const n = await eingabe(tr('Neuer Ordner'), '', tr('Name, z. B. „Bad OG“, „Referenz Webseite“, „Mängel“')); if (!n) return null; const o = ordnerNeu(n); seite(); toast(tr('Ordner „{0}“ angelegt', n) + (o.taste ? tr(' – Taste {0} sortiert hinein', o.taste) : '')); return o; },
@@ -94,7 +96,7 @@ async function einstellungen() {
   const ok = await modal({ titel: tr('Einstellungen'), hilfe: 'einstellungen', inhalt: el('div', {}, sprachWahl(),
     el('label', { class: 'lbl' }, tr('Urheber (wird beim Export in jedes Bild geschrieben)')), u, el('label', { class: 'lbl' }, tr('Copyright-Vermerk')), c,
     el('div', { class: 'zeile', style: 'margin-top:12px' }, el('button', { class: 'btn', onclick: () => installieren() }, tr('⬇ App installieren / Desktop-Symbol')), el('button', { class: 'btn', onclick: () => exp.wasserzeichenDialog() }, tr('💧 Wasserzeichen einstellen …')), el('button', { class: 'btn', onclick: () => src.importOrdner({}, true) }, tr('⟳ Import-Ordner ändern …')), el('button', { class: 'btn', onclick: async () => { (await import('./ki.js')).schluesselDialog(); } }, tr('✨ KI-Zugang …'))),
-    el('p', { class: 'hinweis' }, tr('Die KI läuft automatisch über Google mit dem Schlüssel aus der Master-App – nichts einzutragen.')),
+    el('p', { class: 'hinweis' }, tr('Mail-Texte schreibt Claude über das TW KI-Tor – nichts einzutragen. Die KI-Werkstatt (Bilder verändern) nutzt weiter den Google-Schlüssel der Master-App.')),
     el('div', { class: 'notiz' }, tr('Deine Bilder liegen sicher im Speicher dieses Browsers auf diesem PC. Die Originale werden nie verändert – alle Bearbeitungen sind jederzeit zurücknehmbar.')),
     el('button', { class: 'btn', onclick: async () => { if (await bestaetigen(tr('Wirklich ALLE Bilder, Ordner und Bearbeitungen aus dem Bildstudio löschen? (Google Fotos, Drive und PC bleiben unberührt)'), tr('Alles leeren'), tr('Alles löschen'))) { await db.leeren(); location.reload(); } } }, tr('🗑 Bildstudio komplett leeren'))),
     knoepfe: [{ text: tr('Abbrechen'), wert: false }, { text: tr('Speichern'), art: 'primaer', wert: true }] });
@@ -226,10 +228,10 @@ async function kiMenue() {
   const bildId = ids[0] || state.fokus || null;
   const karte = (i, t, s, f) => el('button', { class: 'karte', style: 'text-align:left;padding:14px', onclick: () => { zu(); f(); } }, el('div', { style: 'font-size:26px' }, i), el('b', {}, t), el('div', { class: 'hinweis' }, s));
   let zu = () => { };
-  const status = bereit
-    ? el('div', { class: 'notiz' }, tr('✓ Google-KI verbunden (Schlüssel aus der Master-App)'))
-    : el('div', { class: 'notiz', style: 'border-color:var(--rot)' }, tr('Auf diesem Gerät ist in der Master-App noch kein Google-KI-Schlüssel hinterlegt. Öffne die Master-App und tippe dort einmal auf „Gemini KI“ – danach läuft die KI hier automatisch. '),
-      el('a', { href: '../', target: '_blank', rel: 'noopener', class: 'btn klein', style: 'margin-left:6px' }, tr('Master-App öffnen')));
+  let bildOk = false; try { bildOk = (await import('./ki-bild.js')).geminiBereit(); } catch (e) { }
+  const status = el('div', { class: 'notiz' }, tr('✓ Mail mit KI: Claude über das TW KI-Tor – nichts einzutragen.'), ' ',
+    bildOk ? tr('KI-Werkstatt: Google-KI (Schlüssel der Master-App) ✓') : el('span', {}, tr('KI-Werkstatt: dafür braucht dieses Gerät noch den Google-Schlüssel aus der Master-App. '),
+      el('a', { href: '../', target: '_blank', rel: 'noopener', class: 'btn klein', style: 'margin-left:6px' }, tr('Master-App öffnen'))));
   const inhalt = el('div', {}, status,
     el('div', { class: 'karten', style: 'grid-template-columns:1fr 1fr;margin-top:12px' },
       karte('✦', tr('KI-Werkstatt'), bildId ? tr('Dieses Bild mit KI verändern: Gegenstände entfernen, Baustelle aufräumen, Licht, Himmel, Hintergrund, erweitern') : tr('Erst ein Bild in der Bibliothek anklicken – dann hier öffnen'), () => {
@@ -297,9 +299,10 @@ function ereignisse() {
   addEventListener('dragenter', (e) => { if (!extern(e)) return; tiefe++; dz.classList.add('an'); });
   addEventListener('dragleave', (e) => { if (!extern(e)) return; tiefe = Math.max(0, tiefe - 1); if (!tiefe) dz.classList.remove('an'); });
   addEventListener('dragover', (e) => { if (extern(e)) e.preventDefault(); });
+  addEventListener('drop', () => { tiefe = 0; dz.classList.remove('an'); }, true); // auch wenn die Bühne des Editors den Wurf übernimmt
   addEventListener('drop', (e) => { if (!extern(e)) return; e.preventDefault(); tiefe = 0; dz.classList.remove('an'); src.dropDateien(e.dataTransfer); });
   // Einfügen (Strg+V)
-  addEventListener('paste', (e) => { if (e.target.closest?.('input,textarea')) return; const files = [...(e.clipboardData?.files || [])].filter(istBild); if (files.length) { e.preventDefault(); importieren(files.map((f, i) => new File([f], f.name && f.name !== 'image.png' ? f.name : tr('Zwischenablage_{0}_{1}.png', Date.now(), i), { type: f.type, lastModified: Date.now() })), { quelle: 'ablage', ordner: state.ansicht.startsWith('ordner:') ? state.ansicht.slice(7) : null }); } });
+  addEventListener('paste', (e) => { if (e.target.closest?.('input,textarea')) return; const files = [...(e.clipboardData?.files || [])].filter(istBild); if (files.length) { e.preventDefault(); if (ed.einfuegenAusAblage(files)) return; importieren(files.map((f, i) => new File([f], f.name && f.name !== 'image.png' ? f.name : tr('Zwischenablage_{0}_{1}.png', Date.now(), i), { type: f.type, lastModified: Date.now() })), { quelle: 'ablage', ordner: state.ansicht.startsWith('ordner:') ? state.ansicht.slice(7) : null }); } });
   addEventListener('beforeunload', () => { ed.speichern(); });
 }
 

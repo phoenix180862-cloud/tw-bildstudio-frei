@@ -1,5 +1,5 @@
 // TW Bildstudio – Bilder holen: PC (Dateien/Ordner), Import-Ordner, Google Fotos, Google Drive, Baustelle, Kamera, Zwischenablage, Internet
-import { state, importieren, istBild, einstSpeichern } from './store.js';
+import { state, importieren, istBild, istBildOderPdf, einstSpeichern } from './store.js';
 import * as drive from './drive.js';
 import * as db from './db.js';
 import { $, el, esc, toast, modal, fortschritt, eingabe, fmtDate } from './util.js';
@@ -8,10 +8,11 @@ import { FREI, NUR_FIRMA_QUELLEN } from './frei.js';
 import { tr, trz } from './i18n.js';
 
 const ALLE_QUELLEN = [
-  { k: 'pc', i: '🖥', t: tr('Vom PC (Dateien)'), h: tr('Einzelne Bilder auswählen – oder einfach aus dem Explorer ins Fenster ziehen') },
+  { k: 'pc', i: '🖥', t: tr('Vom PC (Bilder & PDF)'), h: tr('Bilder oder PDF-Pläne auswählen – oder einfach aus dem Explorer ins Fenster ziehen') },
   { k: 'pcordner', i: '🗂', t: tr('Ganzen Ordner vom PC'), h: tr('Alle Bilder eines Ordners (mit Unterordnern)') },
   { k: 'importordner', i: '⟳', t: tr('Import-Ordner prüfen'), h: tr('Fester Ordner (z. B. Downloads oder Handy-Sync) – holt nur neue Bilder') },
   { k: 'gfotos', i: '🌈', t: tr('Google Fotos'), h: tr('Bilder in Google Fotos auswählen') },
+  { k: 'plan', i: '📐', t: tr('Plan aus Baustelle (03_Zeichnungen)'), h: tr('PDF-Plan eines Kunden auswählen und gleich darin arbeiten') },
   { k: 'baustelle', i: '🏗', t: tr('Aus Baustelle (05_Bilder)'), h: tr('Baustellenfotos aus Google Drive') },
   { k: 'drive', i: '☁', t: tr('Google Drive'), h: tr('Beliebiger Ordner in Google Drive') },
   { k: 'kamera', i: '📷', t: tr('Kamera / Handy'), h: tr('Foto aufnehmen (am Handy/Tablet)') },
@@ -34,6 +35,7 @@ export async function holen(k) {
     else if (k === 'gfotos') await googleFotos(opt);
     else if (k === 'drive') await driveImport(opt);
     else if (k === 'baustelle') await baustelleImport(opt);
+    else if (k === 'plan') await planAusBaustelle(opt);
     else if (k === 'ablage') await zwischenablage(opt);
     else if (k === 'url') await ausUrl(opt);
   } catch (e) { if (e.name === 'AbortError') return; console.error(e); toast(e.message || String(e), 'fehler', 6000); }
@@ -152,6 +154,47 @@ async function baustelleImport(opt) {
   if (files?.length) driveDateienImportieren(files, opt, 'baustelle', { baustelle: b.name, baustelleId: b.id });
 }
 
+/** „Plan öffnen“ (Startseite): Firma → Auswahl aus der Baustelle oder vom PC; kostenlose Fassung → PDF vom Gerät. Danach gleich im Editor. */
+export async function planOeffnen(anker) {
+  const vomGeraet = () => { const i = el('input', { type: 'file', accept: 'application/pdf,.pdf,image/*', style: 'display:none' }); i.onchange = async () => { const neu = await importieren(i.files, { ordner: zielOrdner(), quelle: 'pc' }); i.remove(); if (neu[0]) location.hash = '#/bearbeiten/' + neu[0].id; }; document.body.append(i); i.click(); };
+  if (FREI) return vomGeraet();
+  menue(anker, [{ i: '📐', t: tr('Plan aus Baustelle (03_Zeichnungen)'), f: () => holen('plan') }, { i: '🖥', t: tr('Plan vom PC (PDF) …'), f: vomGeraet }]);
+}
+/* ───────── Plan aus Baustelle: übersichtliche Auswahl aller Pläne eines Kunden ───────── */
+async function planAusBaustelle(opt) {
+  const b = await baustelleWaehlen(tr('Plan holen – welcher Kunde / welche Baustelle?')); if (!b) return;
+  const box = el('div', {}, el('p', { class: 'hinweis' }, tr('Pläne werden gesucht …'))); let liste = [], filter = ''; const gewaehlt = new Map();
+  const zeichne = (ordnerName) => {
+    box.innerHTML = '';
+    if (!liste.length) { box.append(el('p', { class: 'notiz' }, ordnerName ? tr('Im Ordner „{0}“ liegen noch keine Pläne (PDF oder Bild).', ordnerName) : tr('Diese Baustelle hat keinen Ordner „03_Zeichnungen-Plaene“.'))); return; }
+    const info = el('div', { class: 'hinweis' }); const raster = el('div', { class: 'plan-liste' });
+    const neuInfo = () => { info.textContent = trz(liste.length, '{0} Plan', '{0} Pläne') + ' · ' + tr('Antippen = auswählen, Doppelklick = sofort öffnen') + (gewaehlt.size ? ' · ' + trz(gewaehlt.size, '{0} ausgewählt', '{0} ausgewählt') : ''); };
+    const such = el('input', { class: 'inp', type: 'search', placeholder: tr('Plan suchen (z. B. „Grundriss 2. OG“, „Bad“, „Schnitt“) …'), value: filter, style: 'width:100%;margin-bottom:8px', oninput: (e) => { filter = e.target.value.toLowerCase(); karten(); } });
+    const karten = () => {
+      raster.innerHTML = ''; let gruppe = null;
+      for (const f of liste.filter(f => !filter || (f.name + ' ' + f.pfad).toLowerCase().includes(filter))) {
+        if (f.pfad !== gruppe) { gruppe = f.pfad; raster.append(el('div', { class: 'plan-gruppe' }, '📁 ' + (f.pfad || ordnerName))); }
+        const vor = f.thumbnailLink ? el('img', { src: f.thumbnailLink.replace(/=s\d+$/, '=s400'), referrerpolicy: 'no-referrer', loading: 'lazy', alt: '', onerror: (e) => e.target.replaceWith(el('span', { class: 'plan-ico' }, f.mimeType === 'application/pdf' ? 'PDF' : '🖼')) }) : el('span', { class: 'plan-ico' }, f.mimeType === 'application/pdf' ? 'PDF' : '🖼');
+        raster.append(el('button', { class: 'plan-karte' + (gewaehlt.has(f.id) ? ' an' : ''), title: f.name,
+          onclick: (e) => { gewaehlt.has(f.id) ? gewaehlt.delete(f.id) : gewaehlt.set(f.id, f); e.currentTarget.classList.toggle('an', gewaehlt.has(f.id)); neuInfo(); },
+          ondblclick: () => { gewaehlt.clear(); gewaehlt.set(f.id, f); box.closest('.mdl-wrap')?._zu([f]); } },
+          el('div', { class: 'plan-vor' }, vor), el('b', {}, f.name.replace(/\.pdf$/i, '')), el('small', {}, fmtDate(Date.parse(f.modifiedTime || f.createdTime)) + (f.size ? ' · ' + Math.max(1, Math.round(f.size / 1024)) + ' KB' : ''))));
+      }
+    };
+    box.append(such, info, raster); karten(); neuInfo(); setTimeout(() => such.focus(), 50);
+  };
+  drive.baustellenPlaene(b.id).then(r => { liste = r.plaene.sort((x, y) => (x.pfad || '').localeCompare(y.pfad || '') || x.name.localeCompare(y.name, undefined, { numeric: true })); zeichne(r.ordner?.name); }).catch(e => { box.innerHTML = ''; box.append(el('p', { class: 'notiz rot' }, e.message)); });
+  const files = await modal({ titel: tr('Pläne – {0}', b.name), inhalt: box, breit: true, hilfe: 'plan-bilder', knoepfe: [{ text: tr('Abbrechen'), wert: null }, { text: tr('📐 Plan öffnen'), art: 'primaer', wert: () => [...gewaehlt.values()] }] });
+  if (!files?.length) return;
+  const p = fortschritt(tr('Plan wird geladen')); const out = [];
+  for (let i = 0; i < files.length; i++) { const f = files[i]; p.set(i, files.length, f.name); try { const bl = await drive.laden(f.id); const file = new File([bl], f.name, { type: bl.type || f.mimeType, lastModified: Date.parse(f.modifiedTime) || Date.now() }); file._did = f.id; out.push(file); } catch (e) { console.warn(e); toast(tr('„{0}“ konnte nicht geladen werden.', f.name), 'warn'); } }
+  p.zu(); if (!out.length) return;
+  const neu = await importieren(out, { ...opt, quelle: 'baustelle', schluessel: (f) => 'drive:' + f._did, quelleInfo: (f) => ({ driveId: f._did, baustelle: b.name, baustelleId: b.id }) });
+  // gleich mit dem Arbeiten anfangen: erste Planseite im Editor öffnen
+  const ziel = neu[0] || [...state.recs.values()].find(r => r.schluessel?.startsWith('drive:' + out[0]._did));
+  if (ziel) location.hash = '#/bearbeiten/' + ziel.id;
+}
+
 /* ───────── Zwischenablage & Internet ───────── */
 export async function zwischenablage(opt = {}) {
   try {
@@ -171,10 +214,10 @@ export async function dropDateien(dt) {
   const files = [];
   const lies = async (entry, pfad = '') => {
     if (!entry) return;
-    if (entry.isFile) { const f = await new Promise((r, j) => entry.file(r, j)); if (istBild(f)) files.push(f); }
+    if (entry.isFile) { const f = await new Promise((r, j) => entry.file(r, j)); if (istBildOderPdf(f)) files.push(f); }
     else if (entry.isDirectory) { const rd = entry.createReader(); let teil; do { teil = await new Promise((r, j) => rd.readEntries(r, j)); for (const e of teil) await lies(e, pfad + entry.name + '/'); } while (teil.length); }
   };
   const eintraege = [...dt.items].map(i => i.webkitGetAsEntry?.()).filter(Boolean);
-  if (eintraege.length) for (const e of eintraege) await lies(e); else files.push(...[...dt.files].filter(istBild));
-  if (files.length) importieren(files, { ordner: zielOrdner(), quelle: 'pc' }); else toast(tr('Keine Bilder erkannt.'), 'warn');
+  if (eintraege.length) for (const e of eintraege) await lies(e); else files.push(...[...dt.files].filter(istBildOderPdf));
+  if (files.length) importieren(files, { ordner: zielOrdner(), quelle: 'pc' }); else toast(tr('Keine Bilder oder PDF-Dateien erkannt.'), 'warn');
 }

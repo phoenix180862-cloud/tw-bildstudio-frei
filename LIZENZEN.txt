@@ -21,6 +21,9 @@ lib/heic2any.min.js    heic2any 0.0.4 – Umwandlung von Handyfotos im HEIC-Form
                        https://github.com/strukturag/libheif · https://github.com/strukturag/libde265
                        Quelltext dieser Bibliotheken: siehe die genannten Adressen. Die Datei ist eine
                        eigenständige, austauschbare Datei (wird erst beim ersten HEIC-Bild geladen).
+lib/pdfjs/              pdf.js 4.10.38 (pdfjs-dist, legacy build) – PDF-Pläne und -Dokumente öffnen
+                       Apache License 2.0 · Mozilla Foundation · https://github.com/mozilla/pdf.js
+                       (mit cmaps/ und standard_fonts/ aus demselben Paket; Lizenztext: lib/pdfjs/LIZENZ-pdfjs.txt)
 schriften/*.woff2      Oswald, Source Sans 3, Montserrat, Playfair Display, Bebas Neue, Dancing Script,
                        Fira Sans (nur kyrillische Zeichen, Ersatz für Bebas Neue/Dancing Script bei Ukrainisch)
                        SIL Open Font License 1.1 · über npm @fontsource (Lizenztexte: schriften/LIZENZ-*.txt)
@@ -982,3 +985,12 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
+
+==============================================================================
+pdf.js 4.10.38 – Apache License 2.0
+==============================================================================
+Copyright Mozilla Foundation. Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0 – vollständiger Lizenztext: lib/pdfjs/LIZENZ-pdfjs.txt
+Unless required by applicable law or agreed to in writing, software distributed under the License is
+distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.

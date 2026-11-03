@@ -87,7 +87,7 @@ export const HILFE = [
       "text": "This is Bildstudio – the start page shows you everything at a glance."
      },
      {
-      "t": 8.0,
+      "t": 8,
       "text": "At the top left the logo – one click always takes you back to the start page."
      },
      {
@@ -152,7 +152,7 @@ export const HILFE = [
       "text": "Oranžové tlačítko „Načíst obrázky“: z PC, z celé složky, fotoaparátem nebo ze schránky."
      },
      {
-      "t": 28.0,
+      "t": 28,
       "text": "Vpředu nejnovější obrázky – jeden klik otevře obrázek přímo v editoru."
      },
      {
@@ -188,7 +188,7 @@ export const HILFE = [
       "text": "Je-li knihovna ještě prázdná, úvodní stránka ukáže návod ve třech krocích."
      },
      {
-      "t": 110.0,
+      "t": 110,
       "text": "Tvé obrázky zůstávají jen v tomto prohlížeči ve tvém zařízení – originály se nikdy nemění."
      }
     ],
@@ -201,7 +201,7 @@ export const HILFE = [
       "text": "To je Bildstudio – úvodná stránka ti ukáže všetko na prvý pohľad."
      },
      {
-      "t": 7.0,
+      "t": 7,
       "text": "Vľavo hore logo – jeden klik ťa vždy vráti na úvodnú stránku."
      },
      {
@@ -274,7 +274,7 @@ export const HILFE = [
       "text": "Нижче огляд: фото, несортовані, улюблені й папки – один клік веде прямо туди."
      },
      {
-      "t": 44.0,
+      "t": 44,
       "text": "Смуги показують, скільки фото вже відсортовано й оброблено – і скільки сховища зайнято."
      },
      {
@@ -290,7 +290,7 @@ export const HILFE = [
       "text": "Праворуч «Поділитися» – через WhatsApp або вікно поширення пристрою – і «Експорт»."
      },
      {
-      "t": 78.0,
+      "t": 78,
       "text": "Поруч мова: німецька, англійська, чеська, словацька, українська чи польська."
      },
      {
@@ -298,11 +298,11 @@ export const HILFE = [
       "text": "Жовта кнопка інфо – ліворуч унизу на бічній панелі; до кожного кроку є коротке відео, як це."
      },
      {
-      "t": 96.0,
+      "t": 96,
       "text": "Якщо бібліотека ще порожня, стартова сторінка показує інструкцію з трьох кроків."
      },
      {
-      "t": 105.0,
+      "t": 105,
       "text": "Твої фото лишаються лише в цьому браузері на твоєму пристрої – оригінали ніколи не змінюються."
      }
     ],
@@ -410,7 +410,7 @@ export const HILFE = [
       "text": "Oben läuft das Video, die gelben Untertitel erklären jeden Handgriff."
      },
      {
-      "t": 39.0,
+      "t": 39,
       "text": "Darunter alle Schritte – der aktuelle ist gelb markiert."
      },
      {
@@ -528,7 +528,7 @@ export const HILFE = [
       "text": "„Krok za krokem“ se zastaví po každém kroku – zopakuj, pak „Dál“."
      },
      {
-      "t": 71.0,
+      "t": 71,
       "text": "Při 0,75× běží pomaleji."
      },
      {
@@ -540,7 +540,7 @@ export const HILFE = [
       "text": "Mimochodem: malé žluté tečky i vedle posuvníků při najetí myší vysvětlí, co posuvník dělá. F1 otevře nápovědu."
      }
     ],
-    "dauer": 96.0
+    "dauer": 96
    },
    "sk": {
     "kapitel": [
@@ -675,7 +675,7 @@ export const HILFE = [
       "text": "U góry leci film, żółte napisy objaśniają każdy ruch."
      },
      {
-      "t": 43.0,
+      "t": 43,
       "text": "Poniżej wszystkie kroki – bieżący jest zaznaczony na żółto."
      },
      {
@@ -691,7 +691,7 @@ export const HILFE = [
       "text": "Przy 0,75× leci wolniej."
      },
      {
-      "t": 67.0,
+      "t": 67,
       "text": "„podąża za pracą”: gdy zmienisz narzędzie w programie, film też się zmieni."
      },
      {
@@ -699,7 +699,7 @@ export const HILFE = [
       "text": "Przy okazji: małe żółte kropki i obok suwaków po najechaniu myszą wyjaśniają, co robi suwak. F1 otwiera pomoc."
      }
     ],
-    "dauer": 83.0
+    "dauer": 83
    }
   }
  },
@@ -751,7 +751,7 @@ export const HILFE = [
       "text": "Mit „Als App installieren“ bekommst du das Bildstudio als eigenes Programm mit Symbol – auf dem iPhone über Teilen → „Zum Home-Bildschirm“."
      }
     ],
-    "dauer": 46.0
+    "dauer": 46
    },
    "en": {
     "kapitel": [
@@ -768,7 +768,7 @@ export const HILFE = [
       "text": "Author and copyright – for example your name – are written into every picture file on export."
      },
      {
-      "t": 21.0,
+      "t": 21,
       "text": "This is also where you set the watermark and the import folder."
      },
      {
@@ -859,7 +859,7 @@ export const HILFE = [
       "text": "Ліворуч унизу «Автор, водяний знак …» відкриває налаштування."
      },
      {
-      "t": 10.0,
+      "t": 10,
       "text": "На самому верху вибираєш мову програми."
      },
      {
@@ -896,7 +896,7 @@ export const HILFE = [
       "text": "Na samej górze wybierasz język programu."
      },
      {
-      "t": 13.0,
+      "t": 13,
       "text": "Autor i prawa autorskie – na przykład twoje imię – są przy eksporcie zapisywane w każdym pliku zdjęcia."
      },
      {
@@ -922,12 +922,12 @@ export const HILFE = [
  },
  {
   "id": "import-pc",
-  "titel": "Bilder vom PC holen – oder einfach hineinziehen",
+  "titel": "Bilder und PDF-Pläne vom PC holen – oder einfach hineinziehen",
   "bereich": "Bilder holen",
   "seiten": [],
   "schritte": [
-   "„Vom PC (Dateien)“ – Bilder im Explorer markieren (Strg+A für alle) und öffnen.",
-   "Schneller: Bilder oder ganze Ordner aus dem Explorer direkt ins Fenster ziehen.",
+   "„Vom PC (Bilder & PDF)“ – Bilder oder PDF-Pläne im Explorer markieren (Strg+A für alle) und öffnen.",
+   "Schneller: Bilder, PDFs oder ganze Ordner aus dem Explorer direkt ins Fenster ziehen.",
    "Strg+V fügt ein kopiertes Bild oder einen Screenshot ein.",
    "Handy-Fotos (HEIC) und RAW-Dateien von Kameras werden automatisch umgewandelt.",
    "Doppelte Bilder erkennt das Bildstudio und überspringt sie."
@@ -984,7 +984,7 @@ export const HILFE = [
       "text": "Ctrl+V pastes a copied picture or a screenshot directly."
      },
      {
-      "t": 27.0,
+      "t": 27,
       "text": "Phone photos in HEIC format and RAW files from cameras are converted automatically. Duplicate pictures are skipped."
      },
      {
@@ -1038,7 +1038,7 @@ export const HILFE = [
       "text": "Pri presúvaní sa objaví tento červený rámček – pusti, hotovo."
      },
      {
-      "t": 20.0,
+      "t": 20,
       "text": "Ctrl+V priamo vloží skopírovaný obrázok alebo snímku obrazovky."
      },
      {
@@ -1067,7 +1067,7 @@ export const HILFE = [
       "text": "Під час перетягування з’являється ця червона рамка – відпусти, готово."
      },
      {
-      "t": 24.0,
+      "t": 24,
       "text": "Ctrl+V одразу вставляє скопійоване фото або знімок екрана."
      },
      {
@@ -1166,7 +1166,7 @@ export const HILFE = [
       "text": "You can change the folder in the settings at any time."
      }
     ],
-    "dauer": 27.0
+    "dauer": 27
    },
    "cs": {
     "kapitel": [
@@ -1312,7 +1312,7 @@ export const HILFE = [
       "text": "Ein Klick auf den Ordner zeigt nur seine Bilder."
      },
      {
-      "t": 57.0,
+      "t": 57,
       "text": "Tipp: Ein Bild kannst du aus dem Bildstudio direkt in einen Ordner im Explorer ziehen – fertig gespeichert."
      }
     ],
@@ -1361,7 +1361,7 @@ export const HILFE = [
       "text": "Tip: you can drag a picture from Bildstudio straight into a folder in Explorer – saved."
      }
     ],
-    "dauer": 71.0
+    "dauer": 71
    },
    "cs": {
     "kapitel": [
@@ -1390,7 +1390,7 @@ export const HILFE = [
       "text": "… a přetáhni na složku vlevo – nebo prostě stiskni klávesu."
      },
      {
-      "t": 47.0,
+      "t": 47,
       "text": "Hvězdičky dáš Shift + 1 až 5. P označí jako oblíbené, X odmítne."
      },
      {
@@ -1419,7 +1419,7 @@ export const HILFE = [
       "text": "Každý priečinok automaticky dostane kláves od 1 do 9."
      },
      {
-      "t": 14.0,
+      "t": 14,
       "text": "Klikni na obrázok …"
      },
      {
@@ -1460,7 +1460,7 @@ export const HILFE = [
       "text": "Ліворуч у «Папки» створюєш ＋ нові папки – наприклад «Ванна», «Басейн», «Референс»."
      },
      {
-      "t": 10.0,
+      "t": 10,
       "text": "Кожна папка автоматично отримує клавішу від 1 до 9."
      },
      {
@@ -1488,11 +1488,11 @@ export const HILFE = [
       "text": "Угорі фільтруєш: наприклад лише фото від 4 зірок."
      },
      {
-      "t": 64.0,
+      "t": 64,
       "text": "Клік на папку показує лише її фото."
      },
      {
-      "t": 68.0,
+      "t": 68,
       "text": "Порада: фото можна перетягнути з Bildstudio прямо в папку в Провіднику – і воно збережене."
      }
     ],
@@ -1537,7 +1537,7 @@ export const HILFE = [
       "text": "Kliknięcie folderu pokazuje tylko jego zdjęcia."
      },
      {
-      "t": 60.0,
+      "t": 60,
       "text": "Wskazówka: zdjęcie możesz przeciągnąć z Bildstudio prosto do folderu w Eksploratorze – zapisane."
      }
     ],
@@ -1571,11 +1571,11 @@ export const HILFE = [
       "text": "Unten deine Ordner mit ihren Tasten."
      },
      {
-      "t": 14.0,
+      "t": 14,
       "text": "Ziffer drücken: Das Bild liegt im Ordner, das nächste kommt automatisch."
      },
      {
-      "t": 20.0,
+      "t": 20,
       "text": "Umschalt+4 gibt vier Sterne."
      },
      {
@@ -1583,7 +1583,7 @@ export const HILFE = [
       "text": "Pfeiltasten blättern."
      },
      {
-      "t": 28.0,
+      "t": 28,
       "text": "X lehnt ein Bild ab – es verschwindet aus der Hauptansicht, ist aber nicht gelöscht."
      },
      {
@@ -1649,7 +1649,7 @@ export const HILFE = [
       "text": "Šipky listují."
      },
      {
-      "t": 35.0,
+      "t": 35,
       "text": "X obrázek odmítne – zmizí z hlavního zobrazení, ale není smazán."
      },
      {
@@ -1682,7 +1682,7 @@ export const HILFE = [
       "text": "Šípky listujú."
      },
      {
-      "t": 29.0,
+      "t": 29,
       "text": "X obrázok odmietne – zmizne z hlavného zobrazenia, ale nie je zmazaný."
      },
      {
@@ -1783,7 +1783,7 @@ export const HILFE = [
       "text": "Du hast ein Bild einer Serie fertig bearbeitet – die anderen sollen genauso aussehen."
      },
      {
-      "t": 13.0,
+      "t": 13,
       "text": "Links „Übertragen“ öffnet dieses Fenster."
      },
      {
@@ -1799,7 +1799,7 @@ export const HILFE = [
       "text": "„Übertragen“ – fertig, alle Bilder haben dieselbe Bearbeitung."
      },
      {
-      "t": 38.0,
+      "t": 38,
       "text": "Schneller per Tastatur: Strg+Umschalt+C kopiert die Bearbeitung, Strg+Umschalt+V fügt sie auf markierte Bilder ein."
      }
     ],
@@ -1820,7 +1820,7 @@ export const HILFE = [
       "text": "Tick what should go along: light, colour, curve, crop, text …"
      },
      {
-      "t": 28.0,
+      "t": 28,
       "text": "Target: selected pictures, the whole folder or all pictures in the view."
      },
      {
@@ -1845,7 +1845,7 @@ export const HILFE = [
       "text": "Vlevo „Přenést“ otevře toto okno."
      },
      {
-      "t": 19.0,
+      "t": 19,
       "text": "Zaškrtni, co se má přenést: světlo, barva, křivka, oříznutí, text …"
      },
      {
@@ -1870,7 +1870,7 @@ export const HILFE = [
       "text": "Dokončil si úpravu jedného obrázka zo série – ostatné majú vyzerať rovnako."
      },
      {
-      "t": 13.0,
+      "t": 13,
       "text": "Vľavo „Preniesť“ otvorí toto okno."
      },
      {
@@ -1895,7 +1895,7 @@ export const HILFE = [
    "uk": {
     "kapitel": [
      {
-      "t": 8.0,
+      "t": 8,
       "text": "Ти завершив обробку одного фото із серії – інші мають виглядати так само."
      },
      {
@@ -1919,7 +1919,7 @@ export const HILFE = [
       "text": "Швидше клавіатурою: Ctrl+Shift+C копіює зміни, Ctrl+Shift+V вставляє їх на виділені фото."
      }
     ],
-    "dauer": 58.0
+    "dauer": 58
    },
    "pl": {
     "kapitel": [
@@ -1936,7 +1936,7 @@ export const HILFE = [
       "text": "Zaznacz, co ma pójść dalej: światło, kolor, krzywa, kadrowanie, tekst …"
      },
      {
-      "t": 27.0,
+      "t": 27,
       "text": "Cel: zaznaczone zdjęcia, cały folder lub wszystkie zdjęcia w widoku."
      },
      {
@@ -1948,7 +1948,7 @@ export const HILFE = [
       "text": "Szybciej klawiaturą: Ctrl+Shift+C kopiuje edycję, Ctrl+Shift+V wkleja ją na zaznaczone zdjęcia."
      }
     ],
-    "dauer": 51.0
+    "dauer": 51
    }
   }
  },
@@ -1994,7 +1994,7 @@ export const HILFE = [
       "text": "Tiefen hellt nur die dunklen Stellen auf – Ecken, Fugen, Schatten."
      },
      {
-      "t": 79.0,
+      "t": 79,
       "text": "Lichter holt zu helle Stellen zurück – Glanz auf Fliesen, Fenster."
      },
      {
@@ -2026,7 +2026,7 @@ export const HILFE = [
       "text": "Noch ein Klick zeigt das Original – oder Taste \\ gedrückt halten."
      },
      {
-      "t": 141.0,
+      "t": 141,
       "text": "Alles wird automatisch gespeichert – das Original bleibt immer unverändert."
      }
     ],
@@ -2091,7 +2091,7 @@ export const HILFE = [
       "text": "Everything is saved automatically – the original always stays unchanged."
      }
     ],
-    "dauer": 131.0
+    "dauer": 131
    },
    "cs": {
     "kapitel": [
@@ -2112,7 +2112,7 @@ export const HILFE = [
       "text": "Expozice zesvětlí nebo ztmaví celý obrázek."
      },
      {
-      "t": 54.0,
+      "t": 54,
       "text": "Stíny projasní jen tmavá místa – kouty, spáry, stíny."
      },
      {
@@ -2128,7 +2128,7 @@ export const HILFE = [
       "text": "Proti barevnému nádechu: kapátko „Vyvážení bílé“ a klikni na něco bílého nebo šedého …"
      },
      {
-      "t": 96.0,
+      "t": 96,
       "text": "… například bílou dlaždici – žlutý nádech zmizí."
      },
      {
@@ -2230,7 +2230,7 @@ export const HILFE = [
       "text": "Угорі гістограма: показує розподіл світлого й темного."
      },
      {
-      "t": 39.0,
+      "t": 39,
       "text": "Експозиція робить усе фото світлішим чи темнішим."
      },
      {
@@ -2250,7 +2250,7 @@ export const HILFE = [
       "text": "Проти колірного відтінку: піпетка «Баланс білого» й клік на щось біле чи сіре …"
      },
      {
-      "t": 92.0,
+      "t": 92,
       "text": "… наприклад, білу плитку – жовтий відтінок зникає."
      },
      {
@@ -2274,7 +2274,7 @@ export const HILFE = [
       "text": "Усе зберігається автоматично – оригінал завжди лишається незмінним."
      }
     ],
-    "dauer": 143.0
+    "dauer": 143
    },
    "pl": {
     "kapitel": [
@@ -2287,7 +2287,7 @@ export const HILFE = [
       "text": "„☀ Auto światło/kolor” optymalizuje jasność, kontrast i kolor jednym kliknięciem."
      },
      {
-      "t": 19.0,
+      "t": 19,
       "text": "U góry histogram: pokazuje rozkład jasnych i ciemnych tonów."
      },
      {
@@ -2299,7 +2299,7 @@ export const HILFE = [
       "text": "Cienie rozjaśniają tylko ciemne miejsca – kąty, fugi, cienie."
      },
      {
-      "t": 64.0,
+      "t": 64,
       "text": "Światła odzyskują zbyt jasne miejsca – połysk na płytkach, okna."
      },
      {
@@ -2381,7 +2381,7 @@ export const HILFE = [
       "text": "„＋ Look“ speichert deine Einstellungen als eigenen Look – für alle künftigen Bilder."
      }
     ],
-    "dauer": 57.0
+    "dauer": 57
    },
    "en": {
     "kapitel": [
@@ -2406,20 +2406,20 @@ export const HILFE = [
       "text": "Then fine-tune with the sliders."
      },
      {
-      "t": 50.0,
+      "t": 50,
       "text": "“＋ Look” saves your settings as your own look – for all future pictures."
      }
     ],
-    "dauer": 56.0
+    "dauer": 56
    },
    "cs": {
     "kapitel": [
      {
-      "t": 4.0,
+      "t": 4,
       "text": "Nahoře v „Rychle a styly“ vidíš svůj obrázek v každém stylu jako malý náhled."
      },
      {
-      "t": 15.0,
+      "t": 15,
       "text": "Jeden klik styl vyzkouší – tady „Brilantní“."
      },
      {
@@ -2439,7 +2439,7 @@ export const HILFE = [
       "text": "„＋ Styl“ uloží tvé nastavení jako vlastní styl – pro všechny budoucí obrázky."
      }
     ],
-    "dauer": 61.0
+    "dauer": 61
    },
    "sk": {
     "kapitel": [
@@ -2518,7 +2518,7 @@ export const HILFE = [
       "text": "Albo klasycznie czarno-biało."
      },
      {
-      "t": 43.0,
+      "t": 43,
       "text": "Potem dostrój suwakami."
      },
      {
@@ -2561,7 +2561,7 @@ export const HILFE = [
       "text": "Punkt anklicken und ziehen: nach oben heller, nach unten dunkler. Doppelklick löscht einen Punkt."
      },
      {
-      "t": 34.0,
+      "t": 34,
       "text": "Mit Rot, Grün, Blau korrigierst du gezielt einzelne Farben."
      },
      {
@@ -2647,7 +2647,7 @@ export const HILFE = [
       "text": "Červenou, zelenou a modrou cíleně opravíš jednotlivé barvy."
      },
      {
-      "t": 42.0,
+      "t": 42,
       "text": "Pod tím „Detaily“:"
      },
      {
@@ -2717,7 +2717,7 @@ export const HILFE = [
       "text": "Тонова крива: унизу темні, угорі світлі тони."
      },
      {
-      "t": 12.0,
+      "t": 12,
       "text": "Легке «S» дає більше контрасту – готові шаблони нижче."
      },
      {
@@ -2737,7 +2737,7 @@ export const HILFE = [
       "text": "Чіткість робить шви й поверхні об’ємними."
      },
      {
-      "t": 75.0,
+      "t": 75,
       "text": "Різкість для сайту приблизно 20–40."
      },
      {
@@ -2749,7 +2749,7 @@ export const HILFE = [
       "text": "І рамка – наприклад біла для соцмереж."
      }
     ],
-    "dauer": 108.0
+    "dauer": 108
    },
    "pl": {
     "kapitel": [
@@ -2857,7 +2857,7 @@ export const HILFE = [
       "text": "Hue shifts the colour – aqua more towards blue."
      },
      {
-      "t": 62.0,
+      "t": 62,
       "text": "Luminance makes a colour brighter or darker."
      },
      {
@@ -2874,7 +2874,7 @@ export const HILFE = [
       "text": "Mícháním barev měníš jednotlivé barvy, aniž bys sáhl na zbytek."
      },
      {
-      "t": 18.0,
+      "t": 18,
       "text": "Nahoře vybereš: odstín, sytost nebo jas (luminance)."
      },
      {
@@ -2899,7 +2899,7 @@ export const HILFE = [
    "sk": {
     "kapitel": [
      {
-      "t": 4.0,
+      "t": 4,
       "text": "Miešaním farieb meníš jednotlivé farby bez toho, aby si siahol na zvyšok."
      },
      {
@@ -2944,7 +2944,7 @@ export const HILFE = [
       "text": "Тон зсуває колір – аква більше в синій."
      },
      {
-      "t": 64.0,
+      "t": 64,
       "text": "Яскравість (luminance) робить колір світлішим чи темнішим."
      },
      {
@@ -2957,7 +2957,7 @@ export const HILFE = [
    "pl": {
     "kapitel": [
      {
-      "t": 4.0,
+      "t": 4,
       "text": "Mikserem kolorów zmieniasz poszczególne kolory, nie ruszając reszty."
      },
      {
@@ -3051,7 +3051,7 @@ export const HILFE = [
       "text": "Choose the aspect ratio – 4:5 is ideal for Instagram."
      },
      {
-      "t": 23.0,
+      "t": 23,
       "text": "Drag the frame at corners and edges …"
      },
      {
@@ -3125,7 +3125,7 @@ export const HILFE = [
       "text": "Vyber formát – 4:5 je ideálny pre Instagram."
      },
      {
-      "t": 22.0,
+      "t": 22,
       "text": "Ťahaj rámček za rohy a hrany …"
      },
      {
@@ -3137,7 +3137,7 @@ export const HILFE = [
       "text": "16:9 pre web, 9:16 pre story, DIN na výšku/šírku na tlač bez okraja."
      },
      {
-      "t": 40.0,
+      "t": 40,
       "text": "Otočenie o 90 stupňov a zrkadlenie tlačidlami."
      },
      {
@@ -3182,7 +3182,7 @@ export const HILFE = [
       "text": "«✨ Автовирівнювання» знаходить шви й краї та вирівнює фото."
      },
      {
-      "t": 62.0,
+      "t": 62,
       "text": "«Готово» – фото обрізано. Клавіша A теж повертає назад."
      }
     ],
@@ -3257,7 +3257,7 @@ export const HILFE = [
       "text": "„Senkrecht“ ziehen, bis die Fugen parallel zu den Rasterlinien laufen."
      },
      {
-      "t": 64.0,
+      "t": 64,
       "text": "„Waagerecht“ gleicht seitlich schräg fotografierte Wände aus."
      },
      {
@@ -3311,7 +3311,7 @@ export const HILFE = [
       "text": "Zapni jemnou mřížku – čáry jsou tvé měřítko."
      },
      {
-      "t": 43.0,
+      "t": 43,
       "text": "Táhni „Svisle“, dokud spáry nepoběží rovnoběžně s čarami mřížky."
      },
      {
@@ -3505,7 +3505,7 @@ export const HILFE = [
    "cs": {
     "kapitel": [
      {
-      "t": 7.0,
+      "t": 7,
       "text": "Nástroj „Retuš“ (klávesa J): nech zmizet skvrny, díry po hmoždinkách nebo kabely."
      },
      {
@@ -3595,7 +3595,7 @@ export const HILFE = [
       "text": "«Штамп» копіює 1:1: спершу Alt+клік вибирає джерело, потім клікни ціль."
      },
      {
-      "t": 74.0,
+      "t": 74,
       "text": "У порівнянні видно: оригінал із плямами – тепер чисто."
      }
     ],
@@ -3675,7 +3675,7 @@ export const HILFE = [
       "text": "… Farbe, fett, Schatten oder ein Hintergrund-Feld für gute Lesbarkeit."
      },
      {
-      "t": 69.0,
+      "t": 69,
       "text": "Text im Bild ziehen = verschieben. Entf löscht den gewählten Text."
      }
     ],
@@ -3692,7 +3692,7 @@ export const HILFE = [
       "text": "Type the text on the right …"
      },
      {
-      "t": 26.0,
+      "t": 26,
       "text": "… choose a font …"
      },
      {
@@ -3713,7 +3713,7 @@ export const HILFE = [
    "cs": {
     "kapitel": [
      {
-      "t": 6.0,
+      "t": 6,
       "text": "Nástroj „Text“ (klávesa T) – pak klikni do obrázku, kam má text přijít."
      },
      {
@@ -3824,7 +3824,7 @@ export const HILFE = [
       "text": "Przeciągnij tekst na zdjęciu = przesuń. Del usuwa zaznaczony tekst."
      }
     ],
-    "dauer": 59.0
+    "dauer": 59
    }
   }
  },
@@ -3850,7 +3850,7 @@ export const HILFE = [
    "de": {
     "kapitel": [
      {
-      "t": 4.0,
+      "t": 4,
       "text": "Rechts oben der Bild-Check: Das Bildstudio prüft jedes Foto wie ein Profi-Programm."
      },
      {
@@ -3920,7 +3920,7 @@ export const HILFE = [
       "text": "Vpravo nahoře kontrola obrázku: Bildstudio zkontroluje každou fotku jako profesionální program."
      },
      {
-      "t": 15.0,
+      "t": 15,
       "text": "Ostrost, šum, expozice, kontrast, barevný nádech a náklon – se semaforem: zelená dobré, žlutá lze vylepšit, červená opravit."
      },
      {
@@ -4010,12 +4010,12 @@ export const HILFE = [
       "text": "У порівнянні: ліворуч до, праворуч після. Потім доналаштуй повзунками – або Ctrl+Z."
      }
     ],
-    "dauer": 77.0
+    "dauer": 77
    },
    "pl": {
     "kapitel": [
      {
-      "t": 5.0,
+      "t": 5,
       "text": "W prawym górnym rogu kontrola zdjęcia: Bildstudio sprawdza każde zdjęcie jak profesjonalny program."
      },
      {
@@ -4027,7 +4027,7 @@ export const HILFE = [
       "text": "Pod spodem zawsze jest, co pomoże – tutaj przebarwienie."
      },
      {
-      "t": 34.0,
+      "t": 34,
       "text": "„✨ Popraw wszystko automatycznie” koryguje wszystko w jednym kroku: światło, kolor, ostrość, szum i wyrównanie."
      },
      {
@@ -4065,7 +4065,7 @@ export const HILFE = [
    "de": {
     "kapitel": [
      {
-      "t": 2.0,
+      "t": 2,
       "text": "In der Bibliothek die Bilder auswählen – Strg+A wählt alle."
      },
      {
@@ -4085,7 +4085,7 @@ export const HILFE = [
       "text": "Das ✎ zeigt: bearbeitet. Die Originale bleiben unverändert – jedes Bild lässt sich einzeln nachjustieren."
      }
     ],
-    "dauer": 49.0
+    "dauer": 49
    },
    "en": {
     "kapitel": [
@@ -4102,7 +4102,7 @@ export const HILFE = [
       "text": "Here you decide whether to straighten and rescue blur as well."
      },
      {
-      "t": 26.0,
+      "t": 26,
       "text": "Every picture is checked individually and improved appropriately – crop, retouch and mark-ups stay."
      },
      {
@@ -4115,7 +4115,7 @@ export const HILFE = [
    "cs": {
     "kapitel": [
      {
-      "t": 2.0,
+      "t": 2,
       "text": "V knihovně vyber obrázky – Ctrl+A vybere vše."
      },
      {
@@ -4140,7 +4140,7 @@ export const HILFE = [
    "sk": {
     "kapitel": [
      {
-      "t": 2.0,
+      "t": 2,
       "text": "V knižnici vyber obrázky – Ctrl+A vyberie všetky."
      },
      {
@@ -4177,7 +4177,7 @@ export const HILFE = [
       "text": "Тут вирішуєш, чи також вирівнювати й рятувати від розмиття."
      },
      {
-      "t": 33.0,
+      "t": 33,
       "text": "Кожне фото перевіряється окремо й відповідно покращується – кадрування, ретуш і позначки лишаються."
      },
      {
@@ -4198,7 +4198,7 @@ export const HILFE = [
       "text": "Na dole „✨ Popraw automatycznie” – lub prawy klik → „Popraw automatycznie …”."
      },
      {
-      "t": 15.0,
+      "t": 15,
       "text": "Tutaj decydujesz, czy także prostować i ratować nieostrość."
      },
      {
@@ -4249,7 +4249,7 @@ export const HILFE = [
       "text": "Feinjustieren: Länge = wie weit gewackelt, Richtung in Grad."
      },
      {
-      "t": 100.0,
+      "t": 100,
       "text": "Stärke mit Gefühl – zu viel erzeugt Doppelkanten."
      },
      {
@@ -4261,7 +4261,7 @@ export const HILFE = [
       "text": "Vorher/Nachher: links verwackelt, rechts gerettet."
      }
     ],
-    "dauer": 122.0
+    "dauer": 122
    },
    "en": {
     "kapitel": [
@@ -4278,7 +4278,7 @@ export const HILFE = [
       "text": "“🔍 Detect automatically” measures direction and length of the shake and reverses it."
      },
      {
-      "t": 68.0,
+      "t": 68,
       "text": "Fine-tune: length = how far it shook, direction in degrees."
      },
      {
@@ -4340,7 +4340,7 @@ export const HILFE = [
       "text": "V „Ostrosť a detaily“ je záchrana neostrosti."
      },
      {
-      "t": 56.0,
+      "t": 56,
       "text": "„🔍 Rozpoznať automaticky“ zmeria smer a dĺžku rozmazania a vypočíta ho späť."
      },
      {
@@ -4360,12 +4360,12 @@ export const HILFE = [
       "text": "Pred/po: vľavo rozmazané, vpravo zachránené."
      }
     ],
-    "dauer": 124.0
+    "dauer": 124
    },
    "uk": {
     "kapitel": [
      {
-      "t": 4.0,
+      "t": 4,
       "text": "Це фото змазане – перевірка фото одразу це бачить."
      },
      {
@@ -4377,11 +4377,11 @@ export const HILFE = [
       "text": "«🔍 Розпізнати автоматично» вимірює напрямок і довжину змазаності й обчислює її назад."
      },
      {
-      "t": 90.0,
+      "t": 90,
       "text": "Тонке налаштування: довжина = наскільки змістилося, напрямок у градусах."
      },
      {
-      "t": 98.0,
+      "t": 98,
       "text": "Силу – з відчуттям: забагато створює подвійні краї."
      },
      {
@@ -4448,7 +4448,7 @@ export const HILFE = [
    "de": {
     "kapitel": [
      {
-      "t": 6.0,
+      "t": 6,
       "text": "Im Zuschnitt ganz unten: „Objektivkorrektur“."
      },
      {
@@ -4473,7 +4473,7 @@ export const HILFE = [
    "en": {
     "kapitel": [
      {
-      "t": 6.0,
+      "t": 6,
       "text": "At the very bottom of the crop tool: “Lens correction”."
      },
      {
@@ -4506,7 +4506,7 @@ export const HILFE = [
       "text": "Zkreslení doprava vyrovná linie vyklenuté ven – typické pro širokoúhlý objektiv mobilu 0,5×."
      },
      {
-      "t": 44.0,
+      "t": 44,
       "text": "Doleva pro linie prohnuté dovnitř."
      },
      {
@@ -4552,7 +4552,7 @@ export const HILFE = [
       "text": "У кадруванні в самому низу: «Корекція об’єктива»."
      },
      {
-      "t": 26.0,
+      "t": 26,
       "text": "Дисторсія вправо випрямляє вигнуті назовні лінії – типово для ширококутника телефона 0,5×."
      },
      {
@@ -4672,7 +4672,7 @@ export const HILFE = [
       "text": "“☁ Sky” finds the sky automatically – and makes it stronger straight away."
      },
      {
-      "t": 24.0,
+      "t": 24,
       "text": "“Show mask in red” (key O) shows where the mask works."
      },
      {
@@ -4680,7 +4680,7 @@ export const HILFE = [
       "text": "“▤ Gradient”: drag in the picture – full at the bottom, fading towards the top."
      },
      {
-      "t": 55.0,
+      "t": 55,
       "text": "Then sliders for this area only – here “Brighten” for the slabs in front."
      },
      {
@@ -4692,11 +4692,11 @@ export const HILFE = [
       "text": "… “Invert” affects everything outside – for example darken the edges."
      },
      {
-      "t": 98.0,
+      "t": 98,
       "text": "“🖌 Brush”: paint over freely. Alt = erase, [ and ] change the size."
      },
      {
-      "t": 120.0,
+      "t": 120,
       "text": "Only the painted area is changed – everything else stays."
      },
      {
@@ -4717,7 +4717,7 @@ export const HILFE = [
       "text": "„☁ Obloha“ najde oblohu automaticky – a hned ji zesílí."
      },
      {
-      "t": 24.0,
+      "t": 24,
       "text": "„Zobrazit masku červeně“ (klávesa O) ukáže, kde maska působí."
      },
      {
@@ -4754,7 +4754,7 @@ export const HILFE = [
    "sk": {
     "kapitel": [
      {
-      "t": 7.0,
+      "t": 7,
       "text": "Nástroj „◑ Masky“ (kláves K): zmeniť len jednu oblasť obrázka – ako v Lightroome."
      },
      {
@@ -4786,7 +4786,7 @@ export const HILFE = [
       "text": "„🖌 Štetec“: voľne premaľuj. Alt = gumovať, [ a ] mení veľkosť."
      },
      {
-      "t": 113.0,
+      "t": 113,
       "text": "Zmení sa len premaľovaná oblasť – všetko ostatné zostane."
      },
      {
@@ -4794,7 +4794,7 @@ export const HILFE = [
       "text": "Všetky masky sú v zozname – klikni pre zmenu, Del pre zmazanie. Až 8 na obrázok."
      }
     ],
-    "dauer": 125.0
+    "dauer": 125
    },
    "uk": {
     "kapitel": [
@@ -4807,7 +4807,7 @@ export const HILFE = [
       "text": "«☁ Небо» знаходить небо автоматично – і одразу робить його яскравішим."
      },
      {
-      "t": 31.0,
+      "t": 31,
       "text": "«Показати маску червоним» (клавіша O) показує, де діє маска."
      },
      {
@@ -4896,7 +4896,7 @@ export const HILFE = [
    "bearbeiten/markup"
   ],
   "schritte": [
-   "Werkzeug „Einzeichnen“ (Taste M). Werkzeug wählen: Pfeil, Rechteck, Kreis, Wolke, Fläche, Freihand, Marker, Linie, Maß, Nummer, Notiz, Kreuz, Haken.",
+   "Werkzeug „Einzeichnen“ (Taste M). Werkzeug wählen: Pfeil, Rechteck, Kreis, Wolke, Fläche, Freihand, Marker, Linie, Maß, Nummer, Notiz, Kreuz, Haken – dazu „✂ Raum ausschneiden“ und „📷 Fotopunkt“ für Pläne.",
    "Farbe und Strichstärke oben wählen, dann im Bild ziehen.",
    "„Fläche“: Punkte nacheinander klicken, Doppelklick oder Enter schließt – die Fläche wird farbig hinterlegt.",
    "„Maß“ und „Notiz“ bekommen rechts eine Beschriftung, z. B. „1,20 m“ oder „Steckdose versetzen“.",
@@ -5040,7 +5040,7 @@ export const HILFE = [
       "text": "Dole legenda – z ní vznikne list s návrhem."
      }
     ],
-    "dauer": 170.0
+    "dauer": 170
    },
    "sk": {
     "kapitel": [
@@ -5081,7 +5081,7 @@ export const HILFE = [
       "text": "„Vybrať“: klikni na prvok a posuň ho, Del maže."
      },
      {
-      "t": 155.0,
+      "t": 155,
       "text": "Dole legenda – z nej vznikne list s návrhom."
      }
     ],
@@ -5167,7 +5167,7 @@ export const HILFE = [
       "text": "Strzałka: przeciągnij od końca do grotu."
      },
      {
-      "t": 162.0,
+      "t": 162,
       "text": "„Zaznacz”: kliknij element i przesuń go, Del usuwa."
      },
      {
@@ -5175,7 +5175,7 @@ export const HILFE = [
       "text": "Poniżej legenda – z niej powstaje arkusz propozycji."
      }
     ],
-    "dauer": 173.0
+    "dauer": 173
    }
   }
  },
@@ -5202,15 +5202,15 @@ export const HILFE = [
       "text": "Bild ist eingezeichnet, die Punkte sind erklärt – jetzt das Vorschlagsblatt."
      },
      {
-      "t": 15.0,
+      "t": 15,
       "text": "Titel anpassen und auf Wunsch Projekt und Absender eintragen …"
      },
      {
-      "t": 28.0,
+      "t": 28,
       "text": "… eine kurze Erläuterung und auf Wunsch eine Frist."
      },
      {
-      "t": 32.0,
+      "t": 32,
       "text": "„Blatt erzeugen“: ein neutrales A4-Blatt mit Bild und Legende – als PDF und als Word-Datei zum Weiterbearbeiten."
      },
      {
@@ -5327,7 +5327,7 @@ export const HILFE = [
       "text": "Zdjęcie jest oznaczone, punkty objaśnione – teraz arkusz propozycji."
      },
      {
-      "t": 15.0,
+      "t": 15,
       "text": "Zmień tytuł i ewentualnie wpisz projekt i nadawcę …"
      },
      {
@@ -5346,6 +5346,54 @@ export const HILFE = [
     "dauer": 44.8
    }
   }
+ },
+ {
+  "id": "pdf",
+  "titel": "PDF-Pläne öffnen und darin arbeiten",
+  "bereich": "Pläne & Fotodokumentation",
+  "seiten": [],
+  "schritte": [
+   "Startseite: „📐 Plan öffnen“ und die PDF-Datei wählen – oder die PDF einfach ins Fenster ziehen.",
+   "Hat die PDF mehrere Seiten, wählst du die Seiten per Antippen aus („Alle Seiten“ / „Keine“).",
+   "Jede Seite wird in hoher Auflösung zu einem Bild (Kennzeichen „PDF“). Das Papierformat (z. B. A1 quer) wird gemerkt.",
+   "Danach einzeichnen wie bei einem Foto – und zum Schluss wieder als PDF in Originalgröße speichern."
+  ],
+  "kapitel": [],
+  "dauer": 0,
+  "ohneVideo": true
+ },
+ {
+  "id": "plan-bilder",
+  "titel": "Fotos und Bilder in den Plan – Fotopunkte anklickbar",
+  "bereich": "Pläne & Fotodokumentation",
+  "seiten": [],
+  "schritte": [
+   "Bild in den Plan: Foto aus dem Explorer oder aus dem Filmstreifen unten auf den Plan ziehen – oder rechts „🖼 Vom PC …“, „▦ Aus Bibliothek …“, „📋 Einfügen“ (Strg+V).",
+   "Eingefügtes Bild: an den weißen Ecken ziehen = Größe, hineinklicken und ziehen = verschieben, Deckkraft, Rahmen, ⟳ 90°.",
+   "Fotopunkt: Werkzeug „📷 Fotopunkt“ wählen, in den Raum klicken und das Foto wählen – oder Fotos direkt auf den Plan ziehen. Rechts den Raum eintragen.",
+   "Doppelklick auf einen Fotopunkt zeigt das Foto groß zum Hineinzoomen.",
+   "„📄 PDF“ oben: Plan in Originalgröße, jeder Fotopunkt ist anklickbar und öffnet das Foto in hoher Auflösung; „« zurück zum Plan“ springt zurück.",
+   "Für E-Mail „Kleiner“ wählen, dann speichern oder teilen."
+  ],
+  "kapitel": [],
+  "dauer": 0,
+  "ohneVideo": true
+ },
+ {
+  "id": "raum-ausschneiden",
+  "titel": "Einzelne Räume aus dem Plan ausschneiden",
+  "bereich": "Pläne & Fotodokumentation",
+  "seiten": [],
+  "schritte": [
+   "Im Plan Werkzeug „Einzeichnen“ (M) → „✂ Raum ausschneiden“.",
+   "Rahmen um den Raum ziehen und den Namen bestätigen (liegt ein beschrifteter Fotopunkt darin, wird sein Raumname vorgeschlagen).",
+   "Der Raum wird ein eigenes Bild in voller Auflösung – mit allen Fotopunkten, Einzeichnungen und Texten, die im Rahmen liegen. Er erscheint unten im Filmstreifen.",
+   "So nacheinander alle Räume ausschneiden; jeden Raum kannst du danach für sich weiter bearbeiten.",
+   "Als PDF gespeichert liegt der Raum maßstabsgetreu wie im Originalplan auf dem Blatt (A4 bis A0 wählbar) – passt er nicht, wird er verkleinert und so gekennzeichnet."
+  ],
+  "kapitel": [],
+  "dauer": 0,
+  "ohneVideo": true
  },
  {
   "id": "export",
@@ -5404,7 +5452,7 @@ export const HILFE = [
    "en": {
     "kapitel": [
      {
-      "t": 5.0,
+      "t": 5,
       "text": "Select pictures, “Export” at the top (Ctrl+E)."
      },
      {
@@ -5424,7 +5472,7 @@ export const HILFE = [
       "text": "File name with placeholders – “web-friendly” makes names without special characters and spaces."
      },
      {
-      "t": 48.0,
+      "t": 48,
       "text": "The target “Folder on the PC” writes straight into a folder in Explorer – with subfolders matching your Bildstudio folders."
      },
      {
@@ -5449,7 +5497,7 @@ export const HILFE = [
       "text": "Rychlé předvolby: web, Instagram, Facebook, e-mail, zákazník, plná kvalita."
      },
      {
-      "t": 22.0,
+      "t": 22,
       "text": "Nebo sám: velikost – od „Originál“ po banner na web nebo Instagram story."
      },
      {
@@ -5515,7 +5563,7 @@ export const HILFE = [
    "uk": {
     "kapitel": [
      {
-      "t": 7.0,
+      "t": 7,
       "text": "Вибери фото, вгорі «Експорт» (Ctrl+E)."
      },
      {
@@ -5523,7 +5571,7 @@ export const HILFE = [
       "text": "Швидкі шаблони: сайт, Instagram, Facebook, пошта, клієнт, повна якість."
      },
      {
-      "t": 22.0,
+      "t": 22,
       "text": "Або сам: розмір – від «Оригінал» до банера сайту чи Instagram-сторіз."
      },
      {
@@ -5531,7 +5579,7 @@ export const HILFE = [
       "text": "Формат: JPG, WebP для швидких сайтів, PNG без втрат. Якість і максимальний розмір файлу в КБ."
      },
      {
-      "t": 46.0,
+      "t": 46,
       "text": "Ім’я файлу із заповнювачами – «для вебу» робить імена без діакритики й пробілів."
      },
      {
@@ -5846,7 +5894,7 @@ export const HILFE = [
       "text": "Select a picture and press Ctrl+P – the print window with preview."
      },
      {
-      "t": 15.0,
+      "t": 15,
       "text": "Paper size: from A6 to A0, photo sizes, posters or a custom size."
      },
      {
@@ -5915,7 +5963,7 @@ export const HILFE = [
       "text": "„Otevřít a vytisknout PDF“ – nebo uložit jako PDF."
      },
      {
-      "t": 73.0,
+      "t": 73,
       "text": "Vybráno více obrázků? Pak je k dispozici „Obrázků na list“ – 2 až 12 na jedné stránce, ideální pro fotodokumentaci."
      }
     ],
@@ -5973,7 +6021,7 @@ export const HILFE = [
       "text": "Формат паперу: від A6 до A0, фотоформати, постери або власний розмір."
      },
      {
-      "t": 23.0,
+      "t": 23,
       "text": "Світлофор показує, чи вистачає роздільності для розміру."
      },
      {
@@ -5989,15 +6037,15 @@ export const HILFE = [
       "text": "Для великих постерів вистачає 150 dpi, для фото – 300."
      },
      {
-      "t": 57.0,
+      "t": 57,
       "text": "Друк постера: A0 розподіляється на аркуші A4 чи A3 – з краєм для склеювання й номерами частин."
      },
      {
-      "t": 68.0,
+      "t": 68,
       "text": "«Відкрити й надрукувати PDF» – або зберегти як PDF."
      },
      {
-      "t": 74.0,
+      "t": 74,
       "text": "Вибрано кілька фото? Тоді є «Фото на аркуш» – від 2 до 12 на сторінці, ідеально для фотодокументації."
      }
     ],
@@ -6122,7 +6170,7 @@ export const HILFE = [
       "text": "Or WhatsApp Web: the picture is in the clipboard, in the chat only Ctrl+V."
      },
      {
-      "t": 46.0,
+      "t": 46,
       "text": "If the browser cannot share, the pictures are downloaded instead."
      }
     ],
@@ -6147,7 +6195,7 @@ export const HILFE = [
       "text": "„Sdílet“ otevře okno sdílení Windows, Androidu nebo iPhonu: WhatsApp, poštovní program, Signal, AirDrop …"
      },
      {
-      "t": 41.0,
+      "t": 41,
       "text": "WhatsApp: „Sdílet → WhatsApp“ – vyber kontakt, hotovo."
      },
      {
@@ -6192,7 +6240,7 @@ export const HILFE = [
       "text": "Ak prehliadač nevie zdieľať, obrázky sa namiesto toho stiahnu."
      }
     ],
-    "dauer": 48.0
+    "dauer": 48
    },
    "uk": {
     "kapitel": [
@@ -6209,7 +6257,7 @@ export const HILFE = [
       "text": "Угорі для обох способів: розмір фото, легенда під фото, водяний знак."
      },
      {
-      "t": 26.0,
+      "t": 26,
       "text": "«Поділитися» відкриває вікно поширення Windows, Android чи iPhone: WhatsApp, поштова програма, Signal, AirDrop …"
      },
      {
@@ -6254,7 +6302,7 @@ export const HILFE = [
       "text": "Lub WhatsApp Web: zdjęcie jest w schowku, w czacie tylko Ctrl+V."
      },
      {
-      "t": 49.0,
+      "t": 49,
       "text": "Jeśli przeglądarka nie umie udostępniać, zdjęcia zostaną pobrane."
      }
     ],
@@ -6264,6 +6312,6 @@ export const HILFE = [
  }
 ];
 /** Seiten-Schlüssel → passendstes Video */
-export const HILFE_FUER = {"bibliothek": "start", "start": "start", "#hilfe": "info-hilfe", "bearbeiten": "bearbeiten-licht", "bearbeiten/anpassen": "bearbeiten-licht", "#bearbeiten-details": "bearbeiten-kurven", "bearbeiten/zuschnitt": "zuschnitt", "bearbeiten/retusche": "retusche", "bearbeiten/text": "text", "#auto": "bild-check", "#bearbeiten-schaerfe": "unschaerfe", "bearbeiten/masken": "masken", "bearbeiten/markup": "markup", "#bauapp": "versand"};
+export const HILFE_FUER = {"bibliothek": "start", "start": "start", "#hilfe": "info-hilfe", "bearbeiten": "bearbeiten-licht", "bearbeiten/anpassen": "bearbeiten-licht", "#bearbeiten-details": "bearbeiten-kurven", "bearbeiten/zuschnitt": "zuschnitt", "bearbeiten/retusche": "retusche", "bearbeiten/text": "text", "#auto": "bild-check", "#bearbeiten-schaerfe": "unschaerfe", "bearbeiten/masken": "masken", "bearbeiten/markup": "markup", "#pdf": "pdf", "#plan-bilder": "plan-bilder", "#raum-ausschneiden": "raum-ausschneiden", "#bauapp": "versand"};
 /** Hauptseite → alle Videos dieser Seite (für das Info-Menü) */
 export const HILFE_SEITE = {"bibliothek": ["start", "sortieren"], "start": ["start"], "bearbeiten": ["bearbeiten-licht", "zuschnitt", "retusche", "text", "bild-check", "masken", "markup"]};

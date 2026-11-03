@@ -4,6 +4,8 @@ import { uid, toast } from './util.js';
 import { rendern, istBearbeitet, normalisiereBearbeitung } from './engine.js';
 import { exifLesen, istRaw, rawVorschau } from './exif.js';
 import { tr, trz } from './i18n.js';
+import { istPdf, pdfsAufloesen } from './pdf.js';
+import { bilderVorladen } from './markup.js';
 
 export const state = { recs: new Map(), ordner: [], einst: {}, auswahl: new Set(), fokus: null, ansicht: 'alle', filter: { sterne: 0, farbe: '', flag: '', suche: '', quelle: '' }, sort: 'aufnahme', sortAb: true };
 const hoerer = {};
@@ -52,8 +54,11 @@ export async function setzen(ids, feld, wert) {
   const liste = [...ids].map(id => state.recs.get(id)).filter(Boolean); for (const r of liste) r[feld] = wert; await recsSpeichern(liste);
 }
 export async function entfernen(ids) {
-  const k = [...ids]; for (const id of k) { state.recs.delete(id); state.auswahl.delete(id); thumbFrei(id); bmpCache.delete(id); }
-  await db.delViele('recs', k); await db.delViele('blobs', k); await db.delViele('thumbs', k); emit('recs', []); emit('ordner');
+  const k = [...ids]; const geloescht = k.map(id => state.recs.get(id)).filter(Boolean); for (const id of k) { state.recs.delete(id); state.auswahl.delete(id); thumbFrei(id); bmpCache.delete(id); }
+  // eingefügte Bilder/Fotos der gelöschten Bilder mit entfernen – sofern kein anderes Bild sie noch nutzt
+  const genutzt = new Set([...state.recs.values()].flatMap(r => (r.edit?.markup || []).map(m => m.bild).filter(Boolean)));
+  const weg = geloescht.flatMap(r => (r.edit?.markup || []).map(m => m.bild).filter(b => b && !genutzt.has(b)));
+  await db.delViele('recs', k); await db.delViele('blobs', [...k, ...new Set(weg)]); await db.delViele('thumbs', k); emit('recs', []); emit('ordner');
 }
 
 /* ───────── Liste (Ansicht, Filter, Sortierung) ───────── */
@@ -89,6 +94,7 @@ export function zaehler() {
 const bmpCache = new Map();
 export async function original(id) { return db.get('blobs', id); }
 export async function bitmap(rec) {
+  if (rec.edit?.markup?.some(m => m.bild)) await bilderVorladen(rec.edit.markup); // eingefügte Bilder/Fotopunkte für das Rendern bereitlegen
   if (bmpCache.has(rec.id)) { const b = bmpCache.get(rec.id); bmpCache.delete(rec.id); bmpCache.set(rec.id, b); return b; }
   const blob = await original(rec.id); if (!blob) throw new Error(tr('Original nicht gefunden: ') + rec.name);
   const b = await createImageBitmap(blob, { imageOrientation: 'from-image' });
@@ -133,19 +139,22 @@ export async function bildHinzufuegen(blob, { name, vorlage = null, ki = null, t
   return rec;
 }
 let heicP = null;
-async function heicNachJpeg(blob) {
+export async function heicNachJpeg(blob) {
   if (!heicP) heicP = new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'lib/heic2any.min.js'; s.onload = res; s.onerror = () => rej(new Error(tr('HEIC-Wandler nicht geladen'))); document.head.append(s); });
   await heicP; const r = await window.heic2any({ blob, toType: 'image/jpeg', quality: 0.95 }); return Array.isArray(r) ? r[0] : r;
 }
 const BILD = /\.(jpe?g|png|webp|gif|bmp|avif|heic|heif|tiff?|jfif)$/i;
 export const istBild = (f) => (f.type && f.type.startsWith('image/')) || BILD.test(f.name || '') || istRaw(f.name);
+/** Bild oder PDF (Pläne, Dokumente) – PDF-Seiten werden beim Import zu Bildern */
+export const istBildOderPdf = (f) => istBild(f) || istPdf(f);
 /** Dateien in die Bibliothek übernehmen. opt: { quelle, ordner, quelleInfo(file) } */
 export async function importieren(files, opt = {}) {
-  const liste = [...files].filter(istBild); if (!liste.length) { toast(tr('Keine Bilddateien gefunden.'), 'warn'); return []; }
+  let liste = [...files].filter(istBildOderPdf); if (!liste.length) { toast(tr('Keine Bilder oder PDF-Dateien gefunden.'), 'warn'); return []; }
+  if (liste.some(istPdf)) { liste = await pdfsAufloesen(liste); if (!liste.length) return []; }
   const vorhanden = new Set([...state.recs.values()].map(r => r.schluessel));
   const neu = [], fehler = []; let doppelt = 0; emit('import', { laeuft: true, n: liste.length, i: 0 });
   for (let i = 0; i < liste.length; i++) {
-    const f = liste[i]; const schl = (opt.schluessel?.(f)) || (f.name + '|' + f.size);
+    const f = liste[i]; let schl = (opt.schluessel?.(f)) || (f._pdf ? f._pdf.datei + '|' + f._pdfGroesse : f.name + '|' + f.size); if (f._pdf) schl += '#S' + f._pdf.seite;
     emit('import', { laeuft: true, n: liste.length, i: i + 1, name: f.name });
     if (vorhanden.has(schl)) { doppelt++; continue; }
     try {
@@ -156,7 +165,7 @@ export async function importieren(files, opt = {}) {
       const rec = {
         id: uid(), name, typ: typ || blob.type, bytes: f.size, w: bmp.width, h: bmp.height, schluessel: schl,
         importiert: Date.now() + i, aufnahme: exif.aufnahmeZeit || f.lastModified || Date.now(), exif, quelle: opt.quelle || 'pc', quelleInfo: opt.quelleInfo?.(f) || null,
-        ordner: opt.ordner || null, sterne: 0, farbe: '', flag: 0, titel: '', stichworte: [], edit: null, raw: istRaw(name) || undefined
+        ordner: opt.ordner || null, sterne: 0, farbe: '', flag: 0, titel: '', stichworte: f._pdf ? ['PDF'] : [], edit: null, raw: istRaw(name) || undefined, pdf: f._pdf || undefined
       };
       await db.put('blobs', rec.id, blob);
       await thumbErzeugen(rec, bmp); bmp.close?.();
@@ -165,7 +174,7 @@ export async function importieren(files, opt = {}) {
     } catch (e) { console.warn(e); fehler.push(f.name + ': ' + (e.message || e)); }
   }
   emit('import', { laeuft: false }); emit('recs', neu); emit('ordner');
-  const t = [trz(neu.length, '{0} Bild übernommen', '{0} Bilder übernommen')]; if (doppelt) t.push(tr('{0} schon vorhanden', doppelt)); if (fehler.length) t.push(tr('{0} nicht lesbar', fehler.length));
+  const pdfS = neu.filter(r => r.pdf).length; const t = [pdfS && pdfS === neu.length ? trz(pdfS, '{0} PDF-Seite übernommen', '{0} PDF-Seiten übernommen') : trz(neu.length, '{0} Bild übernommen', '{0} Bilder übernommen')]; if (doppelt) t.push(tr('{0} schon vorhanden', doppelt)); if (fehler.length) t.push(tr('{0} nicht lesbar', fehler.length));
   toast(t.join(' · '), fehler.length ? 'warn' : 'ok', 4500); if (fehler.length) console.warn(fehler);
   return neu;
 }

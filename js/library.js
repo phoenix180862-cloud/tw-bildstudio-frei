@@ -4,6 +4,7 @@ import { $, $$, el, esc, toast, bestaetigen, fmtBytes, fmtDate, rafThrottle } fr
 import { istBearbeitet, rendern } from './engine.js';
 import { FREI } from './frei.js';
 import { tr, trz } from './i18n.js';
+import { papierName } from './pdf.js';
 
 const FARBEN = [['rot', '#e5484d'], ['gelb', '#e9cc2a'], ['gruen', '#3fb950'], ['blau', '#3b82f6'], ['lila', '#9b5de5']];
 const FARBNAME = { rot: tr('Rot'), gelb: tr('Gelb'), gruen: tr('Grün'), blau: tr('Blau'), lila: tr('Lila') };
@@ -75,6 +76,7 @@ function kachel(r) {
     r.farbe ? el('span', { class: 'farbe', style: { background: farbWert(r.farbe) } }) : null,
     o && !state.ansicht.startsWith('ordner:') ? el('span', { class: 'badge b-ord', style: { borderLeft: '3px solid ' + o.farbe } }, o.name) : null,
     istBearbeitet(r.edit) ? el('span', { class: 'badge b-edit', title: tr('bearbeitet') }, '✎') : null,
+    r.pdf ? el('span', { class: 'badge b-pdf', title: tr('aus PDF: {0}, Seite {1} ({2})', r.pdf.datei, r.pdf.seite, r.pdf.mmB ? papierName(r.pdf.mmB, r.pdf.mmH) : '') }, 'PDF') : null,
     r.ki ? el('span', { class: 'badge b-ki', title: tr('KI-bearbeitet: ') + (r.ki.art || '') + tr(' – nicht als Beweisfoto verwenden') }, 'KI') : null,
     r.flag === 1 ? el('span', { class: 'badge b-flag', title: tr('markiert (P)') }, '⚑') : r.flag === -1 ? el('span', { class: 'badge b-flag', title: tr('abgelehnt (X)'), style: 'color:#ff8080' }, '✕') : null,
     el('div', { class: 'info' }, el('span', { class: 'nm' }, r.name), r.sterne ? el('span', { class: 'st' }, '★'.repeat(r.sterne)) : null));
@@ -158,6 +160,7 @@ function kontext(e) {
     FREI ? { i: '📤', t: tr('Teilen (WhatsApp, Mail-Programm …) …'), f: () => window.BS.versand(ids) } : { i: '✉', t: tr('Versenden (Mail, WhatsApp, Baustellen-App) …'), f: () => window.BS.versand(ids) },
     { i: '🖨', t: tr('Drucken …'), k: tr('Strg+P'), f: () => window.BS.drucken(ids) },
     { i: '📄', t: FREI ? tr('Vorschlagsblatt (PDF + Word)') : tr('Vorschlagsblatt für Bauherrn (PDF)'), f: () => window.BS.vorschlag(ids[0]) },
+    { i: '🗺', t: tr('Als PDF speichern (Plan, Fotos anklickbar)'), f: () => window.BS.planPdf(ids) },
     '-',
     { i: 'ℹ', t: tr('Bild-Informationen'), f: () => infoDialog(ids[0]) },
     { i: '🗑', t: tr('Aus Bildstudio entfernen'), k: tr('Entf'), f: () => wegnehmen(ids) }

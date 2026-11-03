@@ -35,6 +35,7 @@ export function zeigen(root) {
         : tr('Baustellenfotos holen, einsortieren, bearbeiten und für den Bauherrn einzeichnen – dann drucken, exportieren oder verschicken.'))),
     el('div', { class: 'gruss-knoepfe' },
       el('button', { class: 'btn orange gross', onclick: (e) => window.BS.importMenue(e.currentTarget) }, tr('＋ Bilder holen')),
+      el('button', { class: 'btn gross', title: tr('PDF-Plan öffnen, einzeichnen, Fotos einfügen, Räume ausschneiden'), onclick: (e) => window.BS.planOeffnen(e.currentTarget) }, tr('📐 Plan öffnen')),
       n ? el('button', { class: 'btn gross', onclick: () => geh('alle') }, tr('▦ Zur Bibliothek')) : null,
       z.unsortiert ? el('button', { class: 'btn gross ghost', onclick: () => { geh('unsortiert'); setTimeout(() => window.BS.lib.sichten(), 400); } }, tr('⛶ {0} unsortierte sichten', z.unsortiert)) : null)));
 

@@ -391,3 +391,32 @@ html.tw-frei #kopfKI, html.tw-frei #googlePille { display: none !important; }
 /* ───── Sprachwahl im Kopf ───── */
 .btn.sprache { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; } .btn.sprache .gl { font-size: 15px; line-height: 1; } .btn.sprache .sp-kurz { display: none; font-weight: 700; }
 @media (max-width: 1320px) { .btn.sprache .sp-name { display: none; } .btn.sprache .sp-kurz { display: inline; } }
+
+/* ───── PDF-Pläne (seit 03.11.2026): Kennzeichen, Seitenwahl ───── */
+.kachel .b-pdf { right: 30px; color: #fff; background: var(--blau); font-weight: 700; font-size: 10.5px; letter-spacing: .5px; }
+.pdf-seiten { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; max-height: min(56vh, 560px); overflow: auto; padding: 4px 2px 8px; margin-top: 8px; }
+.pdf-seite { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 6px 6px; min-height: 44px; background: var(--bg); border: 2px solid var(--line); border-radius: 9px; color: var(--tx2); cursor: pointer; font: inherit; }
+.pdf-seite canvas { width: 100%; height: auto; max-height: 150px; object-fit: contain; background: #fff; border-radius: 3px; box-shadow: 0 1px 4px rgba(0,0,0,.35); }
+.pdf-seite:hover { border-color: var(--line2); } .pdf-seite.an { border-color: var(--rot2); color: var(--tx); box-shadow: inset 0 -2px 0 var(--rot); }
+.pdf-seite.an small::before { content: "✓ "; color: var(--gruen); font-weight: 700; }
+/* Bilder in die Zeichnung ziehen, Fotopunkte, Foto groß */
+body.ed-modus #dropZone { display: none !important; }
+.ed-buehne.drop-ziel { box-shadow: inset 0 0 0 3px var(--rot2); background: rgba(196,30,30,.08); }
+.ed-buehne.drop-ziel::after { content: attr(data-drop-text); position: absolute; left: 50%; top: 14px; transform: translateX(-50%); background: var(--rot); color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 600; pointer-events: none; z-index: 5; white-space: nowrap; }
+.ed-unten .fs[draggable="true"] { cursor: grab; }
+.bild-vorschau-box { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 6px; margin: 2px 0 8px; display: flex; justify-content: center; cursor: zoom-in; }
+.bild-vorschau { max-width: 100%; max-height: 160px; border-radius: 4px; object-fit: contain; }
+.ebene .ib { margin-left: auto; flex: none; }
+.mdl.foto-mdl { width: min(1200px, 96vw); }
+.foto-gross { position: relative; height: min(72vh, 900px); overflow: hidden; background: #0b0f14; border-radius: 8px; margin-top: 8px; touch-action: none; cursor: grab; display: flex; align-items: center; justify-content: center; }
+.foto-gross img { max-width: 100%; max-height: 100%; transform-origin: 50% 50%; user-select: none; -webkit-user-drag: none; }
+/* Planauswahl aus der Baustelle */
+.plan-liste { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; max-height: min(60vh, 640px); overflow: auto; padding: 2px; }
+.plan-gruppe { grid-column: 1 / -1; color: var(--tx2); font-weight: 600; font-size: 13px; margin-top: 6px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.plan-karte { display: flex; flex-direction: column; gap: 4px; text-align: left; padding: 8px; min-height: 44px; background: var(--bg); border: 2px solid var(--line); border-radius: 10px; color: var(--tx); cursor: pointer; font: inherit; }
+.plan-karte:hover { border-color: var(--line2); } .plan-karte.an { border-color: var(--rot2); box-shadow: inset 0 -2px 0 var(--rot); }
+.plan-karte b { font-size: 13.5px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; } .plan-karte small { color: var(--tx3); font-size: 12px; }
+.plan-vor { height: 130px; background: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.plan-vor img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.plan-ico { font: 700 22px Oswald, sans-serif; color: var(--rot); }
+@media (max-width: 600px) { .plan-liste { grid-template-columns: repeat(2, minmax(0, 1fr)); } .plan-vor { height: 100px; } }

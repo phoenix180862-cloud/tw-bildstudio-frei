@@ -1,8 +1,10 @@
 // TW Bildstudio – Bearbeiten: Licht, Farbe, Kurven, HSL, Details, Effekte, Zuschnitt/Perspektive, Retusche, Text, Einzeichnen
-import { state, bitmap, bearbeitungSpeichern, sichtbareListe, thumbUrl, einstSpeichern, recSpeichern } from './store.js';
+import { state, bitmap, bearbeitungSpeichern, sichtbareListe, thumbUrl, einstSpeichern, recSpeichern, bildHinzufuegen, thumbErzeugen } from './store.js';
 import * as E from './engine.js';
 import { LOOKS, VERHAELTNISSE, MARKUP_FARBEN, TEXT_FARBEN } from './presets.js';
-import { MARKUP_WZ, markupZeichnen, markupTreffer, naechsteNummer, legende } from './markup.js';
+import { MARKUP_WZ, markupZeichnen, markupTreffer, naechsteNummer, legende, bildAblegen, beiBildGeladen, bildBox, naechsteFotoNr, fotopunkte, bildVon } from './markup.js';
+import { original } from './store.js';
+import * as EIN from './einfuegen.js';
 import { $, $$, el, esc, toast, clamp, rafThrottle, debounce, infoPunkt, eingabe, uid, bestaetigen } from './util.js';
 import { menue } from './library.js';
 import { bildCheck, autoVerbessern } from './analyse.js';
@@ -53,7 +55,7 @@ export function zeigen(root, id) {
     el('div', { class: 'ed-werkzeuge', id: 'edWz' }),
     el('div', { class: 'ed-mitte' },
       el('div', { class: 'ed-oben', id: 'edOben' }),
-      el('div', { class: 'ed-buehne', id: 'buehne' }, el('canvas', { class: 'bild', id: 'edBild' }), el('canvas', { class: 'ueber', id: 'edUeber' }), el('div', { class: 'ed-laden', id: 'edLaden' }, tr('Bild wird geladen …'))),
+      el('div', { class: 'ed-buehne', id: 'buehne', dataset: { dropText: tr('Loslassen = Bild in die Zeichnung einfügen') } }, el('canvas', { class: 'bild', id: 'edBild' }), el('canvas', { class: 'ueber', id: 'edUeber' }), el('div', { class: 'ed-laden', id: 'edLaden' }, tr('Bild wird geladen …'))),
       el('div', { class: 'ed-unten', id: 'filmstreifen' })),
     el('div', { class: 'ed-panel', id: 'edPanel' })));
   if (naechstesWz) { S.wz = naechstesWz; naechstesWz = null; }
@@ -61,6 +63,7 @@ export function zeigen(root, id) {
   laden();
 }
 export const aktiv = () => S && document.getElementById('edBild') ? S : null;
+beiBildGeladen(() => { if (aktiv()) zeichnenBald(); });
 
 async function laden() {
   const s = S;
@@ -216,6 +219,7 @@ function obenLeiste() {
     el('button', { class: 'btn klein' + (S.vergleich ? ' an' : ''), title: tr('Vorher/Nachher: aus → geteilt → vorher (Taste \\ gedrückt halten = kurz vorher)'), onclick: () => { S.vergleich = (S.vergleich + 1) % 3; zeichnen(); obenLeiste(); } }, [tr('◐ Vergleich'), tr('◐ geteilt'), tr('◐ vorher')][S.vergleich]),
     el('button', { class: 'btn klein', title: tr('Einpassen (0)'), onclick: einpassen }, tr('Einpassen')), el('button', { class: 'btn klein', title: '100 % (1)', onclick: () => zoomAuf(1 / (S.cache.geo.cw / S.cache.geo.w)) }, '1:1'), el('span', { class: 'dim', id: 'zoomWert' }),
     el('button', { class: 'btn klein', title: tr('Alle Bearbeitungen dieses Bildes zurücksetzen'), onclick: async () => { if (await bestaetigen(tr('Alle Bearbeitungen dieses Bildes zurücksetzen? (Rückgängig geht trotzdem)'))) aendern(e => Object.assign(e, E.neueBearbeitung()), { neuPanel: true }); } }, tr('↺ Zurücksetzen')),
+    el('button', { class: 'btn', title: tr('Als PDF speichern – Originalgröße, Fotopunkte anklickbar'), onclick: async () => { await speichern(); window.BS.planPdf([S.rec.id]); } }, tr('📄 PDF')),
     el('button', { class: 'btn', title: tr('Drucken (Strg+P)'), onclick: async () => { await speichern(); window.BS.drucken([S.rec.id]); } }, '🖨'),
   );
   undoKnoepfe(); transform();
@@ -226,7 +230,7 @@ async function nachbar(d) {
 }
 async function filmstreifen(liste) {
   const box = $('#filmstreifen'); box.innerHTML = '';
-  for (const r of liste.slice(0, 400)) { const img = el('img', { alt: '' }); const d = el('div', { class: 'fs' + (r.id === S.rec.id ? ' an' : ''), dataset: { id: r.id }, title: r.name, onclick: async () => { await speichern(); location.hash = '#/bearbeiten/' + r.id; } }, img); box.append(d); thumbUrl(r).then(u => img.src = u); }
+  for (const r of liste.slice(0, 400)) { const img = el('img', { alt: '' }); const d = el('div', { class: 'fs' + (r.id === S.rec.id ? ' an' : ''), dataset: { id: r.id }, title: r.name + '\n' + tr('Auf das Bild ziehen = in die Zeichnung einfügen'), draggable: 'true', ondragstart: (e) => { e.dataTransfer.setData('text/x-bs-bild', r.id); e.dataTransfer.effectAllowed = 'copy'; }, onclick: async () => { await speichern(); location.hash = '#/bearbeiten/' + r.id; } }, img); box.append(d); thumbUrl(r).then(u => img.src = u); }
   box.querySelector('.fs.an')?.scrollIntoView({ inline: 'center', block: 'nearest' });
 }
 
@@ -477,15 +481,27 @@ function panelMarkup(p) {
     el('label', { class: 'lbl' }, tr('Farbe')), el('div', { class: 'farbpalette' }, ...MARKUP_FARBEN.map(f => el('button', { class: (m ? m.farbe : S.markupFarbe) === f ? 'an' : '', style: { background: f }, onclick: () => { S.markupFarbe = f; if (m) aendern(() => m.farbe = f); panel(); } }))),
     regler(tr('Strichstärke'), () => m || S, m ? 'staerke' : 'markupStaerke', 1, 12, { schritt: 0.5, null: 4 }),
     regler(tr('Füllung %'), () => m || S, m ? 'fuellung' : 'markupFuellung', 0, 100, { null: 0 }),
-    el('p', { class: 'hinweis' }, (MARKUP_WZ.find(w => w.t === S.markupWz)?.tipp || tr('Element anklicken zum Auswählen, ziehen zum Verschieben, Entf zum Löschen.')))
+    el('p', { class: 'hinweis' }, (MARKUP_WZ.find(w => w.t === S.markupWz)?.tipp || tr('Element anklicken zum Auswählen, ziehen zum Verschieben, Entf zum Löschen.'))),
+    el('label', { class: 'lbl' }, tr('Bild in die Zeichnung einfügen')),
+    el('div', { class: 'knopfreihe' }, el('button', { class: 'btn klein', title: tr('Bild oder PDF vom PC/Handy einfügen'), onclick: async () => einfuegen(await EIN.dateienWaehlen()) }, tr('🖼 Vom PC …')),
+      el('button', { class: 'btn klein', title: tr('Ein Bild aus der Bibliothek einfügen (mit seinen Bearbeitungen)'), onclick: async () => einfuegen(await EIN.ausBibliothekWaehlen({ ohneId: S.rec.id })) }, tr('▦ Aus Bibliothek …')),
+      el('button', { class: 'btn klein', title: tr('Kopiertes Bild einfügen (Strg+V)'), onclick: async () => einfuegen(await EIN.ausZwischenablage()) }, tr('📋 Einfügen'))),
+    el('p', { class: 'hinweis' }, tr('Tipp: Bilder aus dem Explorer oder aus dem Filmstreifen unten einfach auf das Bild ziehen. Mit dem Werkzeug „Fotopunkt“ werden sie zu anklickbaren Fotopunkten.'))
   ], infoPunkt(tr('So machst du dem Bauherrn klare Vorschläge: Bereiche einrahmen, Flächen farbig markieren, Pfeile mit Text, nummerierte Punkte mit Erklärung. Danach „Vorschlagsblatt“ als PDF erzeugen.'), 'markup')));
   if (m) p.append(sektion('mprop', tr('Gewähltes Element'), [
-    ['nummer', 'notiz', 'masz', 'pfeil', 'rechteck', 'ellipse', 'wolke', 'flaeche'].includes(m.t) ? el('div', {}, el('label', { class: 'lbl' }, m.t === 'nummer' ? tr('Erklärung zu Punkt {0} (erscheint in der Legende)', m.nr) : m.t === 'masz' ? tr('Maß-Beschriftung (z. B. 1,20 m)') : tr('Beschriftung')),
-      el('textarea', { class: 'inp', rows: 2, style: 'width:100%', oninput: (e) => aendern(() => m.text = e.target.value) }, m.text || '')) : null,
-    m.t === 'nummer' ? el('div', { class: 'zeile' }, el('span', { class: 'hinweis' }, tr('Nummer')), el('input', { type: 'number', class: 'inp', min: 1, value: m.nr, style: 'width:70px', onchange: (e) => aendern(() => m.nr = +e.target.value) })) : null,
+    m.t === 'foto' || m.t === 'bild' ? bildEigenschaften(m) : null,
+    ['nummer', 'notiz', 'masz', 'pfeil', 'rechteck', 'ellipse', 'wolke', 'flaeche', 'bild', 'foto'].includes(m.t) ? el('div', {}, el('label', { class: 'lbl' }, m.t === 'nummer' ? tr('Erklärung zu Punkt {0} (erscheint in der Legende)', m.nr) : m.t === 'masz' ? tr('Maß-Beschriftung (z. B. 1,20 m)') : m.t === 'foto' ? tr('Raum / Beschriftung (z. B. Bad 2.14)') : tr('Beschriftung')),
+      el('textarea', { class: 'inp', rows: 2, style: 'width:100%', oninput: (e) => { aendern(() => m.text = e.target.value); const z = m.id && document.querySelector(`[data-fp="${m.id}"]`); if (z) z.textContent = m.text || tr('– Raum fehlt –'); } }, m.text || '')) : null,
+    m.t === 'nummer' || m.t === 'foto' ? el('div', { class: 'zeile' }, el('span', { class: 'hinweis' }, tr('Nummer')), el('input', { type: 'number', class: 'inp', min: 1, value: m.nr, style: 'width:70px', onchange: (e) => aendern(() => m.nr = +e.target.value) })) : null,
     el('div', { class: 'knopfreihe' }, el('button', { class: 'btn klein', onclick: () => { aendern(e => e.markup = e.markup.filter(x => x !== m)); S.auswahlMarkup = null; panel(); } }, tr('🗑 Löschen')),
-      el('button', { class: 'btn klein', onclick: () => { const k = JSON.parse(JSON.stringify(m)); k.pts = k.pts.map(([a, b]) => [Math.min(0.98, a + 0.03), Math.min(0.98, b + 0.03)]); if (k.t === 'nummer') k.nr = naechsteNummer(S.edit.markup); aendern(e => e.markup.push(k)); S.auswahlMarkup = k; panel(); } }, tr('Duplizieren')),
+      el('button', { class: 'btn klein', onclick: () => { const k = JSON.parse(JSON.stringify(m)); k.id = uid(); k.pts = k.pts.map(([a, b]) => [Math.min(0.98, a + 0.03), Math.min(0.98, b + 0.03)]); if (k.t === 'nummer') k.nr = naechsteNummer(S.edit.markup); if (k.t === 'foto') k.nr = naechsteFotoNr(S.edit.markup); aendern(e => e.markup.push(k)); S.auswahlMarkup = k; panel(); } }, tr('Duplizieren')),
       el('button', { class: 'btn klein', title: tr('nach vorne'), onclick: () => aendern(e => { e.markup = e.markup.filter(x => x !== m); e.markup.push(m); }) }, tr('⇡ nach vorn')))]));
+  const F = fotopunkte(S.edit.markup);
+  if (F.length || S.markupWz === 'foto') p.append(sektion('fotopunkte', tr('Fotopunkte ({0})', F.length), [
+    F.length ? el('div', {}, ...F.map(f => el('div', { class: 'ebene' + (f === m ? ' an' : ''), onclick: () => { S.auswahlMarkup = f; panel(); zeichnen(); } }, el('b', { style: { color: f.farbe } }, '📷 ' + f.nr), el('span', { dataset: { fp: f.id } }, f.text || tr('– Raum fehlt –')),
+      el('button', { class: 'ib', title: tr('Foto groß ansehen'), onclick: async (e) => { e.stopPropagation(); EIN.fotoGross(await original(f.bild), tr('Foto {0}', f.nr) + (f.text ? ' – ' + f.text : '')); } }, '🔍')))) : el('p', { class: 'hinweis' }, tr('Noch keine Fotopunkte. Werkzeug „Fotopunkt“ wählen und in den Plan klicken – oder Fotos auf den Plan ziehen.')),
+    el('button', { class: 'btn voll', style: 'margin-top:8px', onclick: async () => { await speichern(); window.BS.planPdf([S.rec.id]); } }, tr('📄 Als PDF speichern – Fotos anklickbar'))
+  ], infoPunkt(tr('Fotopunkte machen aus deinem Plan eine Foto-Dokumentation: Im PDF ist jeder Punkt anklickbar und öffnet das Foto in voller Auflösung zum Hineinzoomen. Ein Klick auf „zurück zum Plan“ springt wieder an die Stelle im Plan.'), 'plan-bilder')));
   const L = legende(S.edit.markup);
   p.append(sektion('legende', tr('Legende ({0})', L.length), [
     L.length ? el('div', {}, ...L.map(l => el('div', { class: 'ebene', onclick: () => { S.auswahlMarkup = S.edit.markup.find(x => x.t === 'nummer' && x.nr === l.nr); panel(); zeichnen(); } }, el('b', { style: { color: l.farbe } }, l.nr + '.'), el('span', {}, l.text || tr('– Erklärung fehlt –'))))) : el('p', { class: 'hinweis' }, tr('Setze nummerierte Punkte (①) – ihre Erklärungen erscheinen hier und auf dem Vorschlagsblatt.')),
@@ -709,6 +725,11 @@ function buehneEreignisse() {
     else if (modus === 'mzieh') { const dx = nx - S.zStart[0], dy = ny - S.zStart[1]; ziel.pts = start.pts.map(([a, c]) => [a + dx, c + dy]); S.geaendert = true; zeichnenBald(); }
     else if (modus === 'maske') maskeMove(start, nx, ny);
     else if (modus === 'kimalen') { const l = S.kiZeichnet.pts[S.kiZeichnet.pts.length - 1]; if (Math.hypot(nx - l[0], ny - l[1]) > 0.002) S.kiZeichnet.pts.push([nx, ny]); ueberZeichnen(); }
+    else if (modus === 'mbild') {
+      const cv = $('#edBild'), W = cv.width, H = cv.height, [fx, fy] = start.fest; let dx = (nx - fx) * W, dy = (ny - fy) * H;
+      if (!e.shiftKey) { const k = Math.max(Math.abs(dx) / start.asp, Math.abs(dy), 8); dx = Math.sign(dx || 1) * k * start.asp; dy = Math.sign(dy || 1) * k; }
+      const x2 = fx + dx / W, y2 = fy + dy / H; ziel.pts = [[Math.min(fx, x2), Math.min(fy, y2)], [Math.max(fx, x2), Math.max(fy, y2)]]; S.geaendert = true; zeichnenBald();
+    }
     else if (modus === 'mpunkt') { ziel.pts[start.i] = [clamp(nx, 0, 1), clamp(ny, 0, 1)]; S.geaendert = true; zeichnenBald(); }
   });
   b.addEventListener('pointerleave', () => { S.maus = null; ueberZeichnen(); });
@@ -744,10 +765,16 @@ function buehneEreignisse() {
     if (S.wz === 'ki' && S.kiMalen) { S.kiZeichnet = { r: S.kiPinsel / 100, pts: [[clamp(nx, 0, 1), clamp(ny, 0, 1)]] }; modus = 'kimalen'; ueberZeichnen(); return; }
     if (S.wz === 'markup') {
       const W = cv.width, H = cv.height;
-      if (S.auswahlMarkup) { const i = S.auswahlMarkup.pts.findIndex(pp => Math.hypot((pp[0] - nx) * W * S.z, (pp[1] - ny) * H * S.z) < 9); if (i >= 0) { vorAenderung(); modus = 'mpunkt'; ziel = S.auswahlMarkup; start = { i }; return; } }
+      if (S.auswahlMarkup?.t === 'bild') {
+        const [l, t, bw, bh] = bildBox(S.auswahlMarkup, W, H), ecken = [[l, t], [l + bw, t], [l + bw, t + bh], [l, t + bh]];
+        const i = ecken.findIndex(([ex, ey]) => Math.hypot((ex - nx * W) * S.z, (ey - ny * H) * S.z) < 14);
+        if (i >= 0) { vorAenderung(); modus = 'mbild'; ziel = S.auswahlMarkup; const f = ecken[(i + 2) % 4]; start = { fest: [f[0] / W, f[1] / H], asp: (ziel.asp || bw / bh) }; return; }
+      }
+      if (S.auswahlMarkup && S.auswahlMarkup.t !== 'bild') { const i = S.auswahlMarkup.pts.findIndex(pp => Math.hypot((pp[0] - nx) * W * S.z, (pp[1] - ny) * H * S.z) < 9); if (i >= 0) { vorAenderung(); modus = 'mpunkt'; ziel = S.auswahlMarkup; start = { i }; return; } }
       const t = markupTreffer(S.edit.markup, nx * W, ny * H, W, H);
-      if (S.markupWz === 'zeiger' || (t && t === S.auswahlMarkup)) { if (t) { vorAenderung(); S.auswahlMarkup = t; modus = 'mzieh'; ziel = t; start = { pts: t.pts.map(p => p.slice()) }; panel(); zeichnen(); } else { S.auswahlMarkup = null; panel(); zeichnen(); pan(); } return; }
+      if (S.markupWz === 'zeiger' || (t && t === S.auswahlMarkup) || (t?.t === 'foto' && S.markupWz === 'foto')) { if (t) { vorAenderung(); S.auswahlMarkup = t; modus = 'mzieh'; ziel = t; start = { pts: t.pts.map(p => p.slice()) }; panel(); zeichnen(); } else { S.auswahlMarkup = null; panel(); zeichnen(); pan(); } return; }
       if (nx < 0 || ny < 0 || nx > 1 || ny > 1) return pan();
+      if (S.markupWz === 'foto') { fotoQuelleMenue(e, [nx, ny]); return; }
       const basis = { id: uid(), t: S.markupWz, farbe: S.markupFarbe, staerke: S.markupStaerke, fuellung: S.markupWz === 'flaeche' ? (S.markupFuellung || 35) : S.markupFuellung };
       if (S.markupWz === 'nummer') { const m = { ...basis, pts: [[nx, ny]], nr: naechsteNummer(S.edit.markup), text: '' }; aendern(ed => ed.markup.push(m)); S.auswahlMarkup = m; panel(); setTimeout(() => $('#edPanel textarea')?.focus(), 30); return; }
       if (S.markupWz === 'flaeche') {
@@ -759,10 +786,27 @@ function buehneEreignisse() {
     }
     pan();
   });
-  b.addEventListener('dblclick', () => { if (S.wz === 'markup' && S.zeichnet?.t === 'flaeche') flaecheFertig(); });
+  b.addEventListener('dblclick', async (e) => {
+    if (S.wz === 'markup' && S.zeichnet?.t === 'flaeche') return flaecheFertig();
+    const cv = $('#edBild'), [nx, ny] = nachBild(e), t = markupTreffer(S.edit.markup, nx * cv.width, ny * cv.height, cv.width, cv.height);
+    if (t?.t === 'foto') EIN.fotoGross(await original(t.bild), tr('Foto {0}', t.nr) + (t.text ? ' – ' + t.text : ''));
+  });
+  // Bilder auf die Bühne ziehen: aus dem Explorer (Dateien/PDF) oder aus dem Filmstreifen → in die Zeichnung einfügen
+  const istEinfuegbar = (e) => { const ty = [...(e.dataTransfer?.types || [])]; return ty.includes('text/x-bs-bild') || ty.includes('Files'); };
+  b.addEventListener('dragover', (e) => { if (!istEinfuegbar(e) || !S.cache.heal) return; e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; b.classList.add('drop-ziel'); });
+  b.addEventListener('dragleave', () => b.classList.remove('drop-ziel'));
+  b.addEventListener('drop', async (e) => {
+    b.classList.remove('drop-ziel'); if (!istEinfuegbar(e) || !S.cache.heal) return; e.preventDefault(); e.stopPropagation();
+    document.getElementById('dropZone')?.classList.remove('an');
+    const [nx, ny] = nachBild(e), pos = [clamp(nx, 0.02, 0.98), clamp(ny, 0.02, 0.98)]; const id = e.dataTransfer.getData('text/x-bs-bild');
+    let blobs = [];
+    if (id) { const r = state.recs.get(id); if (r) try { blobs = [await EIN.bibliotheksBild(r)]; } catch (er) { toast(er.message, 'fehler'); } }
+    else blobs = await EIN.dateienZuBlobs(e.dataTransfer.files);
+    einfuegen(blobs, pos);
+  });
   b.addEventListener('contextmenu', (e) => e.preventDefault());
   b.addEventListener('pointerup', () => {
-    if (modus === 'crop' || modus === 'text' || modus === 'healQuelle' || modus === 'mzieh' || modus === 'mpunkt') { S.geaendert = true; zeichnen(); speichernBald(); undoKnoepfe(); if (modus === 'healQuelle') neuHeal(); }
+    if (modus === 'crop' || modus === 'text' || modus === 'healQuelle' || modus === 'mzieh' || modus === 'mpunkt' || modus === 'mbild') { S.geaendert = true; zeichnen(); speichernBald(); undoKnoepfe(); if (modus === 'healQuelle') neuHeal(); }
     if (modus === 'maske') { S.geaendert = true; zeichnen(); speichernBald(); undoKnoepfe(); if (start?.art === 'raufziehen' || start?.art === 'malen') panel(); }
     if (modus === 'kimalen' && S.kiZeichnet) { S.kiStriche.push(S.kiZeichnet); S.kiZeichnet = null; panel(); ueberZeichnen(); }
     if (modus === 'linie' && S.ausrichtLinie) {
@@ -770,6 +814,7 @@ function buehneEreignisse() {
       if (Math.hypot(dx, dy) > 20) { let a = Math.atan2(dy, dx) * 180 / Math.PI; let k = a; while (k > 45) k -= 90; while (k < -45) k += 90; aendern(e => e.geo.angle = clamp(Math.round((e.geo.angle - k) * 10) / 10, -45, 45), { neuPanel: true }); toast(tr('Ausgerichtet')); }
       S.ausrichtLinie = null; S.linieModus = false; panel();
     }
+    if (modus === 'mzeichnen' && S.zeichnet?.t === 'ausschnitt') { const m = S.zeichnet; S.zeichnet = null; ueberZeichnen(); raumAusschneiden(m.pts); modus = null; return; }
     if (modus === 'mzeichnen' && S.zeichnet) {
       const m = S.zeichnet, cv = $('#edBild'); S.zeichnet = null; const [a, c] = [m.pts[0], m.pts[m.pts.length - 1]];
       const gross = Math.hypot((a[0] - c[0]) * cv.width, (a[1] - c[1]) * cv.height) > 6 || m.pts.length > 3;
@@ -784,6 +829,97 @@ function buehneEreignisse() {
   function flaecheFertig() { const m = S.zeichnet; S.zeichnet = null; if (m.pts.length < 3) { ueberZeichnen(); return; } delete m.offen; aendern(ed => ed.markup.push(m)); S.auswahlMarkup = m; panel(); }
   S.flaecheFertig = flaecheFertig;
 }
+/* ───── Bilder und Fotopunkte einfügen ───── */
+/** blobs → als Bild-Element (Standard) oder – mit Werkzeug „Fotopunkt“ – als Fotopunkte einfügen; pos = [x,y] relativ */
+async function einfuegen(blobs, pos = null, art = null) {
+  if (!blobs?.length || !S) return; art ||= S.markupWz === 'foto' ? 'foto' : 'bild';
+  if (S.wz !== 'markup') wzWahl('markup');
+  const cv = $('#edBild'), W = cv.width, H = cv.height; const neu = [];
+  try {
+    for (let i = 0; i < blobs.length; i++) {
+      const versatz = i * 0.035, mitte = pos || [0.5, 0.5];
+      if (art === 'foto') {
+        const { key } = await bildAblegen(blobs[i], { maxKante: 8192 });
+        neu.push({ id: uid(), t: 'foto', bild: key, pts: [[clamp(mitte[0] + versatz, 0.01, 0.99), clamp(mitte[1] + versatz, 0.03, 0.99)]], nr: naechsteFotoNr([...S.edit.markup, ...neu]), text: '', farbe: S.markupFarbe, staerke: S.markupStaerke });
+      } else {
+        const { key, w, h } = await bildAblegen(blobs[i], { maxKante: 6000 });
+        // Startgröße: ca. 30 % der kürzeren Seite der Zeichnung, Seitenverhältnis des Bildes
+        const asp = w / h, kurz = Math.min(W, H) * 0.32; let bw = asp >= 1 ? kurz * asp : kurz, bh = asp >= 1 ? kurz : kurz / asp;
+        const f = Math.min(1, W * 0.9 / bw, H * 0.9 / bh); bw *= f; bh *= f;
+        const cx = clamp(mitte[0] * W + versatz * W, bw / 2, W - bw / 2), cy = clamp(mitte[1] * H + versatz * H, bh / 2, H - bh / 2);
+        neu.push({ id: uid(), t: 'bild', bild: key, asp, pts: [[(cx - bw / 2) / W, (cy - bh / 2) / H], [(cx + bw / 2) / W, (cy + bh / 2) / H]], farbe: S.markupFarbe, staerke: 2, deckkraft: 100, rahmen: false, schatten: false });
+      }
+    }
+  } catch (e) { console.error(e); toast(tr('Bild konnte nicht eingefügt werden: ') + e.message, 'fehler'); }
+  if (!neu.length) return;
+  aendern(ed => ed.markup.push(...neu)); S.auswahlMarkup = neu[neu.length - 1]; panel();
+  toast(art === 'foto' ? (neu.length === 1 ? tr('Fotopunkt {0} gesetzt – jetzt Raum eintragen', neu[0].nr) : trz(neu.length, '{0} Fotopunkt gesetzt', '{0} Fotopunkte gesetzt')) : trz(neu.length, 'Bild eingefügt – an den Ecken ziehen = Größe ändern', '{0} Bilder eingefügt'));
+  if (art === 'foto' && neu.length === 1) setTimeout(() => $('#edPanel textarea')?.focus(), 40);
+}
+/** Klick mit Werkzeug „Fotopunkt“: Foto-Quelle wählen */
+function fotoQuelleMenue(e, pos) {
+  const handy = matchMedia('(pointer:coarse)').matches;
+  menue(null, [
+    { i: '🖥', t: handy ? tr('Foto aus Galerie / Dateien …') : tr('Foto vom PC …'), f: async () => einfuegen(await EIN.dateienWaehlen({ mehrere: false }), pos, 'foto') },
+    ...(handy ? [{ i: '📷', t: tr('Jetzt fotografieren'), f: async () => einfuegen(await EIN.dateienWaehlen({ mehrere: false, kamera: true }), pos, 'foto') }] : []),
+    { i: '▦', t: tr('Aus der Bibliothek …'), f: async () => einfuegen(await EIN.ausBibliothekWaehlen({ ohneId: S.rec.id, mehrere: false, titel: tr('Foto für den Fotopunkt wählen') }), pos, 'foto') },
+    { i: '📋', t: tr('Aus der Zwischenablage'), f: async () => einfuegen((await EIN.ausZwischenablage()).slice(0, 1), pos, 'foto') }
+  ], { x: e.clientX + 8, y: e.clientY + 8 });
+}
+/** Eigenschaften eines eingefügten Bildes / Fotopunkts im Panel */
+function bildEigenschaften(m) {
+  const vor = el('img', { class: 'bild-vorschau', alt: '' }); original(m.bild).then(b => { if (b) { vor.src = URL.createObjectURL(b); vor.onload = () => URL.revokeObjectURL(vor.src); } });
+  const titel = () => m.t === 'foto' ? tr('Foto {0}', m.nr) + (m.text ? ' – ' + m.text : '') : tr('Eingefügtes Bild');
+  const tauschen = async () => { const b = await EIN.dateienWaehlen({ mehrere: false }); if (!b.length) return; const { key, w, h } = await bildAblegen(b[0], { maxKante: m.t === 'foto' ? 8192 : 6000 }); aendern(() => { m.bild = key; if (m.t === 'bild') { m.asp = w / h; seitenverhaeltnis(m); } }); panel(); };
+  return el('div', {},
+    el('div', { class: 'bild-vorschau-box', title: tr('Groß ansehen'), onclick: async () => EIN.fotoGross(await original(m.bild), titel()) }, vor),
+    el('div', { class: 'knopfreihe' }, el('button', { class: 'btn klein', onclick: async () => EIN.fotoGross(await original(m.bild), titel()) }, tr('🔍 Groß ansehen')), el('button', { class: 'btn klein', onclick: tauschen }, m.t === 'foto' ? tr('Foto austauschen …') : tr('Bild austauschen …')),
+      m.t === 'bild' ? el('button', { class: 'btn klein', title: tr('Bild um 90° drehen'), onclick: () => drehen90(m) }, tr('⟳ 90°')) : null,
+      m.t === 'bild' ? el('button', { class: 'btn klein', title: tr('Verzerrung aufheben (Seitenverhältnis des Bildes)'), onclick: () => aendern(() => seitenverhaeltnis(m)) }, tr('↔ Seitenverhältnis')) : null),
+    m.t === 'bild' ? regler(tr('Deckkraft %'), () => m, 'deckkraft', 10, 100, { null: 100 }) : null,
+    m.t === 'bild' ? el('div', { class: 'zeile' }, el('label', { class: 'chk' }, el('input', { type: 'checkbox', checked: !!m.rahmen, onchange: (e) => aendern(() => m.rahmen = e.target.checked) }), tr('Rahmen in Farbe')), el('label', { class: 'chk' }, el('input', { type: 'checkbox', checked: !!m.schatten, onchange: (e) => aendern(() => m.schatten = e.target.checked) }), tr('Schatten'))) : null,
+    el('p', { class: 'hinweis' }, m.t === 'foto' ? tr('Doppelklick auf den Punkt = Foto groß. Im PDF öffnet ein Klick auf den Punkt das Foto in voller Auflösung.') : tr('An den weißen Ecken ziehen = Größe ändern (Umschalt = frei verzerren). Ins Bild klicken und ziehen = verschieben.')));
+}
+function seitenverhaeltnis(m) {
+  const cv = $('#edBild'), W = cv.width, H = cv.height; const [l, t, bw, bh] = bildBox(m, W, H); const asp = m.asp || bw / bh;
+  let nw = bw, nh = bw / asp; if (nh > H) { nh = H; nw = nh * asp; } const cx = l + bw / 2, cy = t + bh / 2; m.pts = [[(cx - nw / 2) / W, (cy - nh / 2) / H], [(cx + nw / 2) / W, (cy + nh / 2) / H]];
+}
+async function drehen90(m) {
+  const b = await original(m.bild); if (!b) return; const bmp = await createImageBitmap(b); const c = document.createElement('canvas'); c.width = bmp.height; c.height = bmp.width;
+  const x = c.getContext('2d'); x.translate(c.width, 0); x.rotate(Math.PI / 2); x.drawImage(bmp, 0, 0); bmp.close?.();
+  const nb = await new Promise(r => c.toBlob(r, b.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.93)); const { key, w, h } = await bildAblegen(nb);
+  aendern(() => { m.bild = key; m.asp = w / h; seitenverhaeltnis(m); }); panel();
+}
+/* ───── Raum ausschneiden: Bereich des Plans als eigenes Bild, mit Fotopunkten/Einzeichnungen, maßstabsgetreu ───── */
+async function raumAusschneiden(pts) {
+  const [[ax, ay], [bx, by]] = pts; const l = clamp(Math.min(ax, bx), 0, 1), t = clamp(Math.min(ay, by), 0, 1), r = clamp(Math.max(ax, bx), 0, 1), u = clamp(Math.max(ay, by), 0, 1);
+  const cv = $('#edBild'); if ((r - l) * cv.width < 12 || (u - t) * cv.height < 12) { toast(tr('Bitte einen Rahmen um den Raum ziehen.'), 'warn'); return; }
+  const innen = (m) => { const xs = m.pts.map(p => p[0]), ys = m.pts.map(p => p[1]); return Math.max(...xs) >= l && Math.min(...xs) <= r && Math.max(...ys) >= t && Math.min(...ys) <= u; };
+  const fp = S.edit.markup.filter(m => m.t === 'foto' && m.text && innen(m)); const zaehler = (S.ausschnittNr = (S.ausschnittNr || 0) + 1);
+  const name = await eingabe(tr('Raum ausschneiden'), fp.length === 1 ? fp[0].text : tr('Raum {0}', zaehler), tr('Name des Raums (z. B. „Bad 2.01“) – wird ein eigenes Bild in der Bibliothek')); if (!name) return;
+  await speichern(); const rec = S.rec, ed = JSON.parse(JSON.stringify(S.edit));
+  try {
+    // Plan in voller Auflösung (Geometrie + Retusche, ohne Farbe – die Farbwerte wandern als Bearbeitung mit) → Ausschnitt
+    const basis = E.rendern(S.bmp, rec.id, ed, { ohneFarbe: true }); S.cache.besitzer = null;
+    const sx = Math.round(l * basis.width), sy = Math.round(t * basis.height), sw = Math.max(1, Math.round((r - l) * basis.width)), sh = Math.max(1, Math.round((u - t) * basis.height));
+    const c = document.createElement('canvas'); c.width = sw; c.height = sh; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, sw, sh); x.drawImage(basis, sx, sy, sw, sh, 0, 0, sw, sh);
+    const blob = await new Promise(res => c.toBlob(res, rec.pdf || /png/.test(rec.typ || '') ? 'image/png' : 'image/jpeg', 0.93));
+    // Einzeichnungen, Fotopunkte und Texte im Rahmen mitnehmen (Lage neu umrechnen, Strichstärke/Schrift gleich groß lassen)
+    const k = Math.min(basis.width, basis.height) / Math.min(sw, sh), um = ([px, py]) => [(px - l) / (r - l), (py - t) / (u - t)];
+    const neu = E.neueBearbeitung(); Object.assign(neu, { adj: ed.adj, hsl: ed.hsl, curves: ed.curves, look: ed.look });
+    neu.markup = ed.markup.filter(innen).map(m => ({ ...m, id: uid(), pts: m.pts.map(um), staerke: (m.staerke || 4) * k }));
+    neu.text = ed.text.filter(tt => tt.x >= l && tt.x <= r && tt.y >= t && tt.y <= u).map(tt => ({ ...tt, x: (tt.x - l) / (r - l), y: (tt.y - t) / (u - t), size: (tt.size || 6) * k }));
+    const nr = await bildHinzufuegen(blob, { name: dateinameSicher(name) + (blob.type === 'image/png' ? '.png' : '.jpg'), vorlage: rec, titel: name });
+    nr.stichworte = [...new Set([...(nr.stichworte || []), tr('Ausschnitt')])];
+    if (rec.pdf?.mmB) { const quer = (ed.geo.rot || 0) % 180 !== 0, seiteB = quer ? rec.pdf.mmH : rec.pdf.mmB, mmPx = seiteB / (basis.width / (ed.geo.crop?.w || 1)); nr.pdf = { ...rec.pdf, ausschnitt: true, von: rec.name, mmB: +(sw * mmPx).toFixed(1), mmH: +(sh * mmPx).toFixed(1) }; }
+    const bmp = await createImageBitmap(blob); nr.edit = E.istBearbeitet(neu) ? E.normalisiereBearbeitung(neu) : null; await thumbErzeugen(nr, bmp); bmp.close?.(); await recSpeichern(nr);
+    basis.width = basis.height = 1; filmstreifen(sichtbareListe()); zeichnen();
+    toast(tr('„{0}“ ist jetzt ein eigenes Bild – unten im Filmstreifen. Nächsten Raum einfach weiter ausschneiden.', name), 'ok', 6000);
+  } catch (e) { console.error(e); toast(tr('Ausschneiden hat nicht geklappt: ') + e.message, 'fehler', 7000); }
+}
+const dateinameSicher = (s) => String(s).replace(/[\\/:*?"<>|]+/g, '-').trim().slice(0, 80) || 'Raum';
+/** Strg+V im Editor: Bild in die Zeichnung (statt in die Bibliothek) */
+export function einfuegenAusAblage(files) { if (!aktiv() || !S.cache.heal) return false; einfuegen(files); return true; }
 function vereinfachen(pts, tol) { const out = [pts[0]]; for (const p of pts.slice(1)) { const l = out[out.length - 1]; if (Math.hypot(p[0] - l[0], p[1] - l[1]) > tol) out.push(p); } if (out.length === 1) out.push(pts[pts.length - 1]); return out; }
 function cropGriff(e) {
   const c = S.edit.geo.crop || { x: 0, y: 0, w: 1, h: 1 }; const r = $('#buehne').getBoundingClientRect(); const mx = e.clientX - r.left, my = e.clientY - r.top;
