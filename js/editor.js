@@ -135,6 +135,7 @@ function nachSchirm(nx, ny) { const cv = $('#edBild'); return [S.off.x + nx * cv
 /* ═════════ Überlagerung: Zuschnitt-Rahmen, Pinsel, Retusche-Punkte, Text-Auswahl ═════════ */
 function ueberZeichnen() {
   const u = $('#edUeber'); if (!u || !S.off) return; const x = u.getContext('2d'), d = devicePixelRatio; x.setTransform(d, 0, 0, d, 0, 0); x.clearRect(0, 0, u.width, u.height);
+  const rahmen = $('#edRahmen'); if (rahmen && S.zeichnet?.t !== 'ausschnitt') rahmen.style.display = 'none';
   const cv = $('#edBild'), W = cv.width * S.z, H = cv.height * S.z;
   if (S.wz === 'zuschnitt') {
     const c = S.edit.geo.crop || { x: 0, y: 0, w: 1, h: 1 }; const [x0, y0] = nachSchirm(c.x, c.y), w = c.w * W, h = c.h * H;
@@ -158,7 +159,11 @@ function ueberZeichnen() {
     const t = S.auswahlText, c2 = document.createElement('canvas').getContext('2d'); const m = E.textMasse(c2, t, cv.width, cv.height);
     const [rx, ry] = nachSchirm(m.rect[0] / cv.width, m.rect[1] / cv.height); x.strokeStyle = '#facc15'; x.setLineDash([5, 4]); x.lineWidth = 1.5; x.strokeRect(rx - 4, ry - 4, m.rect[2] * S.z + 8, m.rect[3] * S.z + 8); x.setLineDash([]);
   }
-  if (S.wz === 'markup' && S.zeichnet) {
+  if (S.wz === 'markup' && S.zeichnet?.t === 'ausschnitt') { // Raum ausschneiden: Rahmen als eigenes Element (Plan außen abgedunkelt)
+    const [ax, ay] = nachSchirm(...S.zeichnet.pts[0]), [bx, by] = nachSchirm(...S.zeichnet.pts[1]); let rb = rahmen;
+    if (!rb) { rb = el('div', { id: 'edRahmen', class: 'ed-rahmen' }); $('#buehne').append(rb); }
+    Object.assign(rb.style, { display: 'block', left: Math.min(ax, bx) + 'px', top: Math.min(ay, by) + 'px', width: Math.abs(bx - ax) + 'px', height: Math.abs(by - ay) + 'px' });
+  } else if (S.wz === 'markup' && S.zeichnet) {
     const m = S.zeichnet; x.save(); x.translate(S.off.x, S.off.y); x.scale(S.z, S.z); markupZeichnen(x, [m], cv.width, cv.height); x.restore();
     if (m.t === 'flaeche' && S.maus) { const l = m.pts[m.pts.length - 1], [ax, ay] = nachSchirm(...l); x.strokeStyle = m.farbe; x.setLineDash([4, 4]); x.beginPath(); x.moveTo(ax, ay); x.lineTo(S.maus[0], S.maus[1]); x.stroke(); x.setLineDash([]); }
   }

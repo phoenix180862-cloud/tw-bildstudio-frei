@@ -142,11 +142,7 @@ export function markupZeichnen(x, liste, W, H, { auswahl = null } = {}) {
         if (m.text) etikett(x, m.text, cx, cy + r * 0.75, r * 0.85, f);
         break;
       }
-      case 'ausschnitt': { // nur während des Aufziehens sichtbar
-        const l = Math.min(a[0], b[0]), t = Math.min(a[1], b[1]), bw = Math.abs(b[0] - a[0]), bh = Math.abs(b[1] - a[1]); x.shadowBlur = 0;
-        x.fillStyle = 'rgba(15,25,35,.35)'; x.beginPath(); x.rect(0, 0, W, H); x.rect(l, t, bw, bh); x.fill('evenodd');
-        x.strokeStyle = '#4DA6FF'; x.lineWidth = Math.max(2, Math.min(W, H) / 600); x.setLineDash([x.lineWidth * 4, x.lineWidth * 3]); x.strokeRect(l, t, bw, bh); x.setLineDash([]); break;
-      }
+      case 'ausschnitt': break; // Rahmen zeichnet der Editor als eigenes Element (#edRahmen)
       case 'kreuz': { const l = Math.min(a[0], b[0]), r = Math.max(a[0], b[0]), t = Math.min(a[1], b[1]), u = Math.max(a[1], b[1]); x.lineWidth = w * 1.3; x.beginPath(); x.moveTo(l, t); x.lineTo(r, u); x.moveTo(r, t); x.lineTo(l, u); x.stroke(); break; }
       case 'haken': { const l = Math.min(a[0], b[0]), r = Math.max(a[0], b[0]), t = Math.min(a[1], b[1]), u = Math.max(a[1], b[1]); x.lineWidth = w * 1.4; x.beginPath(); x.moveTo(l, t + (u - t) * 0.55); x.lineTo(l + (r - l) * 0.38, u); x.lineTo(r, t); x.stroke(); break; }
     }

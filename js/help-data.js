@@ -5360,7 +5360,207 @@ export const HILFE = [
   ],
   "kapitel": [],
   "dauer": 0,
-  "ohneVideo": true
+  "ohneVideo": true,
+  "videos": {
+   "de": {
+    "kapitel": [
+     {
+      "t": 2.1,
+      "text": "Startseite: „📐 Plan öffnen“ – und die PDF-Datei wählen."
+     },
+     {
+      "t": 13.2,
+      "text": "Noch schneller: Die PDF einfach aus dem Explorer ins Fenster ziehen."
+     },
+     {
+      "t": 23.6,
+      "text": "Mehrseitige PDF: Die Seiten erscheinen mit Vorschau – per Antippen aus- oder abwählen."
+     },
+     {
+      "t": 31.2,
+      "text": "Hier nur der Grundriss – das Detail lassen wir weg."
+     },
+     {
+      "t": 44.0,
+      "text": "Die Planseite ist jetzt ein hoch aufgelöstes Bild – das Papierformat (hier A1 quer) merkt sich das Bildstudio."
+     },
+     {
+      "t": 65.0,
+      "text": "Jetzt wie in einem Foto einzeichnen: Wolken, Pfeile, Maße, Nummern, Text …"
+     },
+     {
+      "t": 71.1,
+      "text": "… und zum Schluss oben „📄 PDF“: wieder als PDF in Originalgröße."
+     }
+    ],
+    "dauer": 78.5
+   },
+   "en": {
+    "kapitel": [
+     {
+      "t": 2.1,
+      "text": "Start page: “📐 Open plan” – and choose the PDF file."
+     },
+     {
+      "t": 10.9,
+      "text": "Even faster: simply drag the PDF from Explorer into the window."
+     },
+     {
+      "t": 20.1,
+      "text": "Multi-page PDF: the pages appear with a preview – tap to select or deselect."
+     },
+     {
+      "t": 29.6,
+      "text": "Here only the floor plan – we leave out the detail."
+     },
+     {
+      "t": 44.4,
+      "text": "The plan page is now a high-resolution image – Bildstudio remembers the paper size (here A1 landscape)."
+     },
+     {
+      "t": 66.5,
+      "text": "Now draw just like on a photo: clouds, arrows, dimensions, numbers, text …"
+     },
+     {
+      "t": 75.5,
+      "text": "… and finally “📄 PDF” at the top: back as a PDF in original size."
+     }
+    ],
+    "dauer": 83.5
+   },
+   "cs": {
+    "kapitel": [
+     {
+      "t": 2.2,
+      "text": "Úvodní stránka: „📐 Otevřít plán“ – a vybrat soubor PDF."
+     },
+     {
+      "t": 13.3,
+      "text": "Ještě rychleji: PDF prostě přetáhni z Průzkumníka do okna."
+     },
+     {
+      "t": 22.7,
+      "text": "Vícestránkové PDF: strany se zobrazí s náhledem – klepnutím vybrat nebo zrušit."
+     },
+     {
+      "t": 34.0,
+      "text": "Tady jen půdorys – detail vynecháme."
+     },
+     {
+      "t": 49.5,
+      "text": "Strana plánu je teď obrázek ve vysokém rozlišení – formát papíru (zde A1 na šířku) si Bildstudio zapamatuje."
+     },
+     {
+      "t": 77.0,
+      "text": "Teď zakresluj jako do fotky: mraky, šipky, kóty, čísla, text …"
+     },
+     {
+      "t": 85.1,
+      "text": "… a nakonec nahoře „📄 PDF“: zpět jako PDF v původní velikosti."
+     }
+    ],
+    "dauer": 93.2
+   },
+   "sk": {
+    "kapitel": [
+     {
+      "t": 2.1,
+      "text": "Úvodná stránka: „📐 Otvoriť plán“ – a vybrať súbor PDF."
+     },
+     {
+      "t": 10.1,
+      "text": "Ešte rýchlejšie: PDF jednoducho pretiahni z Prieskumníka do okna."
+     },
+     {
+      "t": 18.7,
+      "text": "Viacstranové PDF: strany sa zobrazia s náhľadom – ťuknutím vybrať alebo zrušiť."
+     },
+     {
+      "t": 27.3,
+      "text": "Tu len pôdorys – detail vynecháme."
+     },
+     {
+      "t": 40.6,
+      "text": "Strana plánu je teraz obrázok vo vysokom rozlíšení – formát papiera (tu A1 na šírku) si Bildstudio zapamätá."
+     },
+     {
+      "t": 61.5,
+      "text": "Teraz zakresľuj ako do fotky: oblaky, šípky, kóty, čísla, text …"
+     },
+     {
+      "t": 68.5,
+      "text": "… a nakoniec hore „📄 PDF“: späť ako PDF v pôvodnej veľkosti."
+     }
+    ],
+    "dauer": 74.8
+   },
+   "uk": {
+    "kapitel": [
+     {
+      "t": 2.1,
+      "text": "Стартова сторінка: „📐 Відкрити план“ – і вибрати PDF-файл."
+     },
+     {
+      "t": 8.9,
+      "text": "Ще швидше: просто перетягни PDF з Провідника у вікно."
+     },
+     {
+      "t": 17.9,
+      "text": "Багатосторінковий PDF: сторінки з’являються з переглядом – дотиком вибрати чи прибрати."
+     },
+     {
+      "t": 29.1,
+      "text": "Тут лише план поверху – деталь пропускаємо."
+     },
+     {
+      "t": 43.1,
+      "text": "Сторінка плану тепер – зображення високої роздільності, формат паперу (тут A1 альбомний) Bildstudio запам’ятовує."
+     },
+     {
+      "t": 68.8,
+      "text": "Тепер позначай, як на фото: хмари, стрілки, розміри, номери, текст …"
+     },
+     {
+      "t": 76.8,
+      "text": "… і наприкінці угорі „📄 PDF“: знову PDF в оригінальному розмірі."
+     }
+    ],
+    "dauer": 85.1
+   },
+   "pl": {
+    "kapitel": [
+     {
+      "t": 2.2,
+      "text": "Strona startowa: „📐 Otwórz plan“ – i wybierz plik PDF."
+     },
+     {
+      "t": 9.8,
+      "text": "Jeszcze szybciej: po prostu przeciągnij PDF z Eksploratora do okna."
+     },
+     {
+      "t": 18.6,
+      "text": "PDF wielostronicowy: strony pojawiają się z podglądem – dotknięciem zaznacz lub odznacz."
+     },
+     {
+      "t": 28.3,
+      "text": "Tu tylko rzut – detal pomijamy."
+     },
+     {
+      "t": 40.6,
+      "text": "Strona planu jest teraz obrazem w wysokiej rozdzielczości – format papieru (tu A1 poziomo) Bildstudio zapamiętuje."
+     },
+     {
+      "t": 62.3,
+      "text": "Teraz rysuj jak na zdjęciu: chmurki, strzałki, wymiary, numery, tekst …"
+     },
+     {
+      "t": 69.7,
+      "text": "… a na koniec u góry „📄 PDF“: z powrotem jako PDF w oryginalnym rozmiarze."
+     }
+    ],
+    "dauer": 76.9
+   }
+  }
  },
  {
   "id": "plan-bilder",
@@ -5377,7 +5577,351 @@ export const HILFE = [
   ],
   "kapitel": [],
   "dauer": 0,
-  "ohneVideo": true
+  "ohneVideo": true,
+  "videos": {
+   "de": {
+    "kapitel": [
+     {
+      "t": 8.4,
+      "text": "Plan geöffnet, Werkzeug „Einzeichnen“ (M)."
+     },
+     {
+      "t": 11.6,
+      "text": "Bild in den Plan: ein Foto aus dem Filmstreifen unten einfach auf den Plan ziehen."
+     },
+     {
+      "t": 29.2,
+      "text": "An den weißen Ecken ziehen = Größe ändern, hineinklicken und ziehen = verschieben. Deckkraft, Rahmen und Drehen stehen rechts."
+     },
+     {
+      "t": 39.0,
+      "text": "Für Fotos je Raum: Werkzeug „📷 Fotopunkt“."
+     },
+     {
+      "t": 44.3,
+      "text": "In die Nasszelle klicken – und das Foto wählen: vom PC, aus der Bibliothek oder aus der Zwischenablage."
+     },
+     {
+      "t": 61.6,
+      "text": "Der Punkt bekommt eine Nummer – rechts den Raum eintragen, z. B. „Bad 2.01“."
+     },
+     {
+      "t": 67.2,
+      "text": "Oder Fotos direkt aus dem Explorer auf die Nasszellen ziehen:"
+     },
+     {
+      "t": 83.4,
+      "text": "Rechts die Liste aller Fotopunkte – 🔍 zeigt das Foto groß."
+     },
+     {
+      "t": 92.8,
+      "text": "Doppelklick auf einen Punkt: das Foto groß – mit Mausrad oder zwei Fingern hineinzoomen."
+     },
+     {
+      "t": 101.1,
+      "text": "Oben „📄 PDF“: Der Plan bleibt in Originalgröße, jeder Fotopunkt wird im PDF anklickbar."
+     },
+     {
+      "t": 110.5,
+      "text": "Für E-Mail „Kleiner“ wählen – Vergrößern geht trotzdem gut."
+     },
+     {
+      "t": 114.4,
+      "text": "Dann speichern oder teilen."
+     },
+     {
+      "t": 120.0,
+      "text": "So sieht es beim Architekten aus: Klick auf den Kamera-Punkt – das Foto öffnet sich in hoher Auflösung. „« zurück zum Plan“ springt zurück."
+     }
+    ],
+    "dauer": 129.5
+   },
+   "en": {
+    "kapitel": [
+     {
+      "t": 8.4,
+      "text": "Plan open, tool “Draw” (M)."
+     },
+     {
+      "t": 11.7,
+      "text": "Image into the plan: simply drag a photo from the filmstrip below onto the plan."
+     },
+     {
+      "t": 31.5,
+      "text": "Drag the white corners = resize, click inside and drag = move. Opacity, frame and rotation are on the right."
+     },
+     {
+      "t": 44.9,
+      "text": "For photos per room: the “📷 Photo pin” tool."
+     },
+     {
+      "t": 50.7,
+      "text": "Click into the bathroom – and choose the photo: from the PC, from the library or from the clipboard."
+     },
+     {
+      "t": 69.0,
+      "text": "The pin gets a number – enter the room on the right, e.g. “Bath 2.01”."
+     },
+     {
+      "t": 76.7,
+      "text": "Or drag photos straight from Explorer onto the bathrooms:"
+     },
+     {
+      "t": 95.0,
+      "text": "On the right the list of all photo pins – 🔍 shows the photo large."
+     },
+     {
+      "t": 105.5,
+      "text": "Double-click a pin: the photo large – zoom in with the mouse wheel or two fingers."
+     },
+     {
+      "t": 115.3,
+      "text": "At the top “📄 PDF”: the plan stays in original size, every photo pin becomes clickable in the PDF."
+     },
+     {
+      "t": 126.5,
+      "text": "For e-mail choose “Smaller” – zooming in still works well."
+     },
+     {
+      "t": 131.9,
+      "text": "Then save or share."
+     },
+     {
+      "t": 136.7,
+      "text": "This is what the architect sees: click the camera pin – the photo opens at high resolution. “« back to the plan” jumps back."
+     }
+    ],
+    "dauer": 147.9
+   },
+   "cs": {
+    "kapitel": [
+     {
+      "t": 9.7,
+      "text": "Plán otevřen, nástroj „Zakreslit“ (M)."
+     },
+     {
+      "t": 14.5,
+      "text": "Obrázek do plánu: fotku z filmového pásu dole prostě přetáhni na plán."
+     },
+     {
+      "t": 37.4,
+      "text": "Tažení bílých rohů = změna velikosti, klik dovnitř a tažení = posun. Krytí, rámeček a otočení jsou vpravo."
+     },
+     {
+      "t": 53.6,
+      "text": "Pro fotky jednotlivých místností: nástroj „📷 Fotobod“."
+     },
+     {
+      "t": 62.2,
+      "text": "Klikni do koupelny – a vyber fotku: z PC, z knihovny nebo ze schránky."
+     },
+     {
+      "t": 81.7,
+      "text": "Bod dostane číslo – vpravo zapiš místnost, např. „Koupelna 2.01“."
+     },
+     {
+      "t": 90.9,
+      "text": "Nebo fotky přetáhni z Průzkumníka přímo na koupelny:"
+     },
+     {
+      "t": 110.1,
+      "text": "Vpravo seznam všech fotobodů – 🔍 ukáže fotku zvětšenou."
+     },
+     {
+      "t": 121.5,
+      "text": "Dvojklik na bod: fotka zvětšená – přiblížení kolečkem myši nebo dvěma prsty."
+     },
+     {
+      "t": 132.7,
+      "text": "Nahoře „📄 PDF“: plán zůstane v původní velikosti, každý fotobod bude v PDF klikací."
+     },
+     {
+      "t": 143.7,
+      "text": "Pro e-mail zvol „Menší“ – zvětšení i tak funguje dobře."
+     },
+     {
+      "t": 150.4,
+      "text": "Pak uložit nebo sdílet."
+     },
+     {
+      "t": 155.5,
+      "text": "Takhle to vidí architekt: klik na bod s fotoaparátem – fotka se otevře ve vysokém rozlišení. „« zpět na plán“ skočí zpět."
+     }
+    ],
+    "dauer": 169.3
+   },
+   "sk": {
+    "kapitel": [
+     {
+      "t": 8.1,
+      "text": "Plán otvorený, nástroj „Zakresliť“ (M)."
+     },
+     {
+      "t": 12.0,
+      "text": "Obrázok do plánu: fotku z filmového pásu dole jednoducho pretiahni na plán."
+     },
+     {
+      "t": 29.9,
+      "text": "Ťahanie bielych rohov = zmena veľkosti, klik dnu a ťahanie = posun. Krytie, rámček a otočenie sú vpravo."
+     },
+     {
+      "t": 41.5,
+      "text": "Na fotky jednotlivých miestností: nástroj „📷 Fotobod“."
+     },
+     {
+      "t": 48.0,
+      "text": "Klikni do kúpeľne – a vyber fotku: z PC, z knižnice alebo zo schránky."
+     },
+     {
+      "t": 64.8,
+      "text": "Bod dostane číslo – vpravo zapíš miestnosť, napr. „Kúpeľňa 2.01“."
+     },
+     {
+      "t": 71.3,
+      "text": "Alebo fotky pretiahni z Prieskumníka priamo na kúpeľne:"
+     },
+     {
+      "t": 90.2,
+      "text": "Vpravo zoznam všetkých fotobodov – 🔍 ukáže fotku zväčšenú."
+     },
+     {
+      "t": 99.1,
+      "text": "Dvojklik na bod: fotka zväčšená – priblíženie kolieskom myši alebo dvoma prstami."
+     },
+     {
+      "t": 108.3,
+      "text": "Hore „📄 PDF“: plán zostane v pôvodnej veľkosti, každý fotobod bude v PDF klikací."
+     },
+     {
+      "t": 117.1,
+      "text": "Na e-mail zvoľ „Menšie“ – zväčšenie aj tak funguje dobre."
+     },
+     {
+      "t": 121.8,
+      "text": "Potom uložiť alebo zdieľať."
+     },
+     {
+      "t": 126.8,
+      "text": "Takto to vidí architekt: klik na bod s fotoaparátom – fotka sa otvorí vo vysokom rozlíšení. „« späť na plán“ skočí späť."
+     }
+    ],
+    "dauer": 136.4
+   },
+   "uk": {
+    "kapitel": [
+     {
+      "t": 7.7,
+      "text": "План відкрито, інструмент „Позначати“ (M)."
+     },
+     {
+      "t": 12.8,
+      "text": "Зображення на план: просто перетягни фото зі стрічки внизу на план."
+     },
+     {
+      "t": 30.8,
+      "text": "Тягни білі кути = змінити розмір, клацни всередині й тягни = зсув. Непрозорість, рамка й поворот – праворуч."
+     },
+     {
+      "t": 44.4,
+      "text": "Для фото кожного приміщення: інструмент „📷 Фототочка“."
+     },
+     {
+      "t": 51.4,
+      "text": "Клацни в санвузлі – і вибери фото: з ПК, з бібліотеки чи з буфера обміну."
+     },
+     {
+      "t": 69.6,
+      "text": "Точка отримує номер – праворуч впиши приміщення, напр. „Ванна 2.01“."
+     },
+     {
+      "t": 79.9,
+      "text": "Або перетягни фото з Провідника прямо на санвузли:"
+     },
+     {
+      "t": 98.6,
+      "text": "Праворуч список усіх фототочок – 🔍 показує фото великим."
+     },
+     {
+      "t": 108.8,
+      "text": "Подвійний клік на точці: фото великим – збільшуй коліщатком миші чи двома пальцями."
+     },
+     {
+      "t": 120.7,
+      "text": "Угорі „📄 PDF“: план лишається в оригінальному розмірі, кожна фототочка в PDF стає клікабельною."
+     },
+     {
+      "t": 133.0,
+      "text": "Для e-mail вибери „Менше“ – збільшення все одно працює добре."
+     },
+     {
+      "t": 139.9,
+      "text": "Потім зберегти чи поділитися."
+     },
+     {
+      "t": 145.6,
+      "text": "Так це бачить архітектор: клік на точку з камерою – фото відкривається у високій роздільності. „« назад до плану“ повертає."
+     }
+    ],
+    "dauer": 158.5
+   },
+   "pl": {
+    "kapitel": [
+     {
+      "t": 7.9,
+      "text": "Plan otwarty, narzędzie „Rysuj“ (M)."
+     },
+     {
+      "t": 11.8,
+      "text": "Obraz do planu: po prostu przeciągnij zdjęcie z paska poniżej na plan."
+     },
+     {
+      "t": 29.3,
+      "text": "Przeciąganie białych rogów = zmiana rozmiaru, kliknij w środek i przeciągnij = przesuwanie. Krycie, ramka i obrót są po prawej."
+     },
+     {
+      "t": 42.3,
+      "text": "Do zdjęć każdego pomieszczenia: narzędzie „📷 Punkt zdjęcia“."
+     },
+     {
+      "t": 50.4,
+      "text": "Kliknij w łazienkę – i wybierz zdjęcie: z komputera, z biblioteki lub ze schowka."
+     },
+     {
+      "t": 67.8,
+      "text": "Punkt dostaje numer – po prawej wpisz pomieszczenie, np. „Łazienka 2.01“."
+     },
+     {
+      "t": 75.4,
+      "text": "Albo przeciągnij zdjęcia z Eksploratora prosto na łazienki:"
+     },
+     {
+      "t": 92.4,
+      "text": "Po prawej lista wszystkich punktów – 🔍 pokazuje zdjęcie w powiększeniu."
+     },
+     {
+      "t": 101.6,
+      "text": "Dwuklik na punkcie: zdjęcie w powiększeniu – przybliżaj kółkiem myszy lub dwoma palcami."
+     },
+     {
+      "t": 111.8,
+      "text": "U góry „📄 PDF“: plan zostaje w oryginalnym rozmiarze, każdy punkt zdjęcia staje się klikalny w PDF."
+     },
+     {
+      "t": 122.2,
+      "text": "Do e-maila wybierz „Mniejsze“ – powiększanie i tak działa dobrze."
+     },
+     {
+      "t": 128.0,
+      "text": "Potem zapisz lub udostępnij."
+     },
+     {
+      "t": 133.3,
+      "text": "Tak widzi to architekt: kliknięcie punktu z aparatem – zdjęcie otwiera się w wysokiej rozdzielczości. „« powrót do planu“ wraca."
+     }
+    ],
+    "dauer": 143.8
+   }
+  }
  },
  {
   "id": "raum-ausschneiden",
@@ -5393,7 +5937,207 @@ export const HILFE = [
   ],
   "kapitel": [],
   "dauer": 0,
-  "ohneVideo": true
+  "ohneVideo": true,
+  "videos": {
+   "de": {
+    "kapitel": [
+     {
+      "t": 9.4,
+      "text": "Ein ganzer Grundriss – du brauchst aber nur einen Raum? Ausschneiden!"
+     },
+     {
+      "t": 15.8,
+      "text": "Werkzeug „✂ Raum ausschneiden“ – Rahmen um den Raum ziehen."
+     },
+     {
+      "t": 21.7,
+      "text": "Liegt ein beschrifteter Fotopunkt im Rahmen, wird sein Name vorgeschlagen – hier passen wir ihn an."
+     },
+     {
+      "t": 34.8,
+      "text": "Fertig: Der Raum ist ein eigenes Bild in voller Auflösung – mit Fotopunkt und allen Einzeichnungen darin."
+     },
+     {
+      "t": 44.9,
+      "text": "Unten im Filmstreifen antippen – der Raum lässt sich für sich weiter bearbeiten."
+     },
+     {
+      "t": 52.1,
+      "text": "Als PDF liegt er maßstabsgetreu wie im Originalplan auf dem Blatt – A4 bis A0 wählbar."
+     },
+     {
+      "t": 59.4,
+      "text": "So schneidest du nacheinander alle Räume aus – jeder mit seinen eigenen Fotos."
+     }
+    ],
+    "dauer": 65.1
+   },
+   "en": {
+    "kapitel": [
+     {
+      "t": 8.7,
+      "text": "A whole floor plan – but you only need one room? Cut it out!"
+     },
+     {
+      "t": 16.7,
+      "text": "The “✂ Cut out room” tool – drag a frame around the room."
+     },
+     {
+      "t": 24.3,
+      "text": "If a labelled photo pin lies inside the frame, its name is suggested – here we adjust it."
+     },
+     {
+      "t": 40.1,
+      "text": "Done: the room is its own image at full resolution – with its photo pin and all drawings inside."
+     },
+     {
+      "t": 52.3,
+      "text": "Tap it in the filmstrip below – the room can be edited on its own."
+     },
+     {
+      "t": 60.2,
+      "text": "As a PDF it sits on the sheet true to the scale of the original plan – A4 to A0 selectable."
+     },
+     {
+      "t": 70.0,
+      "text": "That is how you cut out all rooms one after another – each with its own photos."
+     }
+    ],
+    "dauer": 77.7
+   },
+   "cs": {
+    "kapitel": [
+     {
+      "t": 8.6,
+      "text": "Celý půdorys – ale potřebuješ jen jednu místnost? Vyřízni ji!"
+     },
+     {
+      "t": 18.5,
+      "text": "Nástroj „✂ Vyříznout místnost“ – natáhni rámeček kolem místnosti."
+     },
+     {
+      "t": 28.4,
+      "text": "Je-li v rámečku popsaný fotobod, navrhne se jeho název – tady ho upravíme."
+     },
+     {
+      "t": 44.7,
+      "text": "Hotovo: místnost je samostatný obrázek v plném rozlišení – s fotobodem a všemi zákresy uvnitř."
+     },
+     {
+      "t": 60.0,
+      "text": "Klepni na něj dole ve filmovém pásu – místnost lze dál upravovat samostatně."
+     },
+     {
+      "t": 70.9,
+      "text": "Jako PDF je na listu ve stejném měřítku jako v původním plánu – volitelně A4 až A0."
+     },
+     {
+      "t": 82.1,
+      "text": "Takhle postupně vyřízneš všechny místnosti – každou s vlastními fotkami."
+     }
+    ],
+    "dauer": 90.7
+   },
+   "sk": {
+    "kapitel": [
+     {
+      "t": 8.5,
+      "text": "Celý pôdorys – ale potrebuješ len jednu miestnosť? Vystrihni ju!"
+     },
+     {
+      "t": 15.6,
+      "text": "Nástroj „✂ Vystrihnúť miestnosť“ – natiahni rámček okolo miestnosti."
+     },
+     {
+      "t": 24.3,
+      "text": "Ak je v rámčeku popísaný fotobod, navrhne sa jeho názov – tu ho upravíme."
+     },
+     {
+      "t": 37.8,
+      "text": "Hotovo: miestnosť je samostatný obrázok v plnom rozlíšení – s fotobodom a všetkými zákresmi vnútri."
+     },
+     {
+      "t": 49.2,
+      "text": "Ťukni naň dole vo filmovom páse – miestnosť sa dá ďalej upravovať samostatne."
+     },
+     {
+      "t": 57.2,
+      "text": "Ako PDF je na hárku v rovnakej mierke ako v pôvodnom pláne – voliteľne A4 až A0."
+     },
+     {
+      "t": 64.9,
+      "text": "Takto postupne vystrihneš všetky miestnosti – každú s vlastnými fotkami."
+     }
+    ],
+    "dauer": 71.7
+   },
+   "uk": {
+    "kapitel": [
+     {
+      "t": 7.9,
+      "text": "Цілий план поверху – а потрібне лише одне приміщення? Виріж його!"
+     },
+     {
+      "t": 18.6,
+      "text": "Інструмент „✂ Вирізати приміщення“ – обведи приміщення рамкою."
+     },
+     {
+      "t": 28.0,
+      "text": "Якщо в рамці є підписана фототочка, пропонується її назва – тут ми її змінимо."
+     },
+     {
+      "t": 44.0,
+      "text": "Готово: приміщення – окреме зображення в повній роздільності, з фототочкою й усіма позначками."
+     },
+     {
+      "t": 57.8,
+      "text": "Торкнися внизу на стрічці – приміщення можна обробляти окремо."
+     },
+     {
+      "t": 66.7,
+      "text": "Як PDF воно лежить на аркуші в масштабі оригінального плану – A4–A0 на вибір."
+     },
+     {
+      "t": 77.3,
+      "text": "Так по черзі вирізаєш усі приміщення – кожне зі своїми фото."
+     }
+    ],
+    "dauer": 85.1
+   },
+   "pl": {
+    "kapitel": [
+     {
+      "t": 8.7,
+      "text": "Cały rzut – a potrzebujesz tylko jednego pomieszczenia? Wytnij je!"
+     },
+     {
+      "t": 16.3,
+      "text": "Narzędzie „✂ Wytnij pomieszczenie“ – obrysuj pomieszczenie ramką."
+     },
+     {
+      "t": 23.7,
+      "text": "Jeśli w ramce jest opisany punkt zdjęcia, proponowana jest jego nazwa – tu ją zmienimy."
+     },
+     {
+      "t": 39.3,
+      "text": "Gotowe: pomieszczenie jest osobnym obrazem w pełnej rozdzielczości – z punktem zdjęcia i wszystkimi rysunkami."
+     },
+     {
+      "t": 52.2,
+      "text": "Dotknij na pasku poniżej – pomieszczenie można dalej edytować osobno."
+     },
+     {
+      "t": 60.7,
+      "text": "Jako PDF leży na arkuszu w skali oryginalnego planu – A4 do A0 do wyboru."
+     },
+     {
+      "t": 68.3,
+      "text": "Tak po kolei wytniesz wszystkie pomieszczenia – każde z własnymi zdjęciami."
+     }
+    ],
+    "dauer": 75.1
+   }
+  }
  },
  {
   "id": "export",
