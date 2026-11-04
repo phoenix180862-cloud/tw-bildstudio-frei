@@ -37,6 +37,7 @@ Sagt Thomas „Verkaufs-App“, gilt Abschnitt 11 der Anweisung (Verkaufsakte `0
 2. Änderung umsetzen – eine nach der anderen; Hilfe, Videos und Handbuch im selben Zug anpassen.
 3. Selbst prüfen: Syntax, vorhandene Tests, Ladeprobe im echten Browser (Playwright o. Ä.) in **Handy 390 px, Tablet 1024 px, PC 1920 px**, dunkel und hell, Konsole ohne Fehler, Screenshots.
 4. Versionsnummer **und** Cache-Stempel erhöhen (Service Worker), damit kein Gerät eine alte Fassung zeigt.
+   **Versionsanzeige (Thomas, 04.11.2026, gilt für jede App):** Oben sichtbar die laufende Version, bei neuer Fassung Hinweis „Neue Version – jetzt aktualisieren“ (sichert vorher alles). Gemeinsamer Baustein `tw-business-suite/gemeinsam/tw-version.js`, unverändert als `lib/tw-version.js` kopiert; Version steht nur in `<meta name="tw-version">` (Master-App: `TW2.VERSION`). Service Worker speichert die Prüfabrufe (`?twv=`) nicht. Jede Veröffentlichung erhöht diese Nummer.
 5. Auf `main` veröffentlichen (GitHub Pages geht automatisch live), danach die echte Live-Adresse prüfen.
 6. In der App-Zentrale (Drive) **Änderungsprotokoll** ergänzen (Datum, Version, was, Prüfergebnis, Commit als Rückweg) und **Steckbrief** aktualisieren. Dokumente als PDF **und** Word.
 7. Thomas kurz melden: was ist neu, Link zum Ansehen.
