@@ -39,6 +39,9 @@ const BS = window.BS = {
 async function start() {
   if (!webglOk()) { $('#inhalt').innerHTML = tr('<div class="leer-box"><h2>Browser zu alt</h2><p>Das Bildstudio braucht Chrome oder Edge (WebGL2).</p></div>'); return; }
   await store.init();
+  // Versionsanzeige oben + Hinweis „Neue Version – jetzt aktualisieren“ (lib/tw-version.js; Version nur im <meta name="tw-version"> der index.html)
+  try { window.TWVersion?.sprache(SPRACHE); } catch (e) { }
+  window.twVorAktualisieren = async () => { try { await ed.speichern(); } catch (e) { } };
   htmlUebersetzen(); sprachKnopf(); hilfe.init(); seite(); if (FREI) freiKopf(); else googlePille(); ereignisse();
   addEventListener('hashchange', route); route();
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || (FREI && window.isSecureContext))) navigator.serviceWorker.register('sw.js').then((reg) => { if (FREI) aktualisierungBeobachten(reg); }).catch(() => { });
@@ -161,7 +164,8 @@ function freiKopf() {
 }
 function aktualisierungBeobachten(reg) {
   const hatte = !!navigator.serviceWorker.controller; // beim allerersten Besuch kein Hinweis
-  navigator.serviceWorker.addEventListener('controllerchange', () => { if (hatte) updateHinweis(); });
+  // Hinweis auf neue Version zeigt jetzt lib/tw-version.js (oben, mit Versionsnummer); eigener Hinweis nur noch, falls der Baustein fehlt
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (hatte && !window.TWVersion) updateHinweis(); });
   const pruefen = () => reg.update().catch(() => { });
   setInterval(pruefen, 60 * 60 * 1000); addEventListener('visibilitychange', () => { if (!document.hidden) pruefen(); });
 }

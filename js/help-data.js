@@ -713,7 +713,7 @@ export const HILFE = [
    "Urheber und Copyright (z. B. dein Name) werden beim Export in jede Bilddatei geschrieben.",
    "Wasserzeichen und Import-Ordner lassen sich hier jederzeit ändern.",
    "„Als App installieren“ legt das Bildstudio als eigenes Programm mit Symbol an – am PC in Chrome/Edge, auf Android über das Browser-Menü, auf iPhone/iPad in Safari über Teilen → „Zum Home-Bildschirm“.",
-   "Neue Versionen kommen automatisch – erscheint oben „Neue Version des Bildstudios“, einmal auf „Aktualisieren“ tippen.",
+   "Neue Versionen kommen automatisch – dann erscheint oben „Neue Version … – jetzt aktualisieren“: einmal antippen, deine Bearbeitung wird vorher gespeichert. Die laufende Version steht oben links neben dem Logo.",
    "„Bildstudio komplett leeren“ löscht alle Bilder und Bearbeitungen aus diesem Browser – die Dateien auf deinem Gerät bleiben unberührt."
   ],
   "kapitel": [],
