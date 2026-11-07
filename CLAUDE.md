@@ -3,7 +3,7 @@
 > **Es gilt die „Anweisung Apps und KI“ v1.0 vom 31.10.2026.**
 > Original: Google Drive `02_Firma/App-Zentrale/00_Anweisung Apps`.
 > Diese Datei ist nur die Kurzfassung für die Werkstatt. Bei Widerspruch oder Unklarheit gilt das Original – dort nachlesen.
-> Stand dieser Datei: **Werkstattregeln-Kern v1.0 vom 02.11.2026**. Wird die Anweisung geändert, wird dieser Kern in **allen** Repos im selben Zug nachgezogen (eine Wahrheit, nicht zwei).
+> Stand dieser Datei: **Werkstattregeln-Kern v1.1 vom 07.11.2026** (Logo-Regel nach Thomas’ Vorgabe vom 07.11.2026). Wird die Anweisung geändert, wird dieser Kern in **allen** Repos im selben Zug nachgezogen (eine Wahrheit, nicht zwei).
 
 ## Für wen du arbeitest
 - Thomas Willwacher Fliesenlegermeister e.K. – Thomas ist Auftraggeber, kein Programmierer.
@@ -56,10 +56,13 @@ Commit-Nachrichten auf Deutsch, kurz und verständlich („Raumblatt: Fotos zusc
 - Keine fremden Marken, Figuren, Logos; keine Fotos echter Personen des öffentlichen Lebens.
 
 ## Logo (Abschnitt 5)
-- Immer die **Originaldatei** (wie im Briefkopf), Originalfarben Schwarz-Rot, Originalproportion. Nie umfärben, verzerren, beschneiden, nachzeichnen oder mit Effekten versehen.
-- Dezent: klein in Kopf- oder Fußleiste, „Über diese App“, Ladebildschirm, Hilfe. Auf dunklem Grund auf heller, ruhiger Fläche. Schutzraum rundum mindestens Höhe des Buchstabens „L“.
+- **Original-Logo (Thomas, 07.11.2026, gilt für alle Apps):** dunkler Hintergrund, „wiLLwacher“ in **Weiß**, „Thomas“ und „Fliesenlegermeister e.K.“ in **Rot** – so wie auf der Firmen-Webseite. **Nie** mit weißem Hintergrund und schwarzer Schrift einbauen, keine weiße Platte.
+  Dateien (Kanon, unverändert kopieren): `tw-business-suite/gemeinsam/tw-logo-original.png` (weiß/rot, durchsichtig – für dunkle Flächen) und `tw-business-suite/gemeinsam/tw-logo-original-dunkel.png` (mit dunklem Grund #111111 – für helle Flächen, Handbücher, Ausdrucke der App). Regel-Blatt: Drive `02_Firma/App-Zentrale/00_Anweisung Apps/2026-11-07_Regel_Original-Logo`.
+- Nie umfärben, verzerren, beschneiden, nachzeichnen oder mit Effekten versehen; Originalproportion.
+- Dezent: klein in Kopf- oder Fußleiste, „Über diese App“, Ladebildschirm, Hilfe. Schutzraum rundum mindestens Höhe des Buchstabens „L“.
 - **Dominant nur auf freigegebenen Startseiten:** Master-App, Baustellen-App, Willwacher Hausverwaltung, Kochlöffel im Kochbuch „Was isst die Welt?“.
-- Exporte/PDFs tragen klein: „Erstellt mit <App> · Thomas Willwacher Fliesenlegermeister e.K.“
+- Exporte/PDFs der Apps (Listen, Auswertungen, Handbücher) tragen klein: „Erstellt mit <App> · Thomas Willwacher Fliesenlegermeister e.K.“ (Logo in der dunklen Fassung).
+- **Rechnungen, Briefe und Briefkopf bleiben unverändert** (Thomas, 07.11.2026: „Rechnung und Briefkopf, da lassen wir mal schön die Finger von“). Dazu zählen alle Geschäftsdokumente mit Firmenkopf (Rechnung, Angebot, Abschlag, Brief, Stundennachweis, Aufmaß-PDF, Pläne mit Schriftfeld) und die Bausteine `tw-logo.js`, `tw-pdf-briefkopf.js`, `briefkopf-logo.png`. Die Logo-Regel gilt für die Oberfläche der Apps.
 
 ## KI (Abschnitt 7)
 - KI **ausschließlich über Anthropic** und den gemeinsamen Baustein `tw-ki-kern.js` → Cloud Function **`kiTor`** (Firebase, europe-west1). Der Anthropic-Schlüssel liegt **nur dort**, nie im Browser, nie im Code, nie auf GitHub.

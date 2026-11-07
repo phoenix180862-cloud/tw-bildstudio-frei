@@ -39,9 +39,9 @@ const ladeBild = (src) => new Promise((res, rej) => { const i = new Image(); i.o
 /* ═════════ Wasserzeichen ═════════ */
 let logoCache = null;
 async function firmenlogoTransparent() {
-  if (logoCache) return logoCache; const i = await ladeBild('img/tw-logo.jpg'); const c = document.createElement('canvas'); c.width = i.width; c.height = i.height; const x = c.getContext('2d'); x.drawImage(i, 0, 0);
-  const d = x.getImageData(0, 0, c.width, c.height); for (let k = 0; k < d.data.length; k += 4) { const m = Math.min(d.data[k], d.data[k + 1], d.data[k + 2]); if (m > 225) d.data[k + 3] = Math.max(0, 255 - (m - 225) * 8.5); }
-  x.putImageData(d, 0, 0); logoCache = c; return c;
+  // Original-Logo (Thomas, 07.11.2026): weiß/rot, schon durchsichtig – keine schwarze Schrift mehr
+  if (logoCache) return logoCache; const i = await ladeBild('img/tw-logo-original.png'); const c = document.createElement('canvas'); c.width = i.width; c.height = i.height; c.getContext('2d').drawImage(i, 0, 0);
+  logoCache = c; return c;
 }
 async function logoBild(wz) { if (FREI) return wz.logo && wz.logo !== 'firma' ? ladeBild(wz.logo) : null; if (wz.logo === 'firma' || !wz.logo) return firmenlogoTransparent(); return ladeBild(wz.logo); }
 export async function wasserzeichen(canvas, wz) {

@@ -16,7 +16,7 @@ a { color: inherit; }
 .marke { display: flex; align-items: center; gap: 9px; text-decoration: none; margin-right: 8px; }
 .marke img { width: 34px; height: 34px; border-radius: 8px; }
 /* Firmenlogo (Original-Bilddatei, schwarz/rot) auf kleinem weißem Schild in der Kopfleiste – Seitenverhältnis 639:188 bleibt */
-.marke .logo-schild { display: flex; align-items: center; background: #fff; border-radius: 6px; padding: 3px 7px; box-shadow: 0 1px 4px rgba(0,0,0,.35); }
+.marke .logo-schild { display: flex; align-items: center; background: #111111; border-radius: 6px; padding: 3px 7px; box-shadow: 0 1px 4px rgba(0,0,0,.35); }
 .marke .logo-schild img { height: 26px; width: auto; border-radius: 0; display: block; }
 .marke span { font-family: "Oswald"; font-size: 19px; letter-spacing: .6px; white-space: nowrap; } .marke b { color: var(--rot2); }
 #reiter { display: flex; gap: 2px; background: var(--bg); padding: 3px; border-radius: 9px; border: 1px solid var(--line); }

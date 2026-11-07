@@ -1,6 +1,6 @@
 // TW Bildstudio (kostenlose Fassung) – Service Worker: Netz zuerst (immer neueste Fassung), Zwischenspeicher nur offline.
 // Cache-Stempel wird beim Paketbau gesetzt. Den Hinweis „Neue Version … – jetzt aktualisieren“ zeigt lib/tw-version.js (vergleicht <meta name="tw-version"> der index.html).
-const C = 'tw-bs-frei-20261104-093451';
+const C = 'tw-bs-frei-20261107-103405';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (e) => e.waitUntil(caches.keys().then(k => Promise.all(k.filter(n => n !== C).map(n => caches.delete(n)))).then(() => self.clients.claim())));
 self.addEventListener('fetch', (e) => {
